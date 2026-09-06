@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import StatisticsCards from "../components/dashboard/StatisticsCards";
+import DashboardRightSidebar from "../components/dashboard/DashboardRightSidebar";
 import TouristPlaceCard from "../components/tourist/TouristPlaceCard";
 import { touristPlaces } from "../data/touristPlaces";
 import { useLanguage } from "../i18n/useLanguage";
@@ -16,11 +17,6 @@ const quickActions = [
 
 function HomePage() {
   const { t } = useLanguage();
-  const categories = Array.from(new Set(touristPlaces.map((place) => place.category)));
-  const categorySummary = categories.map((category) => ({
-    category,
-    total: touristPlaces.filter((place) => place.category === category).length,
-  }));
 
   return (
     <section className="home-page" aria-labelledby="home-title">
@@ -37,24 +33,7 @@ function HomePage() {
           </div>
         </section>
 
-        <aside className="dashboard-aside" aria-label="Resumen turístico">
-          <section className="dashboard-panel">
-            <p className="eyebrow">Panorama</p><h2>Resumen Turístico</h2>
-            <dl className="summary-list">
-              <div><dt>Lugares registrados</dt><dd>{touristPlaces.length}</dd></div>
-              <div><dt>Categorías disponibles</dt><dd>{categories.length}</dd></div>
-              <div><dt>Con calificación</dt><dd>{touristPlaces.filter((place) => place.calificacion != null).length}</dd></div>
-            </dl>
-          </section>
-          <section className="dashboard-panel">
-            <p className="eyebrow">Datos disponibles</p><h2>Visitas por categoría</h2>
-            <div className="empty-chart" role="status"><span>◌</span><p>Aún no hay datos de visitas disponibles.</p><small>El panel está preparado para conectarse a esta métrica cuando el backend la exponga.</small></div>
-            <ul className="category-list">{categorySummary.map(({ category, total }) => <li key={category}><span>{category}</span><strong>{total}</strong></li>)}</ul>
-          </section>
-          <section className="dashboard-panel dashboard-panel--muted">
-            <p className="eyebrow">Próximamente</p><h2>Eventos y Festividades</h2><p>No existe una fuente de eventos conectada en el proyecto actual.</p>
-          </section>
-        </aside>
+        <DashboardRightSidebar />
       </div>
 
       <section className="quick-actions" aria-labelledby="quick-actions-title">
