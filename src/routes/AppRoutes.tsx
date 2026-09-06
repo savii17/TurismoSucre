@@ -10,6 +10,9 @@ import PlaceholderPage from "../pages/PlaceholderPage";
 import TouristPlaceDetailPage from "../pages/TouristPlaceDetailPage";
 import TouristPlacesPage from "../pages/TouristPlacesPage";
 import LoginPage from "../pages/auth/LoginPage";
+import AccommodationsPage from "../pages/AccommodationsPage";
+import RestaurantsPage from "../pages/RestaurantsPage";
+import EventsPage from "../pages/EventsPage";
 import { useLanguage } from "../i18n/useLanguage";
 
 
@@ -27,15 +30,15 @@ function AppRoutes() {
           <Route path="/lugares-turisticos/:placeId" element={<TouristPlaceDetailPage />} />
           <Route
             path="/hospedajes"
-            element={<PlaceholderPage title={t("accommodations")} description={t("accommodationsDescription")} />}
+            element={<AccommodationsPage />}
           />
           <Route
             path="/restaurantes"
-            element={<PlaceholderPage title={t("restaurants")} description={t("restaurantsDescription")} />}
+            element={<RestaurantsPage />}
           />
           <Route
             path="/eventos"
-            element={<PlaceholderPage title={t("events")} description={t("eventsDescription")} />}
+            element={<EventsPage />}
           />
           <Route
             path="/emergencias"
