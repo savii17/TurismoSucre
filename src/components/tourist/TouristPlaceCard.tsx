@@ -4,6 +4,7 @@ import {
   getLocalizedTouristPlace,
   type TouristPlace,
 } from "../../data/touristPlaces";
+import { getTouristPlaceImage } from "../../data/touristImages";
 import { useLanguage } from "../../i18n/useLanguage";
 
 type TouristPlaceCardProps = {
@@ -13,7 +14,10 @@ type TouristPlaceCardProps = {
 function TouristPlaceCard({ place }: TouristPlaceCardProps) {
   const { language, t } = useLanguage();
   const localizedPlace = getLocalizedTouristPlace(place, language);
-  const image = localizedPlace.imagenes_url?.[0] ?? localizedPlace.image;
+  const image = getTouristPlaceImage(
+    localizedPlace.id,
+    localizedPlace.imagenes_url?.[0] ?? localizedPlace.image,
+  );
   const location = localizedPlace.ubicacion ?? localizedPlace.address;
   const hours =
     localizedPlace.horario_inicio && localizedPlace.horario_fin
