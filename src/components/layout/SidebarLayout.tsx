@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 
@@ -19,7 +19,7 @@ function Icon({ name }: { name: IconName }) {
 }
 
 function SidebarLayout() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => window.innerWidth > 850);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
   const location = useLocation();
@@ -30,8 +30,24 @@ function SidebarLayout() {
   const initials = useMemo(() => user ? `${user.nombres?.charAt(0) ?? ""}${user.apellido_paterno?.charAt(0) ?? ""}`.toUpperCase() : "TS", [user]);
   const pageTitle = managementRoutes.concat(configurationRoutes).find((route) => route.to === location.pathname)?.label ?? t("systemTitle");
 
+  const closeSidebar = () => setIsSidebarOpen(false);
+  const closeMobileSidebar = () => {
+    if (window.matchMedia("(max-width: 850px)").matches) {
+      closeSidebar();
+    }
+  };
+
+  useEffect(() => {
+    const mobileQuery = window.matchMedia("(max-width: 850px)");
+    const updateSidebarForViewport = () => setIsSidebarOpen(!mobileQuery.matches);
+
+    mobileQuery.addEventListener("change", updateSidebarForViewport);
+    return () => mobileQuery.removeEventListener("change", updateSidebarForViewport);
+  }, []);
+
   return <div className={`app-shell ${isSidebarOpen ? "" : "app-shell--sidebar-collapsed"}`}>
-    <aside className="sidebar" aria-label={t("navigation")}><div className="sidebar__brand"><span>TS</span><div><strong>TURISMO</strong><small>SUCRE</small></div></div><nav className="sidebar__nav"><section className="sidebar__section"><h2 className="sidebar__heading">{t("management")}</h2>{managementRoutes.map((route) => <NavLink key={route.to} to={route.to} end={route.to === "/"} className="sidebar__link"><Icon name={route.icon} /><span>{route.label}</span></NavLink>)}</section><section className="sidebar__section"><h2 className="sidebar__heading">{t("configuration")}</h2>{configurationRoutes.map((route) => <NavLink key={route.to} to={route.to} className="sidebar__link"><Icon name={route.icon} /><span>{route.label}</span></NavLink>)}</section></nav><div className="sidebar__footer"><span className="sidebar__status" /> Sistema operativo</div></aside>
+    <button className="sidebar-backdrop" type="button" aria-label="Cerrar menú" onClick={closeSidebar} tabIndex={isSidebarOpen ? 0 : -1} />
+    <aside className="sidebar" aria-label={t("navigation")}><div className="sidebar__brand"><span>TS</span><div><strong>TURISMO</strong><small>SUCRE</small></div></div><button className="sidebar__close" type="button" aria-label="Cerrar menú" onClick={closeSidebar}>×</button><nav className="sidebar__nav"><section className="sidebar__section"><h2 className="sidebar__heading">{t("management")}</h2>{managementRoutes.map((route) => <NavLink key={route.to} to={route.to} end={route.to === "/"} className="sidebar__link" onClick={closeMobileSidebar}><Icon name={route.icon} /><span>{route.label}</span></NavLink>)}</section><section className="sidebar__section"><h2 className="sidebar__heading">{t("configuration")}</h2>{configurationRoutes.map((route) => <NavLink key={route.to} to={route.to} className="sidebar__link" onClick={closeMobileSidebar}><Icon name={route.icon} /><span>{route.label}</span></NavLink>)}</section></nav><div className="sidebar__footer"><span className="sidebar__status" /> Sistema operativo</div></aside>
     <div className="app-shell__main"><header className="topbar"><div className="topbar__left"><button type="button" className="hamburger-button" aria-label={isSidebarOpen ? t("hideSidebar") : t("showSidebar")} aria-expanded={isSidebarOpen} onClick={() => setIsSidebarOpen((current) => !current)}><Icon name="menu" /></button><div><p className="breadcrumb">{t("dashboard")} <span>/</span> {pageTitle}</p><h1 className="topbar__title">{pageTitle}</h1></div></div><div className="topbar__actions"><label className="topbar-search"><Icon name="search" /><span className="sr-only">Buscar</span><input type="search" placeholder="Buscar en Turismo Sucre" /></label><div className="notifications"><button type="button" className="icon-button" aria-label={t("viewNotifications")} aria-expanded={isNotificationsOpen} onClick={() => setIsNotificationsOpen((current) => !current)}><Icon name="bell" /><span className="notification-badge">{notifications.length}</span></button>{isNotificationsOpen && <div className="notifications__panel" role="status"><h2>{t("notifications")}</h2><ul>{notifications.map((notification) => <li key={notification}>{notification}</li>)}</ul></div>}</div><label className="language-selector"><Icon name="globe" /><span className="sr-only">{t("language")}</span><select value={language} onChange={(event) => setLanguage(event.target.value as "es" | "en")} aria-label={t("language")}><option value="es">ES</option><option value="en">EN</option></select></label><div className="profile-card" aria-label={t("accountProfile")}><div className="profile-card__avatar">{initials}</div><div><strong>{user ? `${user.nombres} ${user.apellido_paterno}` : t("guest")}</strong><span>{user?.rol ?? t("noSession")}</span></div></div></div></header><TourismHero /><main className="app-shell__content"><Outlet /></main></div>
   </div>;
 }
