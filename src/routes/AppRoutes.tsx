@@ -13,6 +13,8 @@ import LoginPage from "../pages/auth/LoginPage";
 import AccommodationsPage from "../pages/AccommodationsPage";
 import RestaurantsPage from "../pages/RestaurantsPage";
 import EventsPage from "../pages/EventsPage";
+import EmergenciesPage from "../pages/EmergenciesPage";
+import UsersPage from "../pages/UsersPage";
 import { useLanguage } from "../i18n/useLanguage";
 
 
@@ -42,12 +44,13 @@ function AppRoutes() {
           />
           <Route
             path="/emergencias"
-            element={<PlaceholderPage title={t("emergencies")} description={t("emergenciesDescription")} />}
+            element={<EmergenciesPage />}
           />
           <Route
             path="/usuario"
-            element={<PlaceholderPage title={t("user")} description={t("userDescription")} />}
+            element={<UsersPage />}
           />
+          <Route path="/usuarios" element={<UsersPage />} />
           <Route
             path="/categorias"
             element={<PlaceholderPage title={t("categories")} description={t("categoriesDescription")} />}
