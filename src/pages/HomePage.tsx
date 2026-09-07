@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 import StatisticsCards from "../components/dashboard/StatisticsCards";
 import DashboardRightSidebar from "../components/dashboard/DashboardRightSidebar";
-import TouristPlaceCard from "../components/tourist/TouristPlaceCard";
-import { touristPlaces } from "../data/touristPlaces";
+import DashboardTouristPlaceCard from "../components/dashboard/DashboardTouristPlaceCard";
+import { featuredTouristPlaces, touristPlaces } from "../data/touristPlaces";
 import { useLanguage } from "../i18n/useLanguage";
 
 const quickActions = [
@@ -17,6 +17,9 @@ const quickActions = [
 
 function HomePage() {
   const { t } = useLanguage();
+  const featuredPlaces = [...touristPlaces, ...featuredTouristPlaces]
+    .sort((first, second) => (second.calificacion ?? -1) - (first.calificacion ?? -1))
+    .slice(0, 8);
 
   return (
     <section className="home-page" aria-labelledby="home-title">
@@ -29,7 +32,7 @@ function HomePage() {
             <Link className="see-all-link" to="/lugares-turisticos">{t("allPlaces")} <span aria-hidden="true">→</span></Link>
           </div>
           <div className="tourist-places-grid tourist-places-grid--featured">
-            {touristPlaces.slice(0, 3).map((place) => <TouristPlaceCard key={place.id} place={place} />)}
+            {featuredPlaces.map((place) => <DashboardTouristPlaceCard key={place.id} place={place} />)}
           </div>
         </section>
 
