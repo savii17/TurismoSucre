@@ -32,6 +32,7 @@ function TouristPlaceCard({ place }: TouristPlaceCardProps) {
             className="tourist-place-card__image"
             src={image}
             alt={`${t("touristPlaces")}: ${localizedPlace.nombre_lugar ?? localizedPlace.name}`}
+            loading="lazy"
           />
         ) : (
           <div
