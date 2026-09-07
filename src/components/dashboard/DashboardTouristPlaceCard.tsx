@@ -2,12 +2,16 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import type { TouristPlace } from "../../data/touristPlaces";
+import { getTouristPlaceImage } from "../../data/touristImages";
 
 type Props = { place: TouristPlace };
 
 function DashboardTouristPlaceCard({ place }: Props) {
   const [imageFailed, setImageFailed] = useState(false);
-  const image = place.imagenes_url?.find((url) => url.trim()) ?? place.image;
+  const image = getTouristPlaceImage(
+    place.id,
+    place.imagenes_url?.find((url) => url.trim()) ?? place.image,
+  );
   const name = place.nombre_lugar ?? place.name;
   const location = place.ubicacion ?? place.localizacion ?? place.address;
   const description = place.descripcion ?? place.shortDescription;
