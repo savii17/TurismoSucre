@@ -1,41 +1,18 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import RecordDetailPage, { type DetailRecord } from "../components/detail/RecordDetailPage";
+import { getTouristPlaceById } from "../data/touristPlaces";
 
-import { getLocalizedTouristPlace, getTouristPlaceById } from "../data/touristPlaces";
-import { useLanguage } from "../i18n/useLanguage";
-
-function TouristPlaceDetailPage() {
+export default function TouristPlaceDetailPage() {
   const { placeId } = useParams<{ placeId: string }>();
-  const { language, t } = useLanguage();
   const place = getTouristPlaceById(placeId);
-
-  if (!place) {
-    return (
-      <section className="page-card tourist-detail">
-        <h1>{t("placeNotFound")}</h1>
-        <p>{t("placeNotFoundDescription")}</p>
-        <Link className="see-all-link" to="/lugares-turisticos">{t("backToPlaces")}</Link>
-      </section>
-    );
-  }
-
-  const localizedPlace = getLocalizedTouristPlace(place, language);
-  const image = localizedPlace.imagenes_url?.[0] ?? localizedPlace.image;
-  const name = localizedPlace.nombre_lugar ?? localizedPlace.name;
-
-  return (
-    <article className="page-card tourist-detail">
-      <Link className="see-all-link" to="/lugares-turisticos">← {t("backToPlaces")}</Link>
-      {image && <img className="tourist-detail__image" src={image} alt={name} />}
-      <p className="eyebrow">{localizedPlace.category}</p>
-      <h1>{name}</h1>
-      <p>{localizedPlace.descripcion ?? localizedPlace.description}</p>
-      <dl className="tourist-detail__facts">
-        <div><dt>{t("address")}</dt><dd>{localizedPlace.ubicacion ?? localizedPlace.address}</dd></div>
-        <div><dt>{t("hours")}</dt><dd>{localizedPlace.horario_inicio && localizedPlace.horario_fin ? `${localizedPlace.horario_inicio} – ${localizedPlace.horario_fin}` : localizedPlace.hours}</dd></div>
-        {localizedPlace.calificacion != null && <div><dt>★</dt><dd>{localizedPlace.calificacion.toFixed(1)}</dd></div>}
-      </dl>
-    </article>
-  );
+  const record: DetailRecord | undefined = place && {
+    id: place.id, name: place.nombre_lugar ?? place.name, category: place.category,
+    status: place.estado, location: place.ubicacion ?? place.address,
+    description: place.descripcion ?? place.description, image: place.imagenes_url?.[0] ?? place.image,
+    images: place.imagenes_url, rating: place.calificacion, hours: place.horario_inicio && place.horario_fin ? `${place.horario_inicio} – ${place.horario_fin}` : place.hours,
+    price: place.precio_entrada != null ? (place.precio_entrada === 0 ? "Gratuito" : `Bs ${place.precio_entrada}`) : undefined,
+    services: place.services, registeredBy: place.registrado_por, registeredAt: place.fecha_registro,
+    latitude: place.latitud, longitude: place.longitud,
+  };
+  return <RecordDetailPage record={record} moduleName="Lugares turísticos" detailTitle="Lugar turístico" backTo="/lugares-turisticos" summary={{ rating: record?.rating?.toFixed(1), price: record?.price, hours: record?.hours }} />;
 }
-
-export default TouristPlaceDetailPage;

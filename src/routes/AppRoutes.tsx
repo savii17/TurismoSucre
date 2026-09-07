@@ -8,6 +8,8 @@ import SidebarLayout from "../components/layout/SidebarLayout";
 import HomePage from "../pages/HomePage";
 import PlaceholderPage from "../pages/PlaceholderPage";
 import TouristPlaceDetailPage from "../pages/TouristPlaceDetailPage";
+import AccommodationDetailPage from "../pages/AccommodationDetailPage";
+import RestaurantDetailPage from "../pages/RestaurantDetailPage";
 import TouristPlacesPage from "../pages/TouristPlacesPage";
 import LoginPage from "../pages/auth/LoginPage";
 import AccommodationsPage from "../pages/AccommodationsPage";
@@ -34,10 +36,12 @@ function AppRoutes() {
             path="/hospedajes"
             element={<AccommodationsPage />}
           />
+          <Route path="/hospedajes/:accommodationId" element={<AccommodationDetailPage />} />
           <Route
             path="/restaurantes"
             element={<RestaurantsPage />}
           />
+          <Route path="/restaurantes/:restaurantId" element={<RestaurantDetailPage />} />
           <Route
             path="/eventos"
             element={<EventsPage />}
