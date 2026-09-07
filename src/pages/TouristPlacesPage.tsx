@@ -9,7 +9,7 @@ function TouristPlacesPage() {
     image: place.imagenes_url?.[0] ?? place.image, rating: place.calificacion ?? 4.5,
     price: place.precio_entrada ? `Bs ${place.precio_entrada}` : "Gratuito",
   }));
-  return <AdministrativeListingPage title="Lugares Turísticos" description="Gestiona y consulta todos los lugares turísticos registrados en el sistema." actionLabel="Nuevo Lugar Turístico" items={places} />;
+  return <AdministrativeListingPage title="Lugares Turísticos" description="Gestiona y consulta todos los lugares turísticos registrados en el sistema." actionLabel="Nuevo Lugar Turístico" items={places} detailPath="/lugares-turisticos" />;
 }
 
 export default TouristPlacesPage;
