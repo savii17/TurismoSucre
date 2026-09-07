@@ -36,11 +36,20 @@ function LoginForm({ error, onSubmit }: LoginFormProps) {
 
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>{t("signIn")}</h1>
+    <form className="login-form" onSubmit={handleSubmit}>
+      <div className="login-form__brand" aria-hidden="true">
+        <span>TS</span>
+        <div><strong>TURISMO</strong><small>SUCRE</small></div>
+      </div>
+
+      <div className="login-form__heading">
+        <p>Panel de gestión turística</p>
+        <h1>{t("signIn")}</h1>
+        <span>Ingresa tus credenciales para continuar.</span>
+      </div>
 
 
-      <div>
+      <div className="login-form__field">
          <label htmlFor="email">{t("email")}</label>
 
 
@@ -57,7 +66,7 @@ function LoginForm({ error, onSubmit }: LoginFormProps) {
       </div>
 
 
-      <div>
+      <div className="login-form__field">
         <label htmlFor="password">{t("password")}</label>
 
 
@@ -75,13 +84,13 @@ function LoginForm({ error, onSubmit }: LoginFormProps) {
 
 
       {error && (
-        <p role="alert" aria-live="polite">
+        <p className="login-form__error" role="alert" aria-live="polite">
           {error}
         </p>
       )}
 
 
-      <button type="submit">{t("login")}</button>
+      <button className="login-form__submit" type="submit">{t("login")}</button>
     </form>
   );
 }
