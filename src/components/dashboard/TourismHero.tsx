@@ -2,19 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
+import { touristHeroImages } from "../../data/touristImages";
 import { useLanguage } from "../../i18n/useLanguage";
 
 const AUTO_ADVANCE_DELAY = 5_000;
 const INTERACTION_PAUSE_DELAY = 10_000;
 
-// Keep this list local and explicit so production images can be swapped without
-// changing the carousel logic. These paths match the project's tourist image set.
-const heroImages = [
-  "/images/lugares-turisticos/centro-historico.jpg",
-  "/images/lugares-turisticos/mirador-del-valle.jpg",
-  "/images/lugares-turisticos/museo-regional.jpg",
-  "/images/lugares-turisticos/cascada-esmeralda.jpg",
-] as const;
+// Carrusel con fotografías reales de atractivos turísticos de Sucre.
+const heroImages = touristHeroImages;
 
 type HeroIconName = "sun" | "location" | "calendar";
 
