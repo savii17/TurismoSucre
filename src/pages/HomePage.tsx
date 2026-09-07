@@ -19,7 +19,7 @@ function HomePage() {
   const { t } = useLanguage();
   const featuredPlaces = [...touristPlaces, ...featuredTouristPlaces]
     .sort((first, second) => (second.calificacion ?? -1) - (first.calificacion ?? -1))
-    .slice(0, 8);
+    .slice(0, 6);
 
   return (
     <section className="home-page" aria-labelledby="home-title">
