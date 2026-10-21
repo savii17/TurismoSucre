@@ -1,12 +1,13 @@
 export const touristPlaceCategories = [
-  "Iglesias",
+  "Patrimonio histórico",
+  "Iglesias y templos",
   "Museos",
   "Miradores",
-  "Plazas",
-  "Patrimonio",
+  "Plazas y espacios urbanos",
   "Naturaleza",
   "Paleontología",
   "Cultura",
+  "Otros atractivos",
 ] as const;
 
 export const accommodationCategories = [
