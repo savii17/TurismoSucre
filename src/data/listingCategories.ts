@@ -42,7 +42,11 @@ export const entertainmentCategories = [
   "Boliche",
   "Bar",
   "Pub",
+  "Karaoke",
+  "Centro de entretenimiento",
   "Sala de eventos",
+  "Música en vivo",
+  "Peña",
   "Otros",
 ] as const;
 

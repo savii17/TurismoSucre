@@ -2,16 +2,166 @@ import type { EntertainmentRecord } from "../types/listing";
 
 export type { EntertainmentRecord } from "../types/listing";
 
-// Local demonstration records mirror the entertainment collection's field names.
+/**
+ * Verificación consultada el 21-10-2026. Los datos no encontrados en fuentes
+ * consultables se dejan vacíos; no se usan fotos genéricas ni coordenadas estimadas.
+ * Los enlaces de fuente quedan junto a cada registro para facilitar su mantenimiento.
+ */
 export const entertainment: EntertainmentRecord[] = [
-  { _id: "la-casona", nombre_lugar: "La Casona", ubicacion: "Calle Calvo 270, Sucre", latitud: -19.0473, longitud: -65.2598, descripcion: "Discoteca céntrica con música para bailar y una pista animada durante el fin de semana.", horario_inicio: "21:00", horario_fin: "03:00", tipo: "Discoteca", calificacion: 4.6, imagenes_url: ["https://images.unsplash.com/photo-1571266028243-d220c9c3b77b?auto=format&fit=crop&w=1000&q=85"], servicios: ["Música en vivo", "Barra", "Pista de baile"], registrado_por: "administrador", estado: "ACTIVO", fecha_registro: "2026-08-12" },
-  { _id: "zona-6", nombre_lugar: "Zona 6", ubicacion: "Av. Jaime Mendoza, Sucre", latitud: -19.0458, longitud: -65.2532, descripcion: "Boliche con sesiones de DJ, luces y ambiente para compartir con amigos.", horario_inicio: "20:00", horario_fin: "02:30", tipo: "Boliche", calificacion: 4.4, imagenes_url: ["https://images.unsplash.com/photo-1574391884720-bbc3740c59d1?auto=format&fit=crop&w=1000&q=85"], servicios: ["DJ", "Barra", "Reservas"], registrado_por: "administrador", estado: "ACTIVO", fecha_registro: "2026-08-14" },
-  { _id: "el-patio", nombre_lugar: "El Patio", ubicacion: "Calle Aniceto Arce, Sucre", latitud: -19.0495, longitud: -65.2611, descripcion: "Bar de ambiente cálido con coctelería y espacios para conversar.", horario_inicio: "18:00", horario_fin: "01:00", tipo: "Bar", calificacion: 4.3, imagenes_url: ["https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1000&q=85"], servicios: ["Coctelería", "Terraza", "Wi‑Fi"], registrado_por: "administrador", estado: "ACTIVO", fecha_registro: "2026-08-18" },
-  { _id: "el-kiosco", nombre_lugar: "El Kiosco", ubicacion: "Plaza 25 de Mayo, Sucre", latitud: -19.0476, longitud: -65.2591, descripcion: "Pub junto al centro histórico, ideal para disfrutar bebidas y buena música.", horario_inicio: "17:00", horario_fin: "00:30", tipo: "Pub", calificacion: 4.5, imagenes_url: ["https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=85"], servicios: ["Cervezas artesanales", "Música", "Wi‑Fi"], registrado_por: "administrador", estado: "ACTIVO", fecha_registro: "2026-08-20" },
-  { _id: "la-trastienda", nombre_lugar: "La Trastienda", ubicacion: "Calle Lemoine, Sucre", descripcion: "Bar pequeño con propuestas musicales y una carta de bebidas para descubrir.", horario_inicio: "19:00", horario_fin: "01:00", tipo: "Bar", calificacion: 4.2, imagenes_url: ["https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1000&q=85"], servicios: ["Coctelería", "Música en vivo"], estado: "ACTIVO" },
-  { _id: "nova-club", nombre_lugar: "Nova Club", ubicacion: "Av. Las Américas, Sucre", descripcion: "Club nocturno con pista amplia y noches temáticas.", horario_inicio: "21:00", horario_fin: "03:00", tipo: "Discoteca", calificacion: 4.7, imagenes_url: ["https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=1000&q=85"], servicios: ["DJ", "Pista de baile", "Reservas"], estado: "ACTIVO" },
-  { _id: "cafe-concert", nombre_lugar: "Café Concert", ubicacion: "Calle Destacamento, Sucre", descripcion: "Un escenario íntimo para conciertos, encuentros y noches culturales.", tipo: "Sala de eventos", calificacion: 4.1, imagenes_url: ["https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1000&q=85"], servicios: ["Música en vivo", "Eventos privados"], estado: "ACTIVO" },
-  { _id: "cielo-lounge", nombre_lugar: "Cielo Lounge", ubicacion: "Calle Bolívar, Sucre", descripcion: "Lounge con ambiente relajado y vista a los tejados de la ciudad.", tipo: "Pub", calificacion: 4.3, imagenes_url: ["https://images.unsplash.com/photo-1515003197210-e0cd7184f8b5?auto=format&fit=crop&w=1000&q=85"], servicios: ["Terraza", "Coctelería"], estado: "ACTIVO" },
-  { _id: "la-terraza", nombre_lugar: "La Terraza", ubicacion: "Calle Junín, Sucre", descripcion: "Espacio nocturno para bailar y disfrutar música con amistades.", tipo: "Discoteca", calificacion: 4.5, imagenes_url: ["https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1000&q=85"], servicios: ["DJ", "Pista de baile"], estado: "ACTIVO" },
-  { _id: "salon-mariscal", nombre_lugar: "Salón Mariscal", ubicacion: "Centro, Sucre", descripcion: "Salón adaptable para celebraciones y encuentros sociales.", tipo: "Sala de eventos", imagenes_url: [], servicios: ["Eventos privados", "Reservas"], estado: "ACTIVO" },
+  {
+    _id: "goblin-cerveza-artesanal",
+    nombre_lugar: "Goblin Cerveza Artesanal",
+    ubicacion: "Calle Grau 246, entre Avaroa y Potosí, Sucre",
+    descripcion: "Bar y cervecería artesanal con música rock y cerveza elaborada en el local.",
+    horario_inicio: "20:00",
+    horario_fin: "02:00",
+    telefono: "+591 73035722",
+    tipo: "Pub",
+    calificacion: 4.5,
+    imagenes_url: [],
+    servicios: ["Cerveza artesanal", "Bar"],
+    estado: "ACTIVO",
+    // Fuentes: https://www.soysucre.info/es/goblin/ ; https://www.tripadvisor.com/Restaurant_Review-g295432-d7395823-Reviews-Goblin_Cerveza_Artesanal-Sucre_Chuquisaca_Department.html
+  },
+  {
+    _id: "terraza-625",
+    nombre_lugar: "Terraza 625",
+    ubicacion: "Calle Bolívar 625, Sucre",
+    descripcion: "Rooftop bar con coctelería, música y vistas panorámicas de Sucre.",
+    horario_inicio: "16:00",
+    horario_fin: "22:30",
+    telefono: "+591 69694120",
+    tipo: "Bar",
+    calificacion: 4.7,
+    imagenes_url: [],
+    servicios: ["Rooftop", "Coctelería", "Reservas"],
+    estado: "ACTIVO",
+    // Fuentes del establecimiento: https://linktr.ee/terraza625 ; https://www.soysucre.info/es/terraza-625/
+  },
+  {
+    _id: "joy-ride-cafe",
+    nombre_lugar: "Joy Ride Café",
+    ubicacion: "Calle Nicolás Ortiz 14, frente a la Catedral, Sucre",
+    latitud: -19.048926,
+    longitud: -65.259607,
+    descripcion: "Café-bar y pub del centro de Sucre, con actividades y ambiente nocturno.",
+    horario_inicio: "07:00",
+    horario_fin: "02:30",
+    telefono: "+591 4 6425544",
+    tipo: "Pub",
+    calificacion: 3.7,
+    imagenes_url: [],
+    servicios: ["Bar", "Pub", "Reservas", "Wi-Fi"],
+    estado: "ACTIVO",
+    // Fuentes: https://www.joyridebol.com/ ; https://www.tripadvisor.com/Restaurant_Review-g295432-d1069717-Reviews-Joy_Ride_Cafe-Sucre_Chuquisaca_Department.html
+  },
+  {
+    _id: "joy-ride-disco",
+    nombre_lugar: "Joy Ride Disco",
+    ubicacion: "Avaroa 431, entre Grau y Dalence, Sucre",
+    descripcion: "Discoteca de Joy Ride Bolivia, con noches de música y baile.",
+    horario_inicio: "23:00",
+    horario_fin: "03:00",
+    tipo: "Discoteca",
+    calificacion: 4.5,
+    imagenes_url: [],
+    servicios: [],
+    estado: "ACTIVO",
+    // Fuentes: https://www.tripadvisor.com.ar/Attraction_Review-g295432-d10606160-Reviews-Joy_Ride_Disco-Sucre_Chuquisaca_Department.html ; https://www.tripadvisor.es/AttractionsNear-g295432-d12845283-oa30-Parque_Simon_Bolivar-Sucre_Chuquisaca_Department.html
+  },
+  {
+    _id: "kultur-cafe-berlin",
+    nombre_lugar: "Kultur Café Berlin",
+    ubicacion: "Avaroa 334, Sucre",
+    descripcion: "Bar y café con ambiente nocturno en el centro de Sucre.",
+    tipo: "Discoteca",
+    calificacion: 4.3,
+    imagenes_url: [],
+    servicios: ["Bar"],
+    estado: "ACTIVO",
+    // Fuente: https://www.tripadvisor.co/Restaurant_Review-g295432-d2214713-Reviews-Kultur_Cafe_Berlin-Sucre_Chuquisaca_Department.html
+  },
+  {
+    _id: "salfari-restobar",
+    nombre_lugar: "Salfari Resto-Bar",
+    ubicacion: "Calle Prudencio Bustillos 237, Sucre",
+    descripcion: "Resto-bar con karaoke y música en Sucre.",
+    telefono: "+591 67644223",
+    tipo: "Karaoke",
+    imagenes_url: [],
+    servicios: ["Karaoke", "Música"],
+    estado: "ACTIVO",
+    // Fuentes: https://restaurantguru.com/Salfari-Restobar-Sucre ; https://www.petitfute.com/v37279-sucre/c1169-s-amuser-sortir/c182-bar-cafe/677115-salfari-resto-bar.html
+  },
+  {
+    _id: "tio-chu",
+    nombre_lugar: "Tío Chu",
+    ubicacion: "Avenida del Ejército 340, Sucre",
+    descripcion: "Pub para compartir bebidas y música; el establecimiento indica que no es una discoteca.",
+    telefono: "+591 74432908",
+    tipo: "Pub",
+    imagenes_url: [],
+    servicios: ["Música", "Reservas"],
+    estado: "ACTIVO",
+    // Fuente del establecimiento, publicaciones de 2026: https://www.restaurants10.com/BO/Sucre/2067221933501673/T%C3%ADo-Chu
+  },
+  {
+    _id: "cheers-beer-company",
+    nombre_lugar: "Cheers Beer Company",
+    ubicacion: "Calle Dalence 109, Sucre",
+    telefono: "+591 72852572",
+    tipo: "Bar",
+    horario_inicio: "16:30",
+    horario_fin: "00:00",
+    descripcion: "Bar ubicado en la calle Dalence, en el centro de Sucre.",
+    imagenes_url: [],
+    servicios: [],
+    estado: "ACTIVO",
+    // Fuente cartográfica con datos de contacto y horario consultada en 2026: https://www.waze.com/live-map/directions/bo/departamento-de-chuquisaca/sucre/cheers-beer-company
+  },
+  {
+    _id: "la-quimba",
+    nombre_lugar: "La Quimba",
+    ubicacion: "Calle Bustillos 235, entre Colón y La Paz, Sucre",
+    descripcion: "Espacio cultural y gastronómico con programación de música en vivo.",
+    telefono: "+591 70326982",
+    tipo: "Música en vivo",
+    imagenes_url: [],
+    servicios: ["Música en vivo", "Reservas"],
+    estado: "ACTIVO",
+    // Fuentes con publicaciones de 2026: https://www.findglocal.com/BO/Sucre/461854987333967/La-Quimba ; https://www.tripadvisor.co/Restaurant_Review-g295432-d12279001-Reviews-La_Quimba-Sucre_Chuquisaca_Department.html
+  },
+  {
+    _id: "la-chicheria-by-samary",
+    nombre_lugar: "La Chichería by Samary",
+    ubicacion: "Calle Dalence 349, Sucre",
+    descripcion: "Bar tradicional donde se sirven chicha y bebidas tradicionales.",
+    tipo: "Bar",
+    imagenes_url: [],
+    servicios: ["Bebidas tradicionales"],
+    estado: "ACTIVO",
+    // Fuentes: https://visit-latin-america.com/es/members/mi-pueblo-samary/ ; https://www.tripadvisor.es/LocationPhotoDirectLink-g295432-d17514692-i397701031-La_Chicheria_by_Samary-Sucre_Chuquisaca_Department.html
+  },
+  {
+    _id: "rockerz-hard-rock-cafe",
+    nombre_lugar: "Rockerz Hard Rock Cafe",
+    ubicacion: "Parque Multipropósito, Av. Circunvalación, Sucre",
+    descripcion: "Bar de música rock con presentaciones y conciertos.",
+    tipo: "Música en vivo",
+    imagenes_url: [],
+    servicios: ["Conciertos", "Música rock"],
+    estado: "ACTIVO",
+    // Fuentes: https://www.tripadvisor.com/Attraction_Review-g295432-d15082632-Reviews-Rockerz_hard_rock_cafe-Sucre_Chuquisaca_Department.html ; https://www.tripadvisor.co/Attractions-g295432-Activities-c20-Sucre_Chuquisaca_Department.html
+  },
+  {
+    _id: "hangar-bolivia",
+    nombre_lugar: "Hangar Bolivia",
+    ubicacion: "Avenida Jaime Mendoza 1052, Sucre",
+    descripcion: "Discoteca con agenda de eventos, reservas y menú publicados en sus canales oficiales.",
+    tipo: "Discoteca",
+    imagenes_url: [],
+    servicios: ["Eventos", "Reservas"],
+    estado: "ACTIVO",
+    // Canal del establecimiento: https://linktr.ee/hangarbolivia
+  },
 ];
