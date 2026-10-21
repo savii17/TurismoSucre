@@ -20,6 +20,7 @@ export const accommodationCategories = [
 ] as const;
 
 export const restaurantCategories = [
+  "Comida típica chuquisaqueña",
   "Comida típica",
   "Comida boliviana",
   "Internacional",
@@ -27,8 +28,13 @@ export const restaurantCategories = [
   "Pizzería",
   "Parrillada",
   "Vegetariano",
+  "Vegetariana/Vegana",
   "Comida rápida",
+  "Repostería/Pastelería",
+  "Gourmet",
   "Otros",
+  // Kept to render the preexisting mock category until that entry is verified.
+  "Comida tradicional",
 ] as const;
 
 export const entertainmentCategories = [
