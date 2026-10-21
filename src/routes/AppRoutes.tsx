@@ -15,6 +15,7 @@ import LoginPage from "../pages/auth/LoginPage";
 import AccommodationsPage from "../pages/AccommodationsPage";
 import RestaurantsPage from "../pages/RestaurantsPage";
 import EventsPage from "../pages/EventsPage";
+import EventDetailPage from "../pages/EventDetailPage";
 import EmergenciesPage from "../pages/EmergenciesPage";
 import UsersPage from "../pages/UsersPage";
 import EntertainmentPage from "../pages/EntertainmentPage";
@@ -50,6 +51,7 @@ function AppRoutes() {
             path="/eventos"
             element={<EventsPage />}
           />
+          <Route path="/eventos/:eventId" element={<EventDetailPage />} />
           <Route
             path="/emergencias"
             element={<EmergenciesPage />}

@@ -396,7 +396,8 @@ export const restaurants: RestaurantListing[] = [
 ];
 
 export const events: AdministrativeListing[] = [
-  { id: "carnaval-sucrense", name: "Carnaval Sucrense", category: "Festividad", status: "ACTIVO", location: "Centro histórico de Sucre", description: "Celebración de música, danzas y tradiciones de la ciudad.", date: "21 – 23 de febrero de 2027" },
-  { id: "festival-chuquisaca", name: "Festival de Cultura Chuquisaqueña", category: "Cultural", status: "ACTIVO", location: "Teatro Gran Mariscal, Sucre", description: "Encuentro de arte, gastronomía y expresiones culturales locales.", date: "15 de abril de 2027" },
-  { id: "feria-artesanal", name: "Feria Artesanal de Sucre", category: "Artesanía", status: "INACTIVO", location: "Plaza Anzures, Sucre", description: "Espacio para conocer y adquirir creaciones de artesanos locales.", date: "6 – 8 de junio de 2027" },
+  // Legacy demo entries are retained for the existing dashboard/search references, but are not published as verified events.
+  { id: "carnaval-sucrense", name: "Demo pendiente de verificar: Carnaval Sucrense", category: "Festividad", status: "INACTIVO", location: "", description: "Registro de demostración sin fechas ni ubicación verificadas; no representa un evento anunciado." },
+  { id: "festival-chuquisaca", name: "Demo pendiente de verificar: Festival de Cultura Chuquisaqueña", category: "Cultural", status: "INACTIVO", location: "", description: "Registro de demostración sin fechas ni ubicación verificadas; no representa un evento anunciado." },
+  { id: "feria-artesanal", name: "Demo pendiente de verificar: Feria Artesanal de Sucre", category: "Artesanía", status: "INACTIVO", location: "", description: "Registro de demostración sin fechas ni ubicación verificadas; no representa un evento anunciado." },
 ];
