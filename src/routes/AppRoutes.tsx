@@ -17,6 +17,8 @@ import RestaurantsPage from "../pages/RestaurantsPage";
 import EventsPage from "../pages/EventsPage";
 import EmergenciesPage from "../pages/EmergenciesPage";
 import UsersPage from "../pages/UsersPage";
+import EntertainmentPage from "../pages/EntertainmentPage";
+import EntertainmentDetailPage from "../pages/EntertainmentDetailPage";
 import { useLanguage } from "../i18n/useLanguage";
 
 
@@ -42,6 +44,8 @@ function AppRoutes() {
             element={<RestaurantsPage />}
           />
           <Route path="/restaurantes/:restaurantId" element={<RestaurantDetailPage />} />
+          <Route path="/entretenimiento" element={<EntertainmentPage />} />
+          <Route path="/entretenimiento/:entertainmentId" element={<EntertainmentDetailPage />} />
           <Route
             path="/eventos"
             element={<EventsPage />}

@@ -41,7 +41,7 @@ function StatisticsCards() {
             <p className="statistic-card__title">{statistic.title}</p>
             <strong className="statistic-card__value">{statistic.value ?? "—"}</strong>
             <div className="statistic-card__footer">
-              <span>{statistic.active == null ? statistic.detail : `${t("active")}: ${statistic.active}`}</span><i aria-hidden="true" />
+              <span>{statistic.active == null ? statistic.detail : `${t("active")}: ${statistic.active}`}</span>
             </div>
           </div>
         </article>

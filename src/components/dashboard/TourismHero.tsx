@@ -78,6 +78,7 @@ function TourismHero() {
             className={`tourism-hero__image${index === activeImage ? " tourism-hero__image--active" : ""}`}
             src={image}
             alt=""
+            onError={(event) => { event.currentTarget.hidden = true; }}
           />
         ))}
       </div>
@@ -91,7 +92,7 @@ function TourismHero() {
         <div className="tourism-hero__information" aria-label={t("heroInformation")}>
           <div className="tourism-hero__info-card">
             <HeroIcon name="sun" />
-            <div><strong>22°C</strong><span>{t("sunny")}</span></div>
+            <div><strong>—</strong><span>{t("weatherUnavailable")}</span></div>
           </div>
           <div className="tourism-hero__info-card">
             <HeroIcon name="location" />

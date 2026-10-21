@@ -1,5 +1,5 @@
 import AdministrativeListingPage from "../components/listing/AdministrativeListingPage";
-import { touristPlaces } from "../data/touristPlaces";
+import { featuredTouristPlaces, touristPlaces } from "../data/touristPlaces";
 import { getTouristPlaceImage } from "../data/touristImages";
 
 function TouristPlacesPage() {
@@ -14,8 +14,12 @@ function TouristPlacesPage() {
       place.id,
       place.imagenes_url?.[0] ?? place.image,
     ),
-    rating: place.calificacion ?? 4.5,
-    price: place.precio_entrada ? `Bs ${place.precio_entrada}` : "Gratuito",
+    rating: place.calificacion ?? featuredTouristPlaces.find((featured) => featured.id === place.id)?.calificacion,
+    price: place.precio_entrada == null
+      ? undefined
+      : place.precio_entrada === 0
+        ? "Gratuito"
+        : `Bs ${place.precio_entrada}`,
   }));
 
   return (
@@ -25,6 +29,7 @@ function TouristPlacesPage() {
       actionLabel="Nuevo Lugar Turístico"
       items={places}
       detailPath="/lugares-turisticos"
+      kind="places"
     />
   );
 }
