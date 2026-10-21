@@ -1,9 +1,21 @@
 import { storageService } from "../services/storageService";
+import { emergencyDirectory } from "../data/emergencies";
 import type { Emergency, EmergencyInput } from "../types/emergency";
 
 const EMERGENCIES_KEY = "emergencias";
+const INITIAL_DIRECTORY_KEY = "emergencias-directorio-inicial-v1";
 
-const readAll = (): Emergency[] => storageService.get<Emergency[]>(EMERGENCIES_KEY) ?? [];
+const readAll = (): Emergency[] => {
+  const stored = storageService.get<Emergency[]>(EMERGENCIES_KEY) ?? [];
+  if (storageService.get<boolean>(INITIAL_DIRECTORY_KEY)) return stored;
+
+  // One-time migration: append verified entries while preserving existing data.
+  const existingNames = new Set(stored.map((item) => item.nombre_lugar.trim().toLocaleLowerCase()));
+  const merged = [...stored, ...emergencyDirectory.filter((item) => !existingNames.has(item.nombre_lugar.trim().toLocaleLowerCase()))];
+  storageService.set(EMERGENCIES_KEY, merged);
+  storageService.set(INITIAL_DIRECTORY_KEY, true);
+  return merged;
+};
 const writeAll = (items: Emergency[]) => storageService.set(EMERGENCIES_KEY, items);
 
 export const emergencyRepository = {

@@ -8,6 +8,14 @@ export type Emergency = {
   longitud?: number;
   descripcion: string;
   telefono: string;
+  telefono_emergencia?: string;
+  horario?: string;
+  atencion_24_horas?: boolean;
+  servicios?: string[];
+  institucion?: string;
+  sitio_web?: string;
+  fuente_url?: string;
+  fuente_secundaria_url?: string;
   tipo: string;
   registrado_por: string;
   estado: EmergencyStatus;
