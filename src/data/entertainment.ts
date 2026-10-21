@@ -1,21 +1,6 @@
-export type EntertainmentRecord = {
-  _id: string;
-  nombre_lugar: string;
-  ubicacion: string;
-  latitud?: number;
-  longitud?: number;
-  descripcion: string;
-  horario_inicio?: string;
-  horario_fin?: string;
-  telefono?: string;
-  tipo: string;
-  calificacion?: number;
-  imagenes_url: string[];
-  servicios: string[];
-  registrado_por?: string;
-  estado: "ACTIVO" | "INACTIVO";
-  fecha_registro?: string;
-};
+import type { EntertainmentRecord } from "../types/listing";
+
+export type { EntertainmentRecord } from "../types/listing";
 
 // Local demonstration records mirror the entertainment collection's field names.
 export const entertainment: EntertainmentRecord[] = [

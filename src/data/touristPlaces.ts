@@ -1,30 +1,6 @@
-export type TouristPlace = {
-  id: string;
-  name: string;
-  category: string;
-  address: string;
-  hours: string;
-  image: string;
-  shortDescription: string;
-  description: string;
-  highlights: string[];
-  services: string[];
-  /** Campos de la entidad lugar_turistico. */
-  nombre_lugar?: string;
-  ubicacion?: string;
-  localizacion?: string;
-  latitud?: number;
-  longitud?: number;
-  descripcion?: string;
-  horario_inicio?: string;
-  horario_fin?: string;
-  precio_entrada?: number;
-  calificacion?: number;
-  imagenes_url?: string[];
-  registrado_por?: string;
-  estado?: string;
-  fecha_registro?: string;
-};
+import type { TouristPlace } from "../types/listing";
+
+export type { TouristPlace } from "../types/listing";
 
 export const touristPlaces: TouristPlace[] = [
   {
