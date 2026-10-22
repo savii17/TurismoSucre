@@ -20,5 +20,14 @@ Las descargas se obtuvieron de Wikimedia Commons el 22-10-2026 mediante `Special
 | `templo-santo-domingo.jpg` | Templo de Santo Domingo | Yamuzine | CC BY-SA 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:Iglesia_Santo_Domingo_Sucre_Bolivia.jpg) |
 | `templo-santa-clara.jpg` | Templo de Santa Clara | Pablo Torrez | CC BY-SA 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:Vista_amplia_del_Convento_Santa_Clara.jpg) |
 | `templo-museo-san-francisco-de-asis.jpg` | Templo Museo San Francisco de Asís | Noverth | CC BY-SA 3.0 | [Commons](https://commons.wikimedia.org/wiki/File:Iglesia_de_San_francisco2.jpg) |
+| `plaza-pedro-de-anzures.jpg` | Plaza Pedro de Anzúres | Mx._Granger | CC0 1.0 | [Commons](https://commons.wikimedia.org/wiki/File:La_Recoleta_-_plaza.jpg) |
+| `palacete-el-guereo.jpg` | Palacete El Guereo | Ev.anabelc | CC BY-SA 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:Palacete_del_Guereo.jpg) |
+| `museo-santa-teresa.jpg` | Museo Santa Teresa | Pablo Torrez | CC BY-SA 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:Convento_Santa_Teresa_Sucre.jpg) |
+| `templo-san-lazaro.jpg` | Templo de San Lázaro | Ev.anabelc | CC BY-SA 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:Templo_de_San_L%C3%A1zaro_Sucre-Bolivia.jpg) |
+| `archivo-y-biblioteca-nacionales-de-bolivia.jpg` | Archivo y Biblioteca Nacionales de Bolivia | Mx._Granger | CC0 1.0 | [Commons](https://commons.wikimedia.org/wiki/File:Archivo_y_Biblioteca_Nacionales_de_Bolivia_1.jpg) |
+| `casa-municipal-de-cultura-simon-roncal.jpg` | Casa Municipal de Cultura Simón Roncal | Vanett Graneros | CC BY-SA 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:Casa_Municipal_de_la_cultura_%22Sime%C3%B3n_Tadeo_Roncal_Gallardo%22_-_Sucre.jpg) |
+| `obelisco-de-sucre.jpg` | Obelisco de Sucre | Parallelepiped09 | CC BY-SA 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:El_Obelisco_de_la_Ciudad_de_Sucre.jpg) |
+| `ex-estacion-ferroviaria-de-sucre.jpg` | Ex Estación Ferroviaria de Sucre | Nils Öberg | CC BY-SA 3.0 | [Commons](https://commons.wikimedia.org/wiki/File:Sucre_Old_Station.JPG) |
+| `museo-colonial-charcas.jpg` | Museo Colonial Charcas | Belcc | CC BY-SA 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:Vista_de_segundo_patio_del_Museo.jpg) |
 
 Los registros turísticos que no tienen una fotografía principal con procedencia y correspondencia verificables continúan mostrando `fallback-tourist-place.svg`. No se reutilizó una foto de otro atractivo para rellenar esos espacios.

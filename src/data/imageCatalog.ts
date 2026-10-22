@@ -30,6 +30,15 @@ const knownTouristAlts: Record<string, string> = {
   "templo-santo-domingo": "Interior del templo histórico de Santo Domingo en Sucre",
   "templo-santa-clara": "Claustro del Convento de Santa Clara en Sucre",
   "templo-museo-san-francisco-de-asis": "Fachada de la Basílica de San Francisco en Sucre",
+  "plaza-pedro-de-anzures": "Vista de la Plaza Pedro de Anzúres desde los arcos del convento de La Recoleta en Sucre, Bolivia",
+  "palacete-el-guereo": "Fachada del Palacete del Guereo en Sucre, Bolivia",
+  "museo-santa-teresa": "Patio interior del Convento y Museo Santa Teresa en Sucre, Bolivia",
+  "templo-san-lazaro": "Fachada principal del Templo de San Lázaro en Sucre, Bolivia",
+  "archivo-y-biblioteca-nacionales-de-bolivia": "Fachada del Archivo y Biblioteca Nacionales de Bolivia en Sucre",
+  "casa-municipal-de-cultura-simon-roncal": "Fachada de la Casa Municipal de Cultura Simeón Tadeo Roncal Gallardo en Sucre",
+  "obelisco-de-sucre": "Obelisco en un jardín del centro histórico de Sucre, Bolivia",
+  "ex-estacion-ferroviaria-de-sucre": "Edificio de la antigua estación ferroviaria de Sucre, Bolivia",
+  "museo-colonial-charcas": "Fuente del segundo patio del Museo Universitario Colonial Charcas en Sucre",
 };
 
 const knownTouristCredits: Record<string, { source: string; attribution?: string; license?: string; sourceConsultedAt: string }> = {
@@ -115,6 +124,60 @@ const knownTouristCredits: Record<string, { source: string; attribution?: string
     source: "https://commons.wikimedia.org/wiki/File:Iglesia_de_San_francisco2.jpg",
     attribution: "Noverth",
     license: "CC BY-SA 3.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "plaza-pedro-de-anzures": {
+    source: "https://commons.wikimedia.org/wiki/File:La_Recoleta_-_plaza.jpg",
+    attribution: "Mx._Granger",
+    license: "CC0 1.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "palacete-el-guereo": {
+    source: "https://commons.wikimedia.org/wiki/File:Palacete_del_Guereo.jpg",
+    attribution: "Ev.anabelc",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "museo-santa-teresa": {
+    source: "https://commons.wikimedia.org/wiki/File:Convento_Santa_Teresa_Sucre.jpg",
+    attribution: "Pablo Torrez",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "templo-san-lazaro": {
+    source: "https://commons.wikimedia.org/wiki/File:Templo_de_San_L%C3%A1zaro_Sucre-Bolivia.jpg",
+    attribution: "Ev.anabelc",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "archivo-y-biblioteca-nacionales-de-bolivia": {
+    source: "https://commons.wikimedia.org/wiki/File:Archivo_y_Biblioteca_Nacionales_de_Bolivia_1.jpg",
+    attribution: "Mx._Granger",
+    license: "CC0 1.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "casa-municipal-de-cultura-simon-roncal": {
+    source: "https://commons.wikimedia.org/wiki/File:Casa_Municipal_de_la_cultura_%22Sime%C3%B3n_Tadeo_Roncal_Gallardo%22_-_Sucre.jpg",
+    attribution: "Vanett Graneros",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "obelisco-de-sucre": {
+    source: "https://commons.wikimedia.org/wiki/File:El_Obelisco_de_la_Ciudad_de_Sucre.jpg",
+    attribution: "Parallelepiped09",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "ex-estacion-ferroviaria-de-sucre": {
+    source: "https://commons.wikimedia.org/wiki/File:Sucre_Old_Station.JPG",
+    attribution: "Nils Öberg",
+    license: "CC BY-SA 3.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "museo-colonial-charcas": {
+    source: "https://commons.wikimedia.org/wiki/File:Vista_de_segundo_patio_del_Museo.jpg",
+    attribution: "Belcc",
+    license: "CC BY-SA 4.0",
     sourceConsultedAt: "2026-10-22",
   },
 };

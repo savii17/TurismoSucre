@@ -24,6 +24,15 @@ export const touristPlaceImages: Record<string, string> = {
   "templo-santo-domingo": "/images/tourist-places/templo-santo-domingo.jpg",
   "templo-santa-clara": "/images/tourist-places/templo-santa-clara.jpg",
   "templo-museo-san-francisco-de-asis": "/images/tourist-places/templo-museo-san-francisco-de-asis.jpg",
+  "plaza-pedro-de-anzures": "/images/tourist-places/plaza-pedro-de-anzures.jpg",
+  "palacete-el-guereo": "/images/tourist-places/palacete-el-guereo.jpg",
+  "museo-santa-teresa": "/images/tourist-places/museo-santa-teresa.jpg",
+  "templo-san-lazaro": "/images/tourist-places/templo-san-lazaro.jpg",
+  "archivo-y-biblioteca-nacionales-de-bolivia": "/images/tourist-places/archivo-y-biblioteca-nacionales-de-bolivia.jpg",
+  "casa-municipal-de-cultura-simon-roncal": "/images/tourist-places/casa-municipal-de-cultura-simon-roncal.jpg",
+  "obelisco-de-sucre": "/images/tourist-places/obelisco-de-sucre.jpg",
+  "ex-estacion-ferroviaria-de-sucre": "/images/tourist-places/ex-estacion-ferroviaria-de-sucre.jpg",
+  "museo-colonial-charcas": "/images/tourist-places/museo-colonial-charcas.jpg",
 };
 
 export const getTouristPlaceImage = (id: string, fallback: string) =>
