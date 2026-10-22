@@ -39,6 +39,9 @@ const knownTouristAlts: Record<string, string> = {
   "obelisco-de-sucre": "Obelisco en un jardín del centro histórico de Sucre, Bolivia",
   "ex-estacion-ferroviaria-de-sucre": "Edificio de la antigua estación ferroviaria de Sucre, Bolivia",
   "museo-colonial-charcas": "Fuente del segundo patio del Museo Universitario Colonial Charcas en Sucre",
+  "mercado-central-de-sucre": "Puestos y actividad comercial del Mercado Central de Sucre, Bolivia",
+  "arco-del-triunfo-de-sucre": "Arco del Triunfo en el Parque Simón Bolívar de Sucre, Bolivia",
+  "museo-de-la-catedral-de-sucre": "Interior del Museo de la Catedral de Sucre, Bolivia",
 };
 
 const knownTouristCredits: Record<string, { source: string; attribution?: string; license?: string; sourceConsultedAt: string }> = {
@@ -180,13 +183,93 @@ const knownTouristCredits: Record<string, { source: string; attribution?: string
     license: "CC BY-SA 4.0",
     sourceConsultedAt: "2026-10-22",
   },
+  "mercado-central-de-sucre": {
+    source: "https://commons.wikimedia.org/wiki/File:Mercado_Central_de_la_ciudad_de_Sucre.jpg",
+    attribution: "Vanett Graneros",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "arco-del-triunfo-de-sucre": {
+    source: "https://commons.wikimedia.org/wiki/File:Triomfboog_parque_bolivar.jpg",
+    attribution: "BraveNewWorld",
+    license: "CC BY-SA 2.0 Belgium",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "museo-de-la-catedral-de-sucre": {
+    source: "https://commons.wikimedia.org/wiki/File:Museo_de_la_catedral_Sucre.jpg",
+    attribution: "Pablo Torrez",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
 };
 
 const keyFor = (category: ImageCategory, id: string) => `${category}:${id}`;
 
 type ImageCredit = Pick<ImageItem, "source" | "attribution" | "license" | "sourceConsultedAt">;
 
-function makeImageSet(category: ImageCategory, alt: string, sources: Array<string | undefined | null>, credit?: ImageCredit): ImageSet {
+const knownEventImages: Record<string, { main: string; gallery?: string[] }> = {
+  "festividad-virgen-guadalupe": {
+    main: "/images/events/festividad-virgen-guadalupe-main.jpg",
+    gallery: ["/images/events/festividad-virgen-guadalupe-gallery-01.jpg"],
+  },
+  "entrada-folklorica-virgen-guadalupe": {
+    main: "/images/events/entrada-folklorica-virgen-guadalupe-main.jpg",
+    gallery: [
+      "/images/events/entrada-folklorica-virgen-guadalupe-gallery-01.jpg",
+      "/images/events/entrada-folklorica-virgen-guadalupe-gallery-02.jpg",
+    ],
+  },
+  "todos-santos-sucre": {
+    main: "/images/events/todos-santos-sucre-main.jpg",
+  },
+};
+
+const knownEventCredits: Record<string, ImageCredit> = {
+  "/images/events/festividad-virgen-guadalupe-main.jpg": {
+    source: "https://commons.wikimedia.org/wiki/File:DANZA_DE_LOS_THANTA_MORENOS_DE_LA_COMUNIDAD_DE_THAQOS_PARTICIPANDO_EN_LA_ENTRADA_DE_LA_VIRGEN_DE_GUADALUPE_EN_LA_CIUDAD_DE_SUCRE_DONDE_SE_%C3%99EDE_APRECIAR_AL_PERSONAJE_DEL_DIABLO%2C_DEL_AWELO_Y_EL_LE%C3%92N.jpg",
+    attribution: "Quisromtomy",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "/images/events/festividad-virgen-guadalupe-gallery-01.jpg": {
+    source: "https://commons.wikimedia.org/wiki/File:DANZA_DE_LOS_THANTA_MORENOS_DE_LA_COMUNIDAD_DE_THAQOS_PARTICIPANDO_EN_LA_ENTRADA_DE_LA_VIRGEN_DE_GUADALUPE_EN_LA_CIUDAD_DE_SUCRE_DONDE_SE_APRECIA_AL_PERSONAJE_DEL_MONITO_Y_EL_LE%C3%92N.jpg",
+    attribution: "Quisromtomy",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "/images/events/entrada-folklorica-virgen-guadalupe-main.jpg": {
+    source: "https://commons.wikimedia.org/wiki/File:Caporales_Centralistas_(37177760406).jpg",
+    attribution: "Freddy Bayo (Flickr: freddy7arte); imagen redimensionada desde Wikimedia Commons",
+    license: "CC BY-SA 2.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "/images/events/entrada-folklorica-virgen-guadalupe-gallery-01.jpg": {
+    source: "https://commons.wikimedia.org/wiki/File:Caporales_en_la_Entrada_de_la_Virgen_de_Guadalupe_2025.jpg",
+    attribution: "LuiLZ1993",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "/images/events/entrada-folklorica-virgen-guadalupe-gallery-02.jpg": {
+    source: "https://commons.wikimedia.org/wiki/File:Morenada_en_la_Entrada_Virgen_de_Guadalupe_(Sucre)_2025.jpg",
+    attribution: "LuiLZ1993",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "/images/events/todos-santos-sucre-main.jpg": {
+    source: "https://commons.wikimedia.org/wiki/File:Panala_de_Todos_Santos_Chuquisaque%C3%B1a.jpg",
+    attribution: "Aleledezma",
+    license: "CC BY 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+};
+
+function makeImageSet(
+  category: ImageCategory,
+  alt: string,
+  sources: Array<string | undefined | null>,
+  credit?: ImageCredit,
+  galleryCredits: Record<string, ImageCredit> = {},
+): ImageSet {
   const uniqueSources = [...new Set(sources.map((source) => source?.trim()).filter((source): source is string => Boolean(source)))];
   const [mainSource, ...gallerySources] = uniqueSources;
   const main: ImageItem | undefined = mainSource
@@ -196,7 +279,19 @@ function makeImageSet(category: ImageCategory, alt: string, sources: Array<strin
   return {
     category,
     main,
-    gallery: gallerySources.map((src, index) => ({ src, source: src.startsWith("http") ? src : undefined, alt: `${alt} · imagen ${index + 2}`, order: index + 1, role: "gallery" })),
+    gallery: gallerySources.map((src, index) => {
+      const galleryCredit = galleryCredits[src];
+      return {
+        src,
+        source: galleryCredit?.source ?? (src.startsWith("http") ? src : undefined),
+        attribution: galleryCredit?.attribution,
+        license: galleryCredit?.license,
+        sourceConsultedAt: galleryCredit?.sourceConsultedAt,
+        alt: `${alt} · imagen ${index + 2}`,
+        order: index + 1,
+        role: "gallery" as const,
+      };
+    }),
     fallback: fallbackByCategory[category],
   };
 }
@@ -221,7 +316,17 @@ export const imageCatalog: ImageCatalog = {
     "entertainment", `${item.nombre_lugar}, establecimiento de entretenimiento en Sucre`, item.imagenes_url,
   )])),
   ...Object.fromEntries(calendarEvents.map((item) => [keyFor("event", item.id), makeImageSet(
-    "event", `${item.name}, celebración realizada en Sucre`, [item.image],
+    "event",
+    item.id === "festividad-virgen-guadalupe"
+      ? "Danza Thanta Morenos de la comunidad de Thaqos durante la Entrada de la Virgen de Guadalupe en Sucre, Bolivia"
+      : item.id === "entrada-folklorica-virgen-guadalupe"
+        ? "Danzarinas caporales durante la Entrada de la Virgen de Guadalupe en Sucre, Bolivia"
+        : item.id === "todos-santos-sucre"
+          ? "Panala chuquisaqueña, preparación tradicional de Todos Santos para ofrendar a los difuntos"
+          : `${item.name}, celebración realizada en Sucre`,
+    [knownEventImages[item.id]?.main, ...(knownEventImages[item.id]?.gallery ?? []), item.image],
+    knownEventCredits[knownEventImages[item.id]?.main ?? ""],
+    knownEventCredits,
   )])),
   ...Object.fromEntries(emergencyDirectory.map((item) => [keyFor("emergency", item.PK_id), makeImageSet(
     "emergency", `${item.nombre_lugar}, servicio de emergencia de Sucre`, [],
