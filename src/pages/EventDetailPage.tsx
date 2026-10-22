@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import RecordDetailPage, { type DetailRecord } from "../components/detail/RecordDetailPage";
 import { events } from "../data/events";
 import type { EventStatus } from "../types/event";
+import { getImageSet } from "../data/imageCatalog";
 
 const statusLabels: Record<EventStatus, string> = { RECURRENTE: "Anual · próxima fecha por confirmar", PROXIMO: "Próximo", EN_CURSO: "En curso", FINALIZADO: "Finalizado", CANCELADO: "Cancelado" };
 const getCurrentStatus = (startDate: string | undefined, endDate: string | undefined, fallback: EventStatus): EventStatus => {
@@ -34,6 +35,7 @@ export default function EventDetailPage() {
     description: event.description,
     image: event.image,
     images: event.image ? [event.image] : [],
+    imageSet: getImageSet("event", event.id, event.image ? [event.image] : []),
     latitude: event.latitude,
     longitude: event.longitude,
     fields: [
@@ -55,6 +57,7 @@ export default function EventDetailPage() {
     moduleName="Eventos"
     detailTitle="evento"
     backTo="/eventos"
+    imageCategory="event"
     summary={{ rating: currentStatus ? statusLabels[currentStatus] : undefined, price: event?.organizer, hours: dateRange ? dateRange + (hours ? " · " + hours : "") : undefined }}
     summaryLabels={{ rating: "Estado", price: "Organizador", hours: "Fecha y horario" }}
   />;

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Ilustración nocturna de reserva para Sucre">
+  <defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#10183e"/><stop offset=".5" stop-color="#542966"/><stop offset="1" stop-color="#d43c68"/></linearGradient></defs>
+  <rect width="1200" height="700" fill="url(#g)"/><circle cx="245" cy="170" r="90" fill="#ffb34d" opacity=".78"/><circle cx="880" cy="125" r="5" fill="#fff"/><circle cx="1030" cy="225" r="6" fill="#ffd46f"/><circle cx="765" cy="246" r="4" fill="#fff"/>
+  <path d="M0 525 198 410l170 117 199-171 191 149 214-164 228 143v216H0Z" fill="#111a34" opacity=".9"/><g fill="#1c2849"><path d="M375 585V310h450v275z"/><path d="m350 312 250-167 250 167z"/></g><path d="M554 355h91v230h-91z" fill="#e83d7c" opacity=".85"/><path d="M420 362h78v85h-78zm282 0h78v85h-78z" fill="#f6ae53" opacity=".9"/><path d="M477 500v48m245-48v48M530 500v48m140-48v48" stroke="#8e4dce" stroke-width="12"/>
+  <text x="60" y="640" fill="#fff" font-family="Arial,sans-serif" font-size="30" font-weight="700" letter-spacing="7">TURISMOSUCRE · NOCHE</text>
+</svg>

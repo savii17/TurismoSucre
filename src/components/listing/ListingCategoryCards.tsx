@@ -1,8 +1,11 @@
+import ImageWithFallback from "../ImageWithFallback";
+import type { ImageCategory, ImageSet } from "../../types/images";
+
 export type ListingCategory = {
   value: string;
   label: string;
   count: number;
-  image?: string;
+  imageSet?: ImageSet;
 };
 
 type Props = {
@@ -11,9 +14,10 @@ type Props = {
   selectedCategory: string;
   onSelect: (category: string) => void;
   allLabel?: string;
+  imageCategory: ImageCategory;
 };
 
-function ListingCategoryCards({ categories, totalCount, selectedCategory, onSelect, allLabel = "Todos" }: Props) {
+function ListingCategoryCards({ categories, totalCount, selectedCategory, onSelect, allLabel = "Todos", imageCategory }: Props) {
   return (
     <section className="listing-categories" aria-label="Explorar por categoría">
       <div className="listing-categories__heading"><h2>Explora por categoría</h2></div>
@@ -38,7 +42,7 @@ function ListingCategoryCards({ categories, totalCount, selectedCategory, onSele
         >
           <span className="listing-category-card__visual">
             <span aria-hidden="true">{category.label.slice(0, 1)}</span>
-            {category.image && <img src={category.image} alt="" loading="lazy" onError={(event) => { event.currentTarget.hidden = true; }} />}
+            <ImageWithFallback imageSet={category.imageSet} category={imageCategory} className="listing-category-card__image" alt={category.imageSet?.main?.alt ?? `${category.label} en Sucre, Bolivia`} />
           </span>
           <span className="listing-category-card__label">{category.label}</span>
           <strong>{category.count}</strong>

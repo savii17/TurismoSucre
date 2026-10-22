@@ -1,13 +1,13 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import type { TouristPlace } from "../../data/touristPlaces";
 import { getTouristPlaceImage } from "../../data/touristImages";
+import { getImageSet } from "../../data/imageCatalog";
+import ImageWithFallback from "../ImageWithFallback";
 
 type Props = { place: TouristPlace };
 
 function DashboardTouristPlaceCard({ place }: Props) {
-  const [imageFailed, setImageFailed] = useState(false);
   const image = getTouristPlaceImage(
     place.id,
     place.imagenes_url?.find((url) => url.trim()) ?? place.image,
@@ -19,15 +19,12 @@ function DashboardTouristPlaceCard({ place }: Props) {
     ? `${place.horario_inicio} – ${place.horario_fin}`
     : place.hours;
   const status = place.estado ?? "SIN ESTADO";
+  const imageSet = getImageSet("tourist-place", place.id, [image]);
 
   return (
     <article className="dashboard-place-card">
       <div className="dashboard-place-card__media">
-        {image && !imageFailed ? (
-          <img src={image} alt={name} onError={() => setImageFailed(true)} />
-        ) : (
-          <div className="dashboard-place-card__fallback" role="img" aria-label={`Imagen no disponible de ${name}`}><span>Sucre</span></div>
-        )}
+        <ImageWithFallback imageSet={imageSet} category="tourist-place" alt={imageSet.main?.alt ?? `${name} en Sucre, Bolivia`} />
         <span className="dashboard-place-card__category">{place.category}</span>
         <span className={`dashboard-place-card__status dashboard-place-card__status--${status.toLowerCase()}`}>{status}</span>
       </div>

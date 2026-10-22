@@ -4,12 +4,15 @@ import { Link } from "react-router-dom";
 
 import { touristHeroImages } from "../../data/touristImages";
 import { useLanguage } from "../../i18n/useLanguage";
+import ImageWithFallback from "../ImageWithFallback";
+import { getImageSet } from "../../data/imageCatalog";
 
 const AUTO_ADVANCE_DELAY = 5_000;
 const INTERACTION_PAUSE_DELAY = 10_000;
 
 // Carrusel con fotografías reales de atractivos turísticos de Sucre.
 const heroImages = touristHeroImages;
+const heroPlaceIds = ["casa-de-la-libertad", "parque-cretacico", "la-recoleta", "castillo-de-la-glorieta"];
 
 type HeroIconName = "sun" | "location" | "calendar";
 
@@ -73,12 +76,13 @@ function TourismHero() {
     <section className="tourism-hero" aria-labelledby="tourism-hero-title">
       <div className="tourism-hero__images" aria-hidden="true">
         {heroImages.map((image, index) => (
-          <img
+          <ImageWithFallback
             key={image}
+            imageSet={getImageSet("tourist-place", heroPlaceIds[index], [image])}
+            category="tourist-place"
             className={`tourism-hero__image${index === activeImage ? " tourism-hero__image--active" : ""}`}
-            src={image}
+            imageClassName="tourism-hero__image-source"
             alt=""
-            onError={(event) => { event.currentTarget.hidden = true; }}
           />
         ))}
       </div>

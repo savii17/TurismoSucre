@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { entertainment } from "../data/entertainment";
 import { entertainmentCategories } from "../data/listingCategories";
 import { useLanguage } from "../i18n/useLanguage";
+import ImageWithFallback from "../components/ImageWithFallback";
+import { getImageSet } from "../data/imageCatalog";
 
 const categories = [...entertainmentCategories];
 const categoryLabels: Record<(typeof entertainmentCategories)[number], { es: string; en: string }> = {
@@ -28,7 +30,7 @@ export default function EntertainmentPage() {
   const popular = [...entertainment].filter((place) => place.calificacion != null).sort((a, b) => (b.calificacion ?? 0) - (a.calificacion ?? 0)).slice(0, 5);
   const featured = [...entertainment].slice(0, 4);
   const card = (place: typeof entertainment[number]) => <article className="entertainment-card" key={place._id}>
-    <div className="entertainment-card__image">{place.imagenes_url[0] ? <img src={place.imagenes_url[0]} alt={place.nombre_lugar} loading="lazy" /> : <span aria-hidden="true">♫</span>}<b>{place.tipo}</b></div>
+    <div className="entertainment-card__image"><ImageWithFallback imageSet={getImageSet("entertainment", place._id, place.imagenes_url)} category="entertainment" alt={`${place.nombre_lugar}, ${place.tipo.toLocaleLowerCase()} en Sucre, Bolivia`} /><b>{place.tipo}</b></div>
     <div className="entertainment-card__body"><h3>{place.nombre_lugar}</h3><p className="entertainment-card__rating">{place.calificacion != null ? <>★ <strong>{place.calificacion.toFixed(1)}</strong></> : <strong>{es ? "Sin calificación verificada" : "No verified rating"}</strong>}</p><p className="entertainment-card__location">⌖ {place.ubicacion}</p><p className="entertainment-card__description">{place.descripcion}</p>{place.horario_inicio && place.horario_fin && <p className="entertainment-card__hours">◷ {place.horario_inicio}–{place.horario_fin}</p>}<Link to={`/entretenimiento/${encodeURIComponent(place._id)}`}>{es ? "Ver detalles" : "View details"} <span>→</span></Link></div>
   </article>;
 

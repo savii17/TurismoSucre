@@ -1,0 +1,34 @@
+.image-frame { display:block; height:100%; min-height:inherit; overflow:hidden; width:100%; }
+.image-frame img { display:block; height:100%; max-width:100%; width:100%; }
+.image-fallback { align-items:center; background:linear-gradient(135deg,#102d49,#45677a 56%,#c8915c); color:#fff; display:flex; height:100%; justify-content:center; min-height:inherit; overflow:hidden; position:relative; width:100%; }
+.image-fallback::after { background:radial-gradient(circle at 75% 15%,rgba(246,211,150,.75),transparent 16%),linear-gradient(150deg,transparent 54%,rgba(8,29,45,.65) 55%); content:""; inset:0; position:absolute; }
+.image-fallback span { border:1px solid rgba(255,255,255,.65); border-radius:999px; font-size:11px; font-weight:800; letter-spacing:.2em; padding:7px 15px; position:relative; z-index:1; }
+.image-fallback--accommodation { background:linear-gradient(135deg,#15384f,#66948f 58%,#d9c59d); }
+.image-fallback--restaurant { background:linear-gradient(135deg,#4b2e36,#bd7047 58%,#e6b976); }
+.image-fallback--entertainment { background:linear-gradient(135deg,#11183c,#583168 58%,#d03d6e); }
+.image-fallback--event { background:linear-gradient(135deg,#142d4c,#655591 58%,#d49a5d); }
+.image-fallback--emergency { background:linear-gradient(135deg,#16394d,#438c89 58%,#b9d0bc); }
+.image-gallery { display:grid; gap:9px; min-width:0; }
+.image-gallery__stage { height:clamp(230px,34vw,420px); min-width:0; overflow:hidden; position:relative; }
+.image-gallery__main { background:#102b41; border-radius:10px; }
+.image-gallery__main img { padding:8px; }
+.image-gallery__controls { align-items:center; background:rgba(7,24,41,.78); border:1px solid rgba(255,255,255,.22); border-radius:999px; bottom:12px; color:#fff; display:flex; gap:11px; padding:4px 7px; position:absolute; right:12px; }
+.image-gallery__controls button { background:none; border:0; color:#fff; cursor:pointer; font-size:22px; height:28px; line-height:1; width:28px; }
+.image-gallery__controls span { font-size:10px; font-weight:700; }
+.image-gallery__thumbnails { display:flex; gap:8px; overflow-x:auto; padding:1px 1px 5px; }
+.image-gallery__thumbnails button { background:#fff; border:2px solid transparent; border-radius:8px; cursor:pointer; flex:0 0 90px; height:64px; overflow:hidden; padding:0; }
+.image-gallery__thumbnails button.is-selected { border-color:var(--coral); box-shadow:0 0 0 2px rgba(232,80,91,.15); }
+.image-gallery__thumbnails .image-frame { border-radius:6px; }
+.listing-hero { position:relative; }
+.listing-hero::after { background:linear-gradient(90deg,rgba(8,27,47,.94),rgba(8,27,47,.65) 54%,rgba(8,27,47,.22)); content:""; inset:0; pointer-events:none; position:absolute; }
+.listing-hero__image { inset:0; position:absolute; }
+.listing-hero__image img { object-fit:cover; }
+.listing-hero__copy { position:relative; z-index:1; }
+.sidebar__promo .image-frame,.sidebar__promo .image-fallback { inset:0; position:absolute; }
+.sidebar__promo .image-frame img { object-fit:cover; }
+.listing-category-card__image { inset:0; position:absolute; }
+.listing-category-card__image img { object-fit:cover; }
+.tourism-hero__image { display:block; }
+.tourism-hero__image img { height:100%; object-fit:cover; width:100%; }
+.emergency-detail-image { border-radius:9px; height:145px; margin:0 0 13px; overflow:hidden; }
+@media(max-width:700px) { .image-gallery__stage { height:clamp(210px,58vw,320px); }.image-gallery__thumbnails button { flex-basis:76px; height:56px; } }

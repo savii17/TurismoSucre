@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import ListingCategoryCards from "../components/listing/ListingCategoryCards";
 import { events } from "../data/events";
 import type { EventStatus } from "../types/event";
+import ImageWithFallback from "../components/ImageWithFallback";
+import { getImageSet } from "../data/imageCatalog";
 
 const eventStatuses: Array<"Todos" | EventStatus> = ["Todos", "RECURRENTE", "PROXIMO", "EN_CURSO", "FINALIZADO", "CANCELADO"];
 const statusLabels: Record<EventStatus, string> = {
@@ -40,10 +42,13 @@ export default function EventsPage() {
         : Boolean(event.usualMonth && Number(date.slice(5, 7)) === event.usualMonth));
       return matchesQuery && (category === "Todas" || event.category === category) && (status === "Todos" || eventStatus === status) && matchesDate;
     }), [category, date, query, status, today]);
-  const categoryCards = categories.map((value) => ({ value, label: value, count: events.filter((event) => event.category === value).length }));
+  const categoryCards = categories.map((value) => {
+    const matchingEvents = events.filter((event) => event.category === value);
+    return { value, label: value, count: matchingEvents.length, imageSet: matchingEvents[0] ? getImageSet("event", matchingEvents[0].id) : undefined };
+  });
 
   return <section className="admin-listing events-page" aria-labelledby="events-title">
-    <ListingCategoryCards categories={categoryCards} totalCount={events.length} selectedCategory={category} onSelect={setCategory} allLabel="Todos los eventos" />
+    <ListingCategoryCards categories={categoryCards} totalCount={events.length} selectedCategory={category} onSelect={setCategory} allLabel="Todos los eventos" imageCategory="event" />
     <div className="admin-listing__heading"><div><p className="eyebrow">Agenda de Sucre</p><h1 id="events-title">Eventos y Festividades</h1><p>Festividades, tradiciones y acontecimientos cívicos y culturales propios de Sucre.</p></div></div>
     <div className="admin-filters events-page__filters" aria-label="Filtros de eventos">
       <label><span className="sr-only">Buscar eventos</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar por nombre, categoría, ubicación u organizador" /></label>
@@ -59,7 +64,7 @@ export default function EventsPage() {
         ? event.startDate === event.endDate ? formatDate(event.startDate) : `${formatDate(event.startDate)} – ${formatDate(event.endDate)}`
         : `${event.usualMonthLabel ?? event.periodicity ?? "Fecha"} · próxima edición por confirmar`;
       return <article className="admin-card" key={event.id}>
-        <div className="admin-card__media"><span aria-hidden="true">✦</span><b className={`status-badge events-status events-status--${eventStatus.toLowerCase()}`}>{statusLabels[eventStatus]}</b></div>
+        <div className="admin-card__media"><ImageWithFallback imageSet={getImageSet("event", event.id, event.image ? [event.image] : [])} category="event" alt={`${event.name}, evento cultural en Sucre, Bolivia`} /><b className={`status-badge events-status events-status--${eventStatus.toLowerCase()}`}>{statusLabels[eventStatus]}</b></div>
         <div className="admin-card__body"><p className="admin-card__category">{event.category}</p><h2>{event.name}</h2><p className="admin-card__date">◷ {dateText}{event.startTime ? ` · ${event.startTime}` : ""}{event.endTime ? `–${event.endTime}` : ""}</p><p className="admin-card__location">⌖ {event.location}</p><p className="admin-card__description">{event.description}</p>{event.price && <div className="admin-card__meta"><strong>{event.price}</strong></div>}<Link className="admin-card__details" to={`/eventos/${encodeURIComponent(event.id)}`}>Ver detalles <span>→</span></Link></div>
       </article>;
     })}</div>

@@ -5,6 +5,8 @@ import {
   type TouristPlace,
 } from "../../data/touristPlaces";
 import { getTouristPlaceImage } from "../../data/touristImages";
+import { getImageSet } from "../../data/imageCatalog";
+import ImageWithFallback from "../ImageWithFallback";
 import { useLanguage } from "../../i18n/useLanguage";
 
 type TouristPlaceCardProps = {
@@ -19,6 +21,7 @@ function TouristPlaceCard({ place }: TouristPlaceCardProps) {
     localizedPlace.imagenes_url?.[0] ?? localizedPlace.image,
   );
   const location = localizedPlace.ubicacion ?? localizedPlace.address;
+  const imageSet = getImageSet("tourist-place", place.id, [image]);
   const hours =
     localizedPlace.horario_inicio && localizedPlace.horario_fin
       ? `${localizedPlace.horario_inicio} – ${localizedPlace.horario_fin}`
@@ -27,22 +30,7 @@ function TouristPlaceCard({ place }: TouristPlaceCardProps) {
   return (
     <article className="tourist-place-card">
       <div className="tourist-place-card__image-wrap">
-        {image ? (
-          <img
-            className="tourist-place-card__image"
-            src={image}
-            alt={`${t("touristPlaces")}: ${localizedPlace.nombre_lugar ?? localizedPlace.name}`}
-            loading="lazy"
-          />
-        ) : (
-          <div
-            className="tourist-place-card__image--fallback"
-            role="img"
-            aria-label={`${t("touristPlaces")}: ${localizedPlace.nombre_lugar ?? localizedPlace.name}`}
-          >
-            <span>Sucre</span>
-          </div>
-        )}
+        <ImageWithFallback imageSet={imageSet} category="tourist-place" imageClassName="tourist-place-card__image" alt={imageSet.main?.alt ?? `${localizedPlace.nombre_lugar ?? localizedPlace.name} en Sucre, Bolivia`} />
         <span className="tourist-place-card__category">
           {localizedPlace.category}
         </span>

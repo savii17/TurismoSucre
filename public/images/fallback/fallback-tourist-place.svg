@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Ilustración turística de reserva para Sucre">
+  <defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#071d31"/><stop offset=".58" stop-color="#245674"/><stop offset="1" stop-color="#d49a65"/></linearGradient></defs>
+  <rect width="1200" height="700" fill="url(#g)"/><circle cx="930" cy="175" r="85" fill="#f5d89a" opacity=".9"/>
+  <path d="M0 520 210 350l170 125 180-210 220 255 190-185 230 190v175H0Z" fill="#18394d" opacity=".88"/><path d="M0 580 205 465l183 102 180-146 180 163 201-131 251 141v106H0Z" fill="#0c2b3e" opacity=".92"/>
+  <g fill="#f8f4ed" opacity=".94"><path d="M463 484h219v107H463z"/><path d="m445 484 127-118 126 118z"/><path d="M536 422h72v-83l-36-57-36 57z"/><path d="M560 369h24v31h-24z" fill="#d49a65"/><path d="M497 517h28v40h-28zm54 0h28v40h-28zm54 0h28v40h-28z" fill="#4f7587"/></g>
+  <text x="60" y="625" fill="#fff" font-family="Arial,sans-serif" font-size="30" font-weight="700" letter-spacing="7">TURISMOSUCRE · LUGARES</text>
+</svg>

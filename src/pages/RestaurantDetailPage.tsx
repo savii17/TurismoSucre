@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import RecordDetailPage, { type DetailRecord } from "../components/detail/RecordDetailPage";
 import { restaurants } from "../data/secondaryListings";
+import { getImageSet } from "../data/imageCatalog";
 
 export default function RestaurantDetailPage() {
   const { restaurantId } = useParams<{ restaurantId: string }>();
@@ -12,6 +13,7 @@ export default function RestaurantDetailPage() {
     price: item.price,
     services: item.services,
     fields: [{ label: "Teléfono", value: item.phone }],
+    imageSet: getImageSet("restaurant", item.id, [item.image ?? "", ...(item.images ?? [])]),
   };
-  return <RecordDetailPage record={record} moduleName="Restaurantes" detailTitle="Restaurante" backTo="/restaurantes" summary={{ rating: record?.rating?.toFixed(1), price: record?.price, hours: record?.hours }} />;
+  return <RecordDetailPage record={record} moduleName="Restaurantes" detailTitle="Restaurante" backTo="/restaurantes" imageCategory="restaurant" summary={{ rating: record?.rating?.toFixed(1), price: record?.price, hours: record?.hours }} />;
 }

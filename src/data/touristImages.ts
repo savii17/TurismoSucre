@@ -5,17 +5,17 @@
  */
 export const touristPlaceImages: Record<string, string> = {
   "casa-de-la-libertad":
-    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Sucre_casa-de-la-Libertad.jpg",
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Sucre_casa-de-la-Libertad.jpg?width=1600",
   "parque-cretacico":
-    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Parque_Cret%C3%A1cico_Cal_orcko10.jpg",
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Parque_Cret%C3%A1cico_Cal_orcko10.jpg?width=1600",
   "la-recoleta":
-    "https://commons.wikimedia.org/wiki/Special:Redirect/file/La_recoleta_Sucre.jpg",
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/La_recoleta_Sucre.jpg?width=1600",
   "castillo-de-la-glorieta":
-    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Castillo_La_Glorieta%2C_Sucre.jpg",
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Castillo_La_Glorieta%2C_Sucre.jpg?width=1600",
   "museo-arte-indigena-asur":
-    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Tejido_Ind%C3%ADgena.jpg",
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Tejido_Ind%C3%ADgena.jpg?width=1200",
   "san-felipe-neri":
-    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Sucre_San-Felipe-Neri.jpg",
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Sucre_San-Felipe-Neri.jpg?width=1600",
 };
 
 export const getTouristPlaceImage = (id: string, fallback: string) =>

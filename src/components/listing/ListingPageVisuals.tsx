@@ -2,6 +2,8 @@ import { useMemo } from "react";
 import type { AdministrativeListing } from "../../types/listing";
 import { touristHeroImages } from "../../data/touristImages";
 import { useLanguage } from "../../i18n/useLanguage";
+import ImageWithFallback from "../ImageWithFallback";
+import { getImageSet } from "../../data/imageCatalog";
 
 export type ListingPageKind = "places" | "accommodations" | "restaurants";
 
@@ -26,10 +28,12 @@ const mapUrl = "https://www.openstreetmap.org/?mlat=-19.0472&mlon=-65.2594#map=1
 function ListingPageVisuals({ kind }: { kind: ListingPageKind }) {
   const { language } = useLanguage();
   const [kicker, heading, description, action] = pageCopy[kind][language];
-  const heroImage = kind === "accommodations" ? touristHeroImages[3] : kind === "restaurants" ? touristHeroImages[2] : touristHeroImages[0];
+  const imageCategory = kind === "accommodations" ? "accommodation" : kind === "restaurants" ? "restaurant" : "tourist-place";
+  const heroImageSet = kind === "places" ? getImageSet("tourist-place", "casa-de-la-libertad", [touristHeroImages[0]]) : getImageSet(imageCategory, `listing-hero-${kind}`);
 
   return <div className="listing-top-layout">
-    <section className={`listing-hero listing-hero--${kind}`} style={{ backgroundImage: `linear-gradient(90deg,rgba(8,27,47,.94),rgba(8,27,47,.65) 54%,rgba(8,27,47,.08)),url("${heroImage}")` }} aria-labelledby="listing-hero-title">
+    <section className={`listing-hero listing-hero--${kind}`} aria-labelledby="listing-hero-title">
+      <ImageWithFallback imageSet={heroImageSet} category={imageCategory} className="listing-hero__image" alt={kind === "places" ? "Casa de la Libertad en Sucre" : `${kind === "accommodations" ? "Hospedajes" : "Restaurantes"} de Sucre`} />
       <div className="listing-hero__copy"><p>{kicker}</p><h2 id="listing-hero-title">{heading}</h2><span>{description}</span><a href="#listing-title">{action} <b aria-hidden="true">→</b></a></div>
     </section>
     <aside className="listing-map-panel"><div className="listing-aside-heading"><div><h2>{language === "es" ? "Mapa de Sucre" : "Map of Sucre"}</h2><p>{language === "es" ? "Explora el centro turístico" : "Explore the tourist center"}</p></div><span aria-hidden="true">⌖</span></div><iframe title={language === "es" ? "Mapa del centro de Sucre" : "Map of central Sucre"} src={mapEmbedUrl} loading="lazy" referrerPolicy="no-referrer" /><a href={mapUrl} target="_blank" rel="noreferrer">{language === "es" ? "Ver mapa" : "Open map"} <span aria-hidden="true">→</span></a></aside>

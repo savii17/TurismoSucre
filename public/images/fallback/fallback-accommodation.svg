@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Ilustración de hospedaje de reserva para Sucre">
+  <defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#12334c"/><stop offset=".58" stop-color="#63948f"/><stop offset="1" stop-color="#e5c89b"/></linearGradient></defs>
+  <rect width="1200" height="700" fill="url(#g)"/><circle cx="975" cy="145" r="68" fill="#fae2b5" opacity=".9"/><path d="M0 540 245 390l208 134 220-198 242 193 165-130 120 89v222H0Z" fill="#183d4d" opacity=".8"/>
+  <g fill="#f8f1e5"><path d="M385 586V345h430v241z"/><path d="m350 347 249-183 250 183z"/><path d="M554 450h101v136H554z" fill="#a97850"/><path d="M430 390h74v80h-74zm266 0h74v80h-74z" fill="#79aab0"/><path d="M462 285h45v61h-45zm233 0h45v61h-45z" fill="#b98457"/></g>
+  <text x="60" y="640" fill="#fff" font-family="Arial,sans-serif" font-size="30" font-weight="700" letter-spacing="7">TURISMOSUCRE · HOSPEDAJES</text>
+</svg>
