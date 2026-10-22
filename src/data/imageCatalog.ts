@@ -16,54 +16,118 @@ const fallbackByCategory: Record<ImageCategory, string> = {
 };
 
 const knownTouristAlts: Record<string, string> = {
-  "casa-de-la-libertad": "Fachada de la Casa de la Libertad en el centro histórico de Sucre",
-  "parque-cretacico": "Huellas de dinosaurio de Cal Orck'o, junto al Parque Cretácico de Sucre",
+  "casa-de-la-libertad": "Patio histórico de la Casa de la Libertad en Sucre, Bolivia",
+  "parque-cretacico": "Escultura de dinosaurio en el Parque Cretácico de Sucre, Bolivia",
   "la-recoleta": "Convento franciscano de La Recoleta en Sucre",
   "castillo-de-la-glorieta": "Castillo de La Glorieta, atractivo histórico cercano a Sucre",
   "museo-arte-indigena-asur": "Tejido tradicional expuesto por el Museo de Arte Indígena ASUR en Sucre",
   "san-felipe-neri": "Templo de San Felipe Neri en el centro histórico de Sucre",
+  "plaza-25-de-mayo": "Plaza 25 de Mayo en el centro histórico de Sucre, Bolivia",
+  "catedral-metropolitana-de-sucre": "Fachada de la Catedral Metropolitana de Sucre, Bolivia",
+  "parque-simon-bolivar": "Torre Eiffel ornamental del Parque Simón Bolívar en Sucre",
+  "cementerio-general-de-sucre": "Alameda arbolada del Cementerio General de Sucre",
+  "teatro-gran-mariscal-sucre": "Fachada del Teatro Gran Mariscal de Sucre",
+  "templo-santo-domingo": "Interior del templo histórico de Santo Domingo en Sucre",
+  "templo-santa-clara": "Claustro del Convento de Santa Clara en Sucre",
+  "templo-museo-san-francisco-de-asis": "Fachada de la Basílica de San Francisco en Sucre",
 };
 
-const knownTouristCredits: Record<string, { source: string; attribution?: string; license?: string }> = {
+const knownTouristCredits: Record<string, { source: string; attribution?: string; license?: string; sourceConsultedAt: string }> = {
   "casa-de-la-libertad": {
-    source: "https://commons.wikimedia.org/wiki/File:Sucre_casa-de-la-Libertad.jpg",
-    attribution: "Marcelo Claros Marzana",
-    license: "CC BY-SA 3.0",
+    source: "https://commons.wikimedia.org/wiki/File:Casa_de_la_Libertad_Sucre.jpg",
+    attribution: "Henry Ponce Barco",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
   },
   "parque-cretacico": {
-    source: "https://commons.wikimedia.org/wiki/File:Parque_Cret%C3%A1cico_Cal_orcko10.jpg",
+    source: "https://commons.wikimedia.org/wiki/File:Parque_Cret%C3%A1cico_Cal_orcko.jpg",
+    attribution: "Caleidoscopic",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
   },
   "la-recoleta": {
     source: "https://commons.wikimedia.org/wiki/File:La_Recoleta_Sucre.jpg",
     attribution: "Haruko28",
     license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
   },
   "castillo-de-la-glorieta": {
     source: "https://commons.wikimedia.org/wiki/File:Castillo_La_Glorieta%2C_Sucre.jpg",
     attribution: "Parallelepiped09",
     license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
   },
   "museo-arte-indigena-asur": {
     source: "https://commons.wikimedia.org/wiki/File:Tejido_Ind%C3%ADgena.jpg",
     attribution: "LuiLZ1993",
     license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
   },
   "san-felipe-neri": {
     source: "https://commons.wikimedia.org/wiki/File:Sucre_San-Felipe-Neri.jpg",
     attribution: "Marcelo Claros",
     license: "CC BY-SA 3.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "plaza-25-de-mayo": {
+    source: "https://commons.wikimedia.org/wiki/File:The_25th_of_May_Plaza.jpg",
+    attribution: "THE WORLDWIDE BOX",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "catedral-metropolitana-de-sucre": {
+    source: "https://commons.wikimedia.org/wiki/File:Catedral_Sucre.jpg",
+    attribution: "AbbyCF12",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "parque-simon-bolivar": {
+    source: "https://commons.wikimedia.org/wiki/File:Parque_Sim%C3%B3n_Bol%C3%ADvar,_Sucre.jpg",
+    attribution: "Mx._Granger",
+    license: "CC0 1.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "cementerio-general-de-sucre": {
+    source: "https://commons.wikimedia.org/wiki/File:Cementerio_General_de_Sucre.jpg",
+    attribution: "Mx._Granger",
+    license: "CC0 1.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "teatro-gran-mariscal-sucre": {
+    source: "https://commons.wikimedia.org/wiki/File:Teatro_de_Sucre,_Bolivia.jpg",
+    attribution: "Parallelepiped09",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "templo-santo-domingo": {
+    source: "https://commons.wikimedia.org/wiki/File:Iglesia_Santo_Domingo_Sucre_Bolivia.jpg",
+    attribution: "Yamuzine",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "templo-santa-clara": {
+    source: "https://commons.wikimedia.org/wiki/File:Vista_amplia_del_Convento_Santa_Clara.jpg",
+    attribution: "Pablo Torrez",
+    license: "CC BY-SA 4.0",
+    sourceConsultedAt: "2026-10-22",
+  },
+  "templo-museo-san-francisco-de-asis": {
+    source: "https://commons.wikimedia.org/wiki/File:Iglesia_de_San_francisco2.jpg",
+    attribution: "Noverth",
+    license: "CC BY-SA 3.0",
+    sourceConsultedAt: "2026-10-22",
   },
 };
 
 const keyFor = (category: ImageCategory, id: string) => `${category}:${id}`;
 
-type ImageCredit = Pick<ImageItem, "source" | "attribution" | "license">;
+type ImageCredit = Pick<ImageItem, "source" | "attribution" | "license" | "sourceConsultedAt">;
 
 function makeImageSet(category: ImageCategory, alt: string, sources: Array<string | undefined | null>, credit?: ImageCredit): ImageSet {
   const uniqueSources = [...new Set(sources.map((source) => source?.trim()).filter((source): source is string => Boolean(source)))];
   const [mainSource, ...gallerySources] = uniqueSources;
   const main: ImageItem | undefined = mainSource
-    ? { src: mainSource, source: credit?.source ?? (mainSource.startsWith("http") ? mainSource : undefined), attribution: credit?.attribution, license: credit?.license, alt, order: 0, role: "main" }
+    ? { src: mainSource, source: credit?.source ?? (mainSource.startsWith("http") ? mainSource : undefined), attribution: credit?.attribution, license: credit?.license, sourceConsultedAt: credit?.sourceConsultedAt, alt, order: 0, role: "main" }
     : undefined;
 
   return {

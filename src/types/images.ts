@@ -13,6 +13,7 @@ export type ImageItem = {
   source?: string;
   attribution?: string;
   license?: string;
+  sourceConsultedAt?: string;
   alt: string;
   order: number;
   role: ImageRole;
