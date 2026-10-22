@@ -2,11 +2,6 @@ import type { EntertainmentRecord } from "../types/listing";
 
 export type { EntertainmentRecord } from "../types/listing";
 
-/**
- * Verificación consultada el 21-10-2026. Los datos no encontrados en fuentes
- * consultables se dejan vacíos; no se usan fotos genéricas ni coordenadas estimadas.
- * Los enlaces de fuente quedan junto a cada registro para facilitar su mantenimiento.
- */
 export const entertainment: EntertainmentRecord[] = [
   {
     _id: "goblin-cerveza-artesanal",
@@ -32,7 +27,6 @@ export const entertainment: EntertainmentRecord[] = [
     horario_fin: "22:30",
     telefono: "+591 69694120",
     tipo: "Bar",
-    calificacion: 4.7,
     imagenes_url: [],
     servicios: ["Rooftop", "Coctelería", "Reservas"],
     estado: "ACTIVO",
@@ -73,7 +67,7 @@ export const entertainment: EntertainmentRecord[] = [
     _id: "kultur-cafe-berlin",
     nombre_lugar: "Kultur Café Berlin",
     ubicacion: "Avaroa 334, Sucre",
-    descripcion: "Bar y café con ambiente nocturno en el centro de Sucre.",
+    descripcion: "Bar-restaurante y espacio de entretenimiento nocturno con noches temáticas, espectáculos y ambiente de discoteca.",
     tipo: "Discoteca",
     calificacion: 4.3,
     imagenes_url: [],
