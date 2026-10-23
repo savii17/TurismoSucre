@@ -196,15 +196,28 @@
 .record-detail__panel dd { font-size:10px; overflow-wrap:anywhere; }
 .record-detail__services { display:flex; flex-wrap:wrap; gap:7px; }
 .record-detail__services li { background:#f0f8f4; border:1px solid #e5f1e9; border-radius:999px; color:#347b5a; font-size:9px; padding:6px 9px; }
-.record-detail__map-panel { overflow:hidden; }
+.record-detail__map-panel { background:transparent; border:0; box-shadow:none; overflow:hidden; padding:0; }
 .record-detail__panel-heading { align-items:center; display:flex; gap:10px; margin-bottom:12px; }
 .record-detail__panel-heading h3 { margin:0; }
-.record-detail__map { border-radius:10px; height:205px; }
-.record-detail__map-empty { align-items:center; background:linear-gradient(145deg,#eef3f7,#e4eaf0); border-radius:10px; color:#637087; display:flex; flex-direction:column; gap:9px; justify-content:center; min-height:145px; padding:18px; text-align:center; }
-.record-detail__map-empty span { color:var(--coral); font-size:26px; }
-.record-detail__map-empty p { font-size:10px; line-height:1.5; }
-.record-detail__text-link { color:var(--coral); display:inline-flex; font-size:10px; font-weight:700; gap:5px; margin-top:12px; text-decoration:none; }
-.record-detail__text-link:hover { text-decoration:underline; }
+.location-map { background:#fff; border:1px solid var(--line); border-radius:13px; box-shadow:0 8px 22px rgba(30,42,71,.045); min-width:0; overflow:hidden; padding:15px; }
+.location-map__heading { align-items:flex-start; display:flex; gap:10px; margin-bottom:12px; }
+.location-map__pin { align-items:center; background:#fff3ef; border-radius:9px; color:var(--coral); display:flex; flex:0 0 34px; font-size:18px; height:34px; justify-content:center; }
+.location-map__heading h3 { color:var(--navy); font-size:13px; margin:1px 0 5px; }
+.location-map__heading strong { color:#37445b; display:block; font-size:10px; line-height:1.4; }
+.location-map__heading p { color:var(--muted); font-size:9px; line-height:1.45; margin-top:3px; }
+.location-map__frame { background:#edf1f5; border:0; border-radius:10px; display:block; height:210px; width:100%; }
+.location-map__unverified { align-items:center; background:linear-gradient(145deg,#eef3f7,#e4eaf0); border-radius:10px; color:#637087; display:flex; flex-direction:column; gap:8px; justify-content:center; min-height:145px; padding:17px; text-align:center; }
+.location-map__unverified span { color:var(--coral); font-size:25px; }
+.location-map__unverified p { font-size:10px; line-height:1.5; }
+.location-map__actions { display:flex; margin-top:12px; }
+.location-map__directions { align-items:center; background:var(--coral); border:0; border-radius:8px; box-shadow:0 6px 14px rgba(232,80,91,.18); color:#fff; display:inline-flex; font-size:10px; font-weight:700; gap:8px; justify-content:center; min-height:38px; padding:0 13px; text-decoration:none; }
+.location-map__directions:hover { background:#d84450; }
+.location-map__search { color:var(--coral); display:inline-flex; font-size:10px; font-weight:700; gap:7px; text-decoration:none; }
+.location-map__search:hover { text-decoration:underline; }
+.location-map__pending { color:var(--muted); font-size:9px; line-height:1.5; }
+.location-map__message { color:#946216; font-size:9px; line-height:1.5; margin-top:9px; }
+.emergency-detail-map { margin-top:16px; }
+.module-form__error { color:#bd3946; font-size:11px; grid-column:1/-1; line-height:1.45; }
 .record-detail__practical h3 { margin-bottom:9px; }
 .record-detail__practical dd a { color:var(--coral); text-decoration:none; }
 .record-detail__related { display:grid; gap:13px; }
@@ -224,7 +237,7 @@
 .record-detail--empty { padding:28px; }
 @media(max-width:1050px) { .record-detail__layout { grid-template-columns:minmax(0,1fr) 290px; }.record-detail__hero { grid-template-columns:minmax(0,1fr); }.record-detail__identity { padding:20px 8px 11px; }.record-detail__hero-media .image-gallery__stage { height:clamp(270px,40vw,390px); } }
 @media(max-width:820px) { .record-detail__layout { grid-template-columns:1fr; }.record-detail__aside { grid-template-columns:repeat(2,minmax(0,1fr)); }.record-detail__map-panel { grid-row:span 2; } }
-@media(max-width:700px) { .record-detail { gap:15px; }.record-detail__heading { align-items:flex-start; flex-direction:column-reverse; gap:10px; }.record-detail__heading h2 { font-size:22px; }.record-detail__back { padding:8px 10px; }.record-detail__layout,.record-detail__primary,.record-detail__aside { gap:12px; }.record-detail__hero { padding:8px; }.record-detail__hero-media .image-gallery__stage { height:clamp(230px,68vw,340px); }.record-detail__identity { padding:18px 8px 9px; }.record-detail__identity h1 { font-size:29px; margin:13px 0 9px; }.record-detail__summary { grid-template-columns:1fr; }.record-detail__stat { min-height:65px!important; }.record-detail__cards,.record-detail__aside,.record-detail__related-grid { grid-template-columns:1fr; }.record-detail__map-panel { grid-row:auto; }.record-detail__panel--description { grid-column:auto; }.record-detail__map { height:190px; }.record-detail__related-heading { align-items:flex-start; gap:8px; }.record-detail__related-heading h2 { font-size:17px; }.record-detail__panel dl div { grid-template-columns:minmax(90px,.7fr) minmax(0,1.3fr); } }
+@media(max-width:700px) { .record-detail { gap:15px; }.record-detail__heading { align-items:flex-start; flex-direction:column-reverse; gap:10px; }.record-detail__heading h2 { font-size:22px; }.record-detail__back { padding:8px 10px; }.record-detail__layout,.record-detail__primary,.record-detail__aside { gap:12px; }.record-detail__hero { padding:8px; }.record-detail__hero-media .image-gallery__stage { height:clamp(230px,68vw,340px); }.record-detail__identity { padding:18px 8px 9px; }.record-detail__identity h1 { font-size:29px; margin:13px 0 9px; }.record-detail__summary { grid-template-columns:1fr; }.record-detail__stat { min-height:65px!important; }.record-detail__cards,.record-detail__aside,.record-detail__related-grid { grid-template-columns:1fr; }.record-detail__map-panel { grid-row:auto; }.record-detail__panel--description { grid-column:auto; }.location-map__frame { height:190px; }.record-detail__related-heading { align-items:flex-start; gap:8px; }.record-detail__related-heading h2 { font-size:17px; }.record-detail__panel dl div { grid-template-columns:minmax(90px,.7fr) minmax(0,1.3fr); } }
 
 /* Final reference details for the tourist dashboard. */
 .topbar__subtitle { color:#526681; font-family:"DM Sans",system-ui,sans-serif; font-size:11px; margin-top:1px; }

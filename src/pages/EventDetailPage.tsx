@@ -25,6 +25,9 @@ export default function EventDetailPage() {
     : `${event.periodicity ?? "Recurrente"}${event.usualMonthLabel ? ` · ${event.usualMonthLabel}` : ""}; próxima fecha por confirmar`);
   const hours = event && [event.startTime, event.endTime].filter(Boolean).join(" – ");
   const statusIsInactive = currentStatus === "FINALIZADO" || currentStatus === "CANCELADO";
+  const eventHasCoordinates = event?.latitude != null && event.longitude != null;
+  const eventLocationIsBroad = Boolean(event && /(recorrido|calles? (de la|y)|circuito anunciado|escenario anunciado|otros espacios|espacios de la ciudad|por confirmar|anunciad[oa]s? para cada edici[oó]n|programa por gesti[oó]n)/i.test(event.location));
+  const eventHasPhysicalLocation = Boolean(event && (eventHasCoordinates || (event.location.trim() && !eventLocationIsBroad)));
   const record: DetailRecord | undefined = event && currentStatus && {
     id: event.id,
     name: event.name,
@@ -32,6 +35,8 @@ export default function EventDetailPage() {
     status: statusIsInactive ? "INACTIVO" : "ACTIVO",
     statusLabel: statusLabels[currentStatus],
     location: event.location,
+    address: eventHasPhysicalLocation ? event.location : undefined,
+    showLocationMap: eventHasPhysicalLocation,
     description: event.description,
     image: event.image,
     images: event.image ? [event.image] : [],

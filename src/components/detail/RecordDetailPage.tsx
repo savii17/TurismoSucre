@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import ImageGallery from "../ImageGallery";
 import ImageWithFallback from "../ImageWithFallback";
+import LocationMap from "../LocationMap";
 import { useLanguage } from "../../i18n/useLanguage";
 import type { ImageCategory, ImageSet } from "../../types/images";
 
@@ -39,6 +40,7 @@ export type DetailRecord = {
   fields?: DetailField[];
   tags?: string[];
   action?: { label: string; href: string };
+  showLocationMap?: boolean;
 };
 
 type Props = {
@@ -55,27 +57,21 @@ type Props = {
 const copy = {
   es: {
     notFound: "Registro no encontrado", notFoundText: "El registro solicitado no existe o ya no está disponible.", back: "Volver al listado",
-    dashboard: "Inicio", detail: "Detalle", statusActive: "Activo", statusInactive: "Inactivo", location: "Ubicación no registrada",
+    dashboard: "Inicio", detail: "Detalle", statusActive: "Activo", statusInactive: "Inactivo",
     address: "Dirección", phone: "Teléfono", category: "Categoría", locationLabel: "Ubicación", rating: "Valoración", reviews: "opiniones",
     description: "Descripción", readMore: "Leer más", readLess: "Leer menos", features: "Características", practical: "Información práctica",
-    map: "Ubicación en el mapa", mapUnavailable: "No hay coordenadas registradas para mostrar el mapa.", openMap: "Abrir mapa", call: "Llamar",
-    services: "Servicios e instalaciones", noServices: "No hay servicios registrados.", related: "También te puede interesar", noDescription: "No hay descripción registrada.",
+    call: "Llamar", services: "Servicios e instalaciones", related: "También te puede interesar", noDescription: "No hay descripción registrada.",
     ratingLabel: "Calificación", price: "Precio", hours: "Horario", registeredBy: "Registrado por", registeredAt: "Fecha de registro",
   },
   en: {
     notFound: "Record not found", notFoundText: "The requested record does not exist or is no longer available.", back: "Back to list",
-    dashboard: "Home", detail: "Details", statusActive: "Active", statusInactive: "Inactive", location: "Location not provided",
+    dashboard: "Home", detail: "Details", statusActive: "Active", statusInactive: "Inactive",
     address: "Address", phone: "Phone", category: "Category", locationLabel: "Location", rating: "Rating", reviews: "reviews",
     description: "Description", readMore: "Read more", readLess: "Read less", features: "Features", practical: "Visitor information",
-    map: "Map location", mapUnavailable: "No coordinates are available to display the map.", openMap: "Open map", call: "Call",
-    services: "Services and facilities", noServices: "No services are listed.", related: "You may also like", noDescription: "No description is available.",
+    call: "Call", services: "Services and facilities", related: "You may also like", noDescription: "No description is available.",
     ratingLabel: "Rating", price: "Price", hours: "Hours", registeredBy: "Registered by", registeredAt: "Registration date",
   },
 } as const;
-
-const mapUrl = (latitude?: number, longitude?: number) => latitude != null && longitude != null
-  ? `https://www.openstreetmap.org/export/embed.html?bbox=${longitude - 0.01}%2C${latitude - 0.01}%2C${longitude + 0.01}%2C${latitude + 0.01}&layer=mapnik&marker=${latitude}%2C${longitude}`
-  : undefined;
 
 export default function RecordDetailPage({ record, moduleName, detailTitle, backTo, summary, summaryLabels, imageCategory, related = [] }: Props) {
   const { language } = useLanguage();
@@ -92,7 +88,6 @@ export default function RecordDetailPage({ record, moduleName, detailTitle, back
     gallery: images.slice(1).map((src, index) => ({ src, alt: `${record.name} en Sucre, Bolivia · imagen ${index + 2}`, order: index + 1, role: "gallery" as const })),
     fallback: `/images/fallback/fallback-${imageCategory}.svg`,
   };
-  const locationMap = mapUrl(record.latitude, record.longitude);
   const fields = [
     { label: text.category, value: record.category },
     { label: text.address, value: record.address },
@@ -110,8 +105,7 @@ export default function RecordDetailPage({ record, moduleName, detailTitle, back
   const status = record.statusLabel ?? (record.status === "INACTIVO" ? text.statusInactive : record.status === "ACTIVO" ? text.statusActive : undefined);
   const tags = [...new Set([...(record.tags ?? []), ...(record.services ?? []).slice(0, 3)])].slice(0, 4);
   const hasDescription = Boolean(record.description?.trim());
-  const mapSearchUrl = `https://www.openstreetmap.org/search?query=${encodeURIComponent([record.name, record.address ?? record.location, "Sucre Bolivia"].filter(Boolean).join(", "))}`;
-  const primaryAction = record.action ?? (record.phone ? { label: text.call, href: `tel:${record.phone.replace(/[^+\d]/g, "")}` } : { label: text.openMap, href: locationMap ? `https://www.openstreetmap.org/?mlat=${record.latitude}&mlon=${record.longitude}#map=17/${record.latitude}/${record.longitude}` : mapSearchUrl });
+  const primaryAction = record.action ?? (record.phone ? { label: text.call, href: `tel:${record.phone.replace(/[^+\d]/g, "")}` } : undefined);
 
   return <article className="record-detail">
     <div className="record-detail__heading">
@@ -130,7 +124,7 @@ export default function RecordDetailPage({ record, moduleName, detailTitle, back
             {record.rating != null && <p className="record-detail__rating"><span aria-label="Valoración">★</span> {record.rating.toFixed(1)}{record.reviews != null && <small> · {record.reviews} {text.reviews}</small>}</p>}
             {tags.length > 0 && <ul className="record-detail__tags">{tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>}
             {hasDescription && <p className="record-detail__intro">{record.description!.length > 185 ? `${record.description!.slice(0, 182).trimEnd()}…` : record.description}</p>}
-            <div className="record-detail__actions"><a className="detail-button" href={primaryAction.href} target={primaryAction.href.startsWith("http") ? "_blank" : undefined} rel={primaryAction.href.startsWith("http") ? "noreferrer" : undefined}>{primaryAction.label}<span aria-hidden="true"> →</span></a></div>
+            {primaryAction && <div className="record-detail__actions"><a className="detail-button" href={primaryAction.href} target={primaryAction.href.startsWith("http") ? "_blank" : undefined} rel={primaryAction.href.startsWith("http") ? "noreferrer" : undefined}>{primaryAction.label}<span aria-hidden="true"> →</span></a></div>}
           </div>
         </section>
 
@@ -145,7 +139,7 @@ export default function RecordDetailPage({ record, moduleName, detailTitle, back
       </div>
 
       <aside className="record-detail__aside">
-        <section className="record-detail__panel record-detail__map-panel"><div className="record-detail__panel-heading"><span className="record-detail__panel-icon" aria-hidden="true">⌖</span><h3>{text.map}</h3></div>{locationMap ? <iframe className="record-detail__map" title={`${text.map}: ${record.name}`} src={locationMap} loading="lazy" /> : <div className="record-detail__map-empty"><span aria-hidden="true">⌖</span><p>{record.address ?? record.location ?? text.mapUnavailable}</p></div>}<a className="record-detail__text-link" href={locationMap ? primaryAction.href.includes("openstreetmap") && primaryAction.label === text.openMap ? primaryAction.href : `https://www.openstreetmap.org/?mlat=${record.latitude}&mlon=${record.longitude}#map=17/${record.latitude}/${record.longitude}` : mapSearchUrl} target="_blank" rel="noreferrer">{text.openMap} <span aria-hidden="true">↗</span></a></section>
+        {record.showLocationMap !== false && ((record.latitude != null && record.longitude != null) || Boolean(record.address || record.location)) && <div className="record-detail__panel record-detail__map-panel"><LocationMap latitude={record.latitude} longitude={record.longitude} name={record.name} address={record.address ?? record.location} allowAddressSearch={imageCategory !== "event" || Boolean(record.address)} /></div>}
         {(record.phone || record.hours || record.price || record.address || record.location) && <section className="record-detail__panel record-detail__practical"><h3>{text.practical}</h3><dl>{record.address && <div><dt>{text.address}</dt><dd>{record.address}</dd></div>}{record.location && record.location !== record.address && <div><dt>{text.locationLabel}</dt><dd>{record.location}</dd></div>}{record.phone && <div><dt>{text.phone}</dt><dd><a href={`tel:${record.phone.replace(/[^+\d]/g, "")}`}>{record.phone}</a></dd></div>}{record.hours && <div><dt>{text.hours}</dt><dd>{record.hours}</dd></div>}{record.price && <div><dt>{text.price}</dt><dd>{record.price}</dd></div>}</dl></section>}
       </aside>
     </div>
