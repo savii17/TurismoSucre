@@ -208,10 +208,6 @@ const keyFor = (category: ImageCategory, id: string) => `${category}:${id}`;
 type ImageCredit = Pick<ImageItem, "source" | "attribution" | "license" | "sourceConsultedAt">;
 
 const knownEventImages: Record<string, { main: string; gallery?: string[] }> = {
-  "festividad-virgen-guadalupe": {
-    main: "/images/events/festividad-virgen-guadalupe-main.jpg",
-    gallery: ["/images/events/festividad-virgen-guadalupe-gallery-01.jpg"],
-  },
   "entrada-folklorica-virgen-guadalupe": {
     main: "/images/events/entrada-folklorica-virgen-guadalupe-main.jpg",
     gallery: [
@@ -225,18 +221,6 @@ const knownEventImages: Record<string, { main: string; gallery?: string[] }> = {
 };
 
 const knownEventCredits: Record<string, ImageCredit> = {
-  "/images/events/festividad-virgen-guadalupe-main.jpg": {
-    source: "https://commons.wikimedia.org/wiki/File:DANZA_DE_LOS_THANTA_MORENOS_DE_LA_COMUNIDAD_DE_THAQOS_PARTICIPANDO_EN_LA_ENTRADA_DE_LA_VIRGEN_DE_GUADALUPE_EN_LA_CIUDAD_DE_SUCRE_DONDE_SE_%C3%99EDE_APRECIAR_AL_PERSONAJE_DEL_DIABLO%2C_DEL_AWELO_Y_EL_LE%C3%92N.jpg",
-    attribution: "Quisromtomy",
-    license: "CC BY-SA 4.0",
-    sourceConsultedAt: "2026-10-22",
-  },
-  "/images/events/festividad-virgen-guadalupe-gallery-01.jpg": {
-    source: "https://commons.wikimedia.org/wiki/File:DANZA_DE_LOS_THANTA_MORENOS_DE_LA_COMUNIDAD_DE_THAQOS_PARTICIPANDO_EN_LA_ENTRADA_DE_LA_VIRGEN_DE_GUADALUPE_EN_LA_CIUDAD_DE_SUCRE_DONDE_SE_APRECIA_AL_PERSONAJE_DEL_MONITO_Y_EL_LE%C3%92N.jpg",
-    attribution: "Quisromtomy",
-    license: "CC BY-SA 4.0",
-    sourceConsultedAt: "2026-10-22",
-  },
   "/images/events/entrada-folklorica-virgen-guadalupe-main.jpg": {
     source: "https://commons.wikimedia.org/wiki/File:Caporales_Centralistas_(37177760406).jpg",
     attribution: "Freddy Bayo (Flickr: freddy7arte); imagen redimensionada desde Wikimedia Commons",

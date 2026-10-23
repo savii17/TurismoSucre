@@ -3,18 +3,6 @@ import type { EventRecord } from "../types/event";
 /** Festividades y tradiciones recurrentes verificadas en la ciudad de Sucre. */
 export const events: EventRecord[] = [
   {
-    id: "festividad-virgen-guadalupe",
-    name: "Festividad de la Virgen de Guadalupe",
-    category: "Festividades religiosas",
-    description: "Celebración religiosa y cultural dedicada a la patrona de Sucre. El programa reúne novenas, actos de devoción y actividades que culminan con entradas folklóricas y autóctonas. Se celebra anualmente en la ciudad; el calendario de cada gestión se anuncia oficialmente.",
-    location: "Ciudad de Sucre, Bolivia; actividades y recorridos según el programa anual",
-    periodicity: "Anual",
-    usualMonth: 9,
-    usualMonthLabel: "Septiembre",
-    status: "RECURRENTE",
-    source: "https://sucre.bo/2026/page/12/",
-  },
-  {
     id: "entrada-folklorica-virgen-guadalupe",
     name: "Entrada Folklórica de la Virgen de Guadalupe",
     category: "Entradas folklóricas",
@@ -25,18 +13,6 @@ export const events: EventRecord[] = [
     usualMonthLabel: "Septiembre",
     status: "RECURRENTE",
     source: "https://sucre.bo/2026/page/12/",
-  },
-  {
-    id: "entrada-autoctona-virgen-guadalupe",
-    name: "Entrada Autóctona de la Virgen de Guadalupe",
-    category: "Entradas folklóricas",
-    description: "Entrada de expresiones autóctonas vinculada a la festividad de la Virgen de Guadalupe. El reglamento municipal de la festividad contempla la coordinación de las entradas autóctona y folklórica en Sucre. El programa y la fecha de cada edición deben confirmarse anualmente.",
-    location: "Ciudad de Sucre, Bolivia; recorrido según programa anual",
-    periodicity: "Anual",
-    usualMonth: 9,
-    usualMonthLabel: "Septiembre",
-    status: "RECURRENTE",
-    source: "https://gacetamunicipalsucre.gob.bo/docs/normas/reglamento/41097/RG.M.-076-2025-FESTIVIDAD-DE-LA-VIRGEN-DE-GUADALUPE-1760715830.pdf",
   },
   {
     id: "carnaval-de-antano-sucre",
@@ -167,6 +143,17 @@ export const events: EventRecord[] = [
     usualMonthLabel: "Domingos durante el año",
     status: "RECURRENTE",
     source: "https://gacetamunicipalsucre.gob.bo/leyes?direction=asc&page=27&sort=fecha_promulgacion",
+  },
+  {
+    id: "entrada-universitaria-sucre",
+    name: "Entrada Universitaria de Sucre",
+    category: "Entradas folklóricas universitarias",
+    description: "Entrada folklórica organizada por la Federación Universitaria Local de la Universidad Mayor, Real y Pontificia de San Francisco Xavier de Chuquisaca, con fraternidades de estudiantes e invitados que presentan danzas y expresiones culturales. En 2026 participaron 47 grupos; la edición del 22 de agosto recorrió desde el estadio Patria por avenidas y calles de Sucre hasta la Plaza 25 de Mayo. Es un evento propio de la comunidad universitaria sucrense; la fecha, recorrido y grupos se confirman para cada gestión.",
+    location: "Ciudad de Sucre; en 2026 el recorrido fue del estadio Patria a la Plaza 25 de Mayo por Germán Mendoza, Ladislao Cabrera, Venezuela, Hernando Siles y Aniceto Arce",
+    periodicity: "Anual; fecha y recorrido sujetos a organización de la FUL y autorización municipal de cada gestión",
+    usualMonthLabel: "Fecha variable durante el año",
+    status: "RECURRENTE",
+    source: "https://correodelsur.com/local/20260822/la-entrada-universitaria-se-celebra-este-sabado-tras-polemica-por-recorrido.html",
   },
   {
     id: "dia-del-peaton-y-ciclista-sucre",
