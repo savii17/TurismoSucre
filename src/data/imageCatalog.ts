@@ -263,6 +263,69 @@ const knownEventCredits: Record<string, ImageCredit> = {
   },
 };
 
+const knownAccommodationImages: Record<string, string> = {
+  "hotel-independencia": "/images/accommodations/hotel-independencia-main.jpg",
+  "hostal-colonial": "/images/accommodations/hostal-colonial-main.webp",
+  "mi-pueblo-samary": "/images/accommodations/mi-pueblo-samary-main.jpg",
+  "hotel-villa-antigua": "/images/accommodations/hotel-villa-antigua-main.jpg",
+  "parador-santa-maria-la-real": "/images/accommodations/parador-santa-maria-la-real-main.jpg",
+  "hotel-de-su-merced": "/images/accommodations/hotel-de-su-merced-main.webp",
+  "on-hotel-boutique": "/images/accommodations/on-hotel-boutique-main.jpg",
+  "hotel-boutique-la-posada": "/images/accommodations/hotel-boutique-la-posada-main.webp",
+  "san-marino-royal-hotel": "/images/accommodations/san-marino-royal-hotel-main.jpg",
+  "hotel-san-felipe": "/images/accommodations/hotel-san-felipe-main.jpg",
+  "hotel-premier": "/images/accommodations/hotel-premier-main.jpg",
+  "hotel-real-audiencia": "/images/accommodations/hotel-real-audiencia-main.webp",
+  "hotel-monasterio": "/images/accommodations/hotel-monasterio-main.jpg",
+  "hostal-sucre": "/images/accommodations/hostal-sucre-main.jpg",
+  "hostal-pachamama": "/images/accommodations/hostal-pachamama-main.jpg",
+  "hospedaje-sarabia": "/images/accommodations/hospedaje-sarabia-main.jpg",
+  "cittadella-hostal": "/images/accommodations/cittadella-hostal-main.png",
+  "la-escondida-hostal": "/images/accommodations/la-escondida-hostal-main.jpg",
+};
+
+const knownAccommodationCredits: Record<string, ImageCredit> = {
+  "hotel-independencia": { source: "https://www.tripadvisor.es/Hotel_Review-g295432-d632188-Reviews-Hotel_Independencia-Sucre_Chuquisaca_Department.html", sourceConsultedAt: "2026-10-22" },
+  "hostal-colonial": { source: "https://destinia.com/es/hoteles/america-del-sur/bolivia/sucre/sucre/hostal-colonial/ho-23703", sourceConsultedAt: "2026-10-22" },
+  "mi-pueblo-samary": { source: "https://www.minube.com/rincon/mi-pueblo-samary-hotel-boutique-a2059780", sourceConsultedAt: "2026-10-22" },
+  "hotel-villa-antigua": { source: "https://correodelsur.com/ecos/20190210/hotel-villa-antigua-mas-de-400-anos-de-historia.html", sourceConsultedAt: "2026-10-22" },
+  "parador-santa-maria-la-real": { source: "https://www.vanverre.nl/bolivia/hotels", sourceConsultedAt: "2026-10-22" },
+  "hotel-de-su-merced": { source: "https://hoteldesumerced.com/es/inicio/", sourceConsultedAt: "2026-10-22" },
+  "on-hotel-boutique": { source: "https://www.myboutiquehotel.com/en/boutique-hotels-sucre/on-hotel-boutique.html", sourceConsultedAt: "2026-10-22" },
+  "hotel-boutique-la-posada": { source: "https://hotellaposada.com.bo/", sourceConsultedAt: "2026-10-22" },
+  "san-marino-royal-hotel": { source: "https://www.boliviaentusmanos.com/amarillas/businesscard/san-marino-royal.html", sourceConsultedAt: "2026-10-22" },
+  "hotel-san-felipe": { source: "https://www.agoda.com/hotel-san-felipe/hotel/sucre-bo.html", sourceConsultedAt: "2026-10-22" },
+  "hotel-premier": { source: "https://www.soysucre.info/es/hotel-premier/", sourceConsultedAt: "2026-10-22" },
+  "hotel-real-audiencia": { source: "https://destinia.com/es/hoteles/america-del-sur/bolivia/sucre/sucre/real-audiencia/ho-85018", sourceConsultedAt: "2026-10-22" },
+  "hotel-monasterio": { source: "https://www.centraldereservas.com/hoteles/bolivia/chuquisaca/sucre/hotel-monasterio", sourceConsultedAt: "2026-10-22" },
+  "hostal-sucre": { source: "https://www.tripadvisor.com/Hotel_Review-g295432-d607377-Reviews-Hostal_Sucre-Sucre_Chuquisaca_Department.html", sourceConsultedAt: "2026-10-22" },
+  "hostal-pachamama": { source: "https://www.skyscanner.gg/hotels/bolivia/sucre-hotels/hostal-pachamama/ht-160813331", sourceConsultedAt: "2026-10-22" },
+  "hospedaje-sarabia": { source: "https://hotelsbolivia.com/sucre/hospedaje-sarabia", sourceConsultedAt: "2026-10-22" },
+  "cittadella-hostal": { source: "https://www.cittadellahostal.com/Cittadella/Index.html", sourceConsultedAt: "2026-10-22" },
+  "la-escondida-hostal": { source: "https://www.tripadvisor.com/Hotel_Review-g295432-d15137635-Reviews-Hostal_La_Escondida-Sucre_Chuquisaca_Department.html", sourceConsultedAt: "2026-10-22" },
+};
+
+const knownAccommodationAlts: Record<string, string> = {
+  "hotel-independencia": "Fachada de Hotel Independencia en Sucre, Bolivia",
+  "hostal-colonial": "Habitación doble del Hostal Colonial en Sucre, Bolivia",
+  "mi-pueblo-samary": "Fachada colonial de Mi Pueblo Samary Hotel Boutique en Sucre",
+  "hotel-villa-antigua": "Fachada patrimonial del Hotel Villa Antigua en Sucre",
+  "parador-santa-maria-la-real": "Patio colonial del Parador Santa María La Real en Sucre",
+  "hotel-de-su-merced": "Terraza y patio del Hotel de Su Merced en Sucre",
+  "on-hotel-boutique": "Terraza de On Hotel Boutique en Sucre",
+  "hotel-boutique-la-posada": "Patio interior del Hotel Boutique La Posada en Sucre",
+  "san-marino-royal-hotel": "Fachada del San Marino Royal Hotel en Sucre",
+  "hotel-san-felipe": "Patio y comedor del Hotel San Felipe en Sucre",
+  "hotel-premier": "Recepción interior del Hotel Premier en Sucre",
+  "hotel-real-audiencia": "Patio interior del Hotel Real Audiencia en Sucre",
+  "hotel-monasterio": "Fachada colonial del Hotel Monasterio en Sucre",
+  "hostal-sucre": "Patio colonial del Hostal Sucre en Sucre, Bolivia",
+  "hostal-pachamama": "Fachada del Hostal Pachamama en Sucre",
+  "hospedaje-sarabia": "Habitación del Hospedaje Sarabia en Sucre",
+  "cittadella-hostal": "Fachada de Cittadella Hostal en Sucre",
+  "la-escondida-hostal": "Patio exterior de La Escondida Hostal en Sucre",
+};
+
 function makeImageSet(
   category: ImageCategory,
   alt: string,
@@ -307,7 +370,7 @@ export const imageCatalog: ImageCatalog = {
     )];
   })),
   ...Object.fromEntries(accommodations.map((item) => [keyFor("accommodation", item.id), makeImageSet(
-    "accommodation", `Exterior o espacio interior de ${item.name}, hospedaje en Sucre`, [item.image, ...(item.images ?? [])],
+    "accommodation", knownAccommodationAlts[item.id] ?? `Exterior o espacio interior de ${item.name}, hospedaje en Sucre`, [knownAccommodationImages[item.id], item.image, ...(item.images ?? [])], knownAccommodationCredits[item.id],
   )])),
   ...Object.fromEntries(restaurants.map((item) => [keyFor("restaurant", item.id), makeImageSet(
     "restaurant", `${item.name}, restaurante en Sucre`, [item.image, ...(item.images ?? [])],
