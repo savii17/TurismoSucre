@@ -1,4 +1,5 @@
 import type { TouristPlace } from "../types/listing";
+import { touristPlaceImages } from "./touristImages";
 
 type VerifiedPlace = Pick<TouristPlace, "id" | "name" | "category" | "address" | "shortDescription" | "description"> & {
   latitud?: number;
@@ -36,7 +37,7 @@ const place = ({ id, name, category, address, shortDescription, description, lat
     longitud,
     ubicacion: address,
     hours: "",
-    image: "",
+    image: touristPlaceImages[id] ?? "/images/fallback/fallback-tourist-place.svg",
     shortDescription,
     description,
     descripcion: description,

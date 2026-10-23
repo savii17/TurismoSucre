@@ -36,6 +36,13 @@ export const touristPlaceImages: Record<string, string> = {
   "mercado-central-de-sucre": "/images/tourist-places/mercado-central-de-sucre-main.jpg",
   "arco-del-triunfo-de-sucre": "/images/tourist-places/arco-del-triunfo-de-sucre-main.jpg",
   "museo-de-la-catedral-de-sucre": "/images/tourist-places/museo-de-la-catedral-de-sucre-main.jpg",
+  "callejones-de-los-gatos": "/images/tourist-places/callejones-de-los-gatos-main.jpg",
+  "museo-del-tesoro": "/images/tourist-places/museo-del-tesoro-main.jpg",
+  "museo-antropologico-usfx": "/images/tourist-places/museo-antropologico-usfx-main.png",
+  "museo-alfredo-gutierrez-valenzuela": "/images/tourist-places/museo-alfredo-gutierrez-valenzuela-main.jpg",
+  "templo-san-miguel": "/images/tourist-places/templo-san-miguel-main.jpg",
+  "templo-santa-ana": "/images/tourist-places/templo-santa-ana-main.jpg",
+  "palacio-consistorial-de-sucre": "/images/tourist-places/palacio-consistorial-de-sucre-main.jpg",
 };
 
 export const getTouristPlaceImage = (id: string, fallback: string) =>

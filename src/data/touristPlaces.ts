@@ -12,7 +12,7 @@ export const touristPlaces: TouristPlace[] = [
     latitud: -19.0474713,
     longitud: -65.2603846,
     hours: "",
-    image: "/images/lugares-turisticos/casa-de-la-libertad.jpg",
+    image: "/images/tourist-places/casa-de-la-libertad-main.jpg",
     shortDescription:
       "Museo histórico donde se conserva la memoria de la independencia de Bolivia.",
     description:
@@ -32,7 +32,7 @@ export const touristPlaces: TouristPlace[] = [
     latitud: -19.0066667,
     longitud: -65.2361111,
     hours: "Lun. a vie. · 09:00 – 17:00 · Sáb. y dom. · 10:00 – 17:00",
-    image: "/images/lugares-turisticos/parque-cretacico.jpg",
+    image: "/images/tourist-places/parque-cretacico-main.jpg",
     shortDescription:
       "Parque paleontológico ubicado junto al yacimiento de huellas de dinosaurios de Cal Orck'o.",
     description:
@@ -52,7 +52,7 @@ export const touristPlaces: TouristPlace[] = [
     latitud: -19.054687,
     longitud: -65.25343,
     hours: "",
-    image: "/images/lugares-turisticos/la-recoleta.jpg",
+    image: "/images/tourist-places/la-recoleta-main.jpg",
     shortDescription:
       "Conjunto histórico franciscano y uno de los miradores más conocidos de Sucre.",
     description:
@@ -72,7 +72,7 @@ export const touristPlaces: TouristPlace[] = [
     latitud: -19.08466,
     longitud: -65.26861,
     hours: "",
-    image: "/images/lugares-turisticos/castillo-de-la-glorieta.jpg",
+    image: "/images/tourist-places/castillo-de-la-glorieta-main.jpg",
     shortDescription:
       "Monumento histórico de arquitectura singular ubicado a pocos kilómetros de Sucre.",
     description:
@@ -92,7 +92,7 @@ export const touristPlaces: TouristPlace[] = [
     latitud: -19.0538,
     longitud: -65.253884,
     hours: "Mon. to Fri. · 09:00 – 12:15 and 14:30 – 18:00 · Sat. · 09:00 – 12:00 and 14:30 – 18:00",
-    image: "/images/lugares-turisticos/museo-arte-indigena-asur.jpg",
+    image: "/images/tourist-places/museo-arte-indigena-asur-main.jpg",
     shortDescription:
       "Museo dedicado a los tejidos tradicionales y a las expresiones culturales indígenas de Chuquisaca.",
     description:
@@ -112,7 +112,7 @@ export const touristPlaces: TouristPlace[] = [
     latitud: -19.0499986,
     longitud: -65.2611267,
     hours: "Mon. to Sat. · 14:30 – 17:30",
-    image: "/images/lugares-turisticos/san-felipe-neri.jpg",
+    image: "/images/tourist-places/san-felipe-neri-main.jpg",
     shortDescription:
       "Templo neoclásico con una terraza que ofrece una vista panorámica del centro de Sucre.",
     description:

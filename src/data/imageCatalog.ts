@@ -1,7 +1,7 @@
 import { emergencyDirectory } from "./emergencies";
 import { entertainment } from "./entertainment";
 import { events as calendarEvents } from "./events";
-import { accommodations, restaurants } from "./secondaryListings";
+import { accommodations, events as legacyEvents, restaurants } from "./secondaryListings";
 import { touristPlaces } from "./touristPlaces";
 import { touristPlaceImages } from "./touristImages";
 import type { ImageCatalog, ImageCategory, ImageItem, ImageSet } from "../types/images";
@@ -203,6 +203,26 @@ const knownTouristCredits: Record<string, { source: string; attribution?: string
   },
 };
 
+Object.assign(knownTouristCredits, {
+  "callejones-de-los-gatos": { source: "https://correodelsur.com/local/20250714/la-calle-de-los-gatos-un-tesoro-escondido-con-potencial-turistico.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "museo-del-tesoro": { source: "https://museotesoro.com/", attribution: "Museo del Tesoro", sourceConsultedAt: "2026-10-23" },
+  "museo-antropologico-usfx": { source: "https://chuquisacadelbicentenario.blogspot.com/2018/05/destinos-turisticos-museo-universitario.html", attribution: "Museo Universitario Charcas", sourceConsultedAt: "2026-10-23" },
+  "museo-alfredo-gutierrez-valenzuela": { source: "https://museovalenzuela.usfx.bo/mytour/", attribution: "Museo Dr. Alfredo Gutiérrez Valenzuela", sourceConsultedAt: "2026-10-23" },
+  "templo-san-miguel": { source: "https://www.travel4pictures.com/iglesia_san_miguel", attribution: "Travel4Pictures", sourceConsultedAt: "2026-10-23" },
+  "templo-santa-ana": { source: "https://correodelsur.com/local/20230106/gestionan-recursos-para-la-refaccion-de-dos-templos-en-sucre.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "palacio-consistorial-de-sucre": { source: "https://correodelsur.com/local/20260323/oficial-estos-son-los-nuevos-concejales-municipales-de-sucre.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+});
+
+Object.assign(knownTouristAlts, {
+  "callejones-de-los-gatos": "Callejón empedrado de los Gatos en Sucre",
+  "museo-del-tesoro": "Galería de exposición del Museo del Tesoro en Sucre",
+  "museo-antropologico-usfx": "Colección antropológica del Museo Universitario Charcas de Sucre",
+  "museo-alfredo-gutierrez-valenzuela": "Salón patrimonial del Museo Alfredo Gutiérrez Valenzuela en Sucre",
+  "templo-san-miguel": "Interior barroco del Templo de San Miguel en Sucre",
+  "templo-santa-ana": "Templo de Santa Ana de La Recoleta en Sucre",
+  "palacio-consistorial-de-sucre": "Fachada del Palacio Consistorial de Sucre",
+});
+
 const keyFor = (category: ImageCategory, id: string) => `${category}:${id}`;
 
 type ImageCredit = Pick<ImageItem, "source" | "attribution" | "license" | "sourceConsultedAt">;
@@ -219,6 +239,23 @@ const knownEventImages: Record<string, { main: string; gallery?: string[] }> = {
     main: "/images/events/todos-santos-sucre-main.jpg",
   },
 };
+
+Object.assign(knownEventImages, {
+  "carnaval-de-antano-sucre": { main: "/images/events/carnaval-de-antano-sucre-main.jpg" },
+  "carnaval-grande-sucre": { main: "/images/events/carnaval-grande-sucre-main.jpg" },
+  "corso-infantil-sucre": { main: "/images/events/corso-infantil-sucre-main.jpg" },
+  "festival-sikuris-sucre": { main: "/images/events/festival-sikuris-sucre-main.jpg" },
+  "semana-santa-sucre": { main: "/images/events/semana-santa-sucre-main.jpg" },
+  "conmemoracion-25-mayo-sucre": { main: "/images/events/conmemoracion-25-mayo-sucre-main.jpg" },
+  "serenata-25-mayo-sucre": { main: "/images/events/serenata-25-mayo-sucre-main.jpg" },
+  "navidad-sucrense": { main: "/images/events/navidad-sucrense-main.jpg" },
+  "entrada-navidena-sucre": { main: "/images/events/entrada-navidena-sucre-main.jpg" },
+  "domingos-peatonalizacion-cultural-sucre": { main: "/images/events/domingos-peatonalizacion-cultural-sucre-main.jpg" },
+  "entrada-universitaria-sucre": { main: "/images/events/entrada-universitaria-sucre-main.jpg" },
+  "dia-del-peaton-y-ciclista-sucre": { main: "/images/events/dia-del-peaton-y-ciclista-sucre-main.jpg" },
+  "carnaval-sucrense": { main: "/images/events/carnaval-grande-sucre-main.jpg" },
+  "feria-artesanal": { main: "/images/events/feria-artesanal-sucre-main.jpg" },
+});
 
 const knownEventCredits: Record<string, ImageCredit> = {
   "/images/events/entrada-folklorica-virgen-guadalupe-main.jpg": {
@@ -247,6 +284,22 @@ const knownEventCredits: Record<string, ImageCredit> = {
   },
 };
 
+Object.assign(knownEventCredits, {
+  "/images/events/carnaval-de-antano-sucre-main.jpg": { source: "https://correodelsur.com/cultura/20260208/la-entrada-del-carnaval-de-antano-de-sucre-ya-tiene-a-sus-ganadores.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "/images/events/carnaval-grande-sucre-main.jpg": { source: "https://correodelsur.com/sociedad/20260215/carnaval-sikuris-dan-paso-al-corso.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "/images/events/corso-infantil-sucre-main.jpg": { source: "https://carnaval.sucre.bo/", attribution: "Gobierno Autónomo Municipal de Sucre", sourceConsultedAt: "2026-10-23" },
+  "/images/events/festival-sikuris-sucre-main.jpg": { source: "https://commons.wikimedia.org/wiki/File:GRUPO_DE_SICURIS_DE_LA_CIUDAD_DE_SUCRE_-_BOLIVIA_TOCANDO_PARA_ACOMPA%C3%91AR_A_LOS_THANTA_MORENOS_DE_LA_COMUNIDAD_DE_THAQOS.jpg", attribution: "Wikimedia Commons", sourceConsultedAt: "2026-10-23" },
+  "/images/events/semana-santa-sucre-main.jpg": { source: "https://correodelsur.com/local/20220328/que-oferta-la-capital-para-la-semana-santa.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "/images/events/conmemoracion-25-mayo-sucre-main.jpg": { source: "https://correodelsur.com/sociedad/20260525/bandas-y-teas-encienden-la-libertad.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "/images/events/serenata-25-mayo-sucre-main.jpg": { source: "https://correodelsur.com/cultura/20250520/sabor-sabor-y-yuri-ortuno-destacan-en-la-cartelera-de-la-serenata-por-el-25-de-mayo.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "/images/events/navidad-sucrense-main.jpg": { source: "https://correodelsur.com/local/20251202/la-ciudad-blanca-da-la-bienvenida-a-la-navidad.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "/images/events/entrada-navidena-sucre-main.jpg": { source: "https://correodelsur.com/local/20231216/entrada-navidena-postales-y-videos-del-deslumbrante-desfile-en-la-capital.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "/images/events/domingos-peatonalizacion-cultural-sucre-main.jpg": { source: "https://correodelsur.com/local/20230814/danza-y-espectaculo-en-la-peatonalizacion-del-centro.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "/images/events/entrada-universitaria-sucre-main.jpg": { source: "https://correodelsur.com/cultura/20240703/entrada-universitaria-se-diferira-una-o-dos-semanas-en-sucre.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "/images/events/dia-del-peaton-y-ciclista-sucre-main.jpg": { source: "https://correodelsur.com/local/20240422/primer-dia-del-peaton-participacion-masiva-de-la-poblacion-en-la-ciudad.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "/images/events/feria-artesanal-sucre-main.jpg": { source: "https://correodelsur.com/cultura/20171212/artesanos-exigen-politicas-de-apoyo-a-nivel-nacional.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+});
+
 const knownEntertainmentImages: Record<string, string> = {
   "goblin-cerveza-artesanal": "/images/entertainment/goblin-cerveza-artesanal-main.jpg",
   "terraza-625": "/images/entertainment/terraza-625-main.jpg",
@@ -256,6 +309,40 @@ const knownEntertainmentImages: Record<string, string> = {
   "la-quimba": "/images/entertainment/la-quimba-main.jpg",
   "la-chicheria-by-samary": "/images/entertainment/la-chicheria-by-samary-main.webp",
   "rockerz-hard-rock-cafe": "/images/entertainment/rockerz-hard-rock-cafe-main.jpg",
+};
+
+const knownEmergencyImages: Record<string, string> = {
+  "gams-salud-emergencias": "/images/emergencies/gams-emergencias-telefonos-sucre.jpg",
+  "dimger-reten-emergencia": "/images/emergencies/dimger-rescate-sucre.jpg",
+  "policia-110-sucre": "/images/emergencies/policia-110-sucre.jpg",
+  "bomberos-119-sucre": "/images/emergencies/bomberos-119-sucre.jpg",
+  "hospital-santa-barbara": "/images/emergencies/hospital-santa-barbara-sucre.webp",
+  "hospital-tercer-nivel-chuquisaca": "/images/emergencies/hospital-tercer-nivel-chuquisaca.jpg",
+  "hospital-municipal-poconas": "/images/emergencies/hospital-municipal-poconas.jpg",
+  "hospital-san-pedro-claver": "/images/emergencies/hospital-san-pedro-claver.jpg",
+  "centro-salud-luis-espinal": "/images/emergencies/centro-salud-luis-espinal.jpg",
+  "centro-salud-azari": "/images/emergencies/centros-salud-sucre.jpg",
+  "centro-salud-casegural": "/images/emergencies/centros-salud-sucre.jpg",
+  "centro-salud-belen": "/images/emergencies/centros-salud-sucre.jpg",
+  "centro-salud-alegria": "/images/emergencies/hospital-municipal-alegria-sucre.jpg",
+  "cruz-roja-chuquisaca": "/images/emergencies/cruz-roja-chuquisaca-sucre.jpg",
+};
+
+const knownEmergencyCredits: Record<string, ImageCredit> = {
+  "gams-salud-emergencias": { source: "https://correodelsur.com/seguridad/20230921/lineas-de-emergencia-cuales-funcionan.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "dimger-reten-emergencia": { source: "https://unitel.bo/noticias/sociedad/una-llamada-clave-el-milagroso-rescate-de-una-mujer-aplastada-por-los-muros-de-su-casa-en-sucre-FC15354504", attribution: "Unitel", sourceConsultedAt: "2026-10-23" },
+  "policia-110-sucre": { source: "https://correodelsur.com/panorama/20150607/llamadas-falsas-el-cancer--de-radio-patrullas-110.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "bomberos-119-sucre": { source: "https://correodelsur.com/seguridad/20200525/direccion-departamental-de-bomberos-recibe-un-vehiculo-contra-incendios.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "hospital-santa-barbara": { source: "https://www.solidaritybridge.org/blog/2022/11/4/neurotrauma1-l6c8e", attribution: "Solidarity Bridge", sourceConsultedAt: "2026-10-23" },
+  "hospital-tercer-nivel-chuquisaca": { source: "https://aisem.gob.bo/node/44", attribution: "Agencia de Infraestructura en Salud y Equipamiento Médico", sourceConsultedAt: "2026-10-23" },
+  "hospital-municipal-poconas": { source: "https://correodelsur.com/local/20200617/rotarac-sucre-y-rotarac-chuquisaca-donan-130-barbijos-kn95-al-ico-y-al-hospital-poconas.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "hospital-san-pedro-claver": { source: "https://www.defensoria.gob.bo/oficinas/prensa/defensoria-del-pueblo-interviene-ante-la-falta-de-pago-a-46-trabajadores-en-salud-del-hospital-san-pedro-claver", attribution: "Defensoría del Pueblo", sourceConsultedAt: "2026-10-23" },
+  "centro-salud-luis-espinal": { source: "https://www.minsalud.gob.bo/2445-en-11-anos-se-triplico-ambulancias-hospitales-e-items-en-salud-para-bolivia", attribution: "Ministerio de Salud y Deportes de Bolivia", sourceConsultedAt: "2026-10-23" },
+  "centro-salud-alegria": { source: "https://correodelsur.com/politica/20180821/inauguran-hospital-municipal-alegria-en-el-distrito-6-de-sucre.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "centro-salud-azari": { source: "https://correodelsur.com/local/20221219/sucre-donde-acudir-para-recibir-la-vacuna-contra-el-covid-19-o-hacerse-una-prueba.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "centro-salud-casegural": { source: "https://correodelsur.com/local/20221219/sucre-donde-acudir-para-recibir-la-vacuna-contra-el-covid-19-o-hacerse-una-prueba.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "centro-salud-belen": { source: "https://correodelsur.com/local/20221219/sucre-donde-acudir-para-recibir-la-vacuna-contra-el-covid-19-o-hacerse-una-prueba.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
+  "cruz-roja-chuquisaca": { source: "https://correodelsur.com/local/20150618/cruz-roja-estrena-centro-de-salud-con-atencion-gratis.html", attribution: "Correo del Sur", sourceConsultedAt: "2026-10-23" },
 };
 
 const knownEntertainmentAlts: Record<string, string> = {
@@ -385,6 +472,12 @@ const knownRestaurantImages: Record<string, string> = {
   "azafran-restaurant": "/images/restaurants/azafran-restaurant-main.jpg",
 };
 
+Object.assign(knownRestaurantImages, {
+  "cafe-capital-aniceto-arce": "/images/restaurants/cafe-capital-sucre-main.webp",
+  "cafe-capital-avenida-americas": "/images/restaurants/cafe-capital-sucre-main.webp",
+  "dona-nieves": "/images/restaurants/dona-nieves-sucre-main.jpg",
+});
+
 const knownRestaurantCredits: Record<string, ImageCredit> = {
   "restaurant-el-solar": { source: "https://www.tripadvisor.com/Restaurant_Review-g295432-d10179078-Reviews-Restaurant_El_Solar-Sucre_Chuquisaca_Department.html", sourceConsultedAt: "2026-10-22" },
   "la-taverne": { source: "https://www.tripadvisor.com/Restaurant_Review-g295432-d1069738-Reviews-La_Taverne-Sucre_Chuquisaca_Department.html", sourceConsultedAt: "2026-10-22" },
@@ -430,9 +523,17 @@ function makeImageSet(
 ): ImageSet {
   const uniqueSources = [...new Set(sources.map((source) => source?.trim()).filter((source): source is string => Boolean(source)))];
   const [mainSource, ...gallerySources] = uniqueSources;
-  const main: ImageItem | undefined = mainSource
-    ? { src: mainSource, source: credit?.source ?? (mainSource.startsWith("http") ? mainSource : undefined), attribution: credit?.attribution, license: credit?.license, sourceConsultedAt: credit?.sourceConsultedAt, alt, order: 0, role: "main" }
-    : undefined;
+  const resolvedMainSource = mainSource ?? fallbackByCategory[category];
+  const main: ImageItem = {
+    src: resolvedMainSource,
+    source: credit?.source ?? (resolvedMainSource.startsWith("http") ? resolvedMainSource : undefined),
+    attribution: credit?.attribution,
+    license: credit?.license,
+    sourceConsultedAt: credit?.sourceConsultedAt,
+    alt: mainSource ? alt : `Ilustración representativa de ${alt}`,
+    order: 0,
+    role: "main",
+  };
 
   return {
     category,
@@ -493,8 +594,11 @@ export const imageCatalog: ImageCatalog = {
     knownEventCredits[knownEventImages[item.id]?.main ?? ""],
     knownEventCredits,
   )])),
+  ...Object.fromEntries(legacyEvents.map((item) => [keyFor("event", item.id), makeImageSet(
+    "event", `${item.name}, evento pendiente de verificación en Sucre`, [knownEventImages[item.id]?.main, item.image, ...(item.images ?? [])], knownEventCredits[knownEventImages[item.id]?.main ?? ""],
+  )])),
   ...Object.fromEntries(emergencyDirectory.map((item) => [keyFor("emergency", item.PK_id), makeImageSet(
-    "emergency", `${item.nombre_lugar}, servicio de emergencia de Sucre`, [],
+    "emergency", `${item.nombre_lugar}, servicio de emergencia de Sucre`, [knownEmergencyImages[item.PK_id]], knownEmergencyCredits[item.PK_id],
   )])),
 };
 
