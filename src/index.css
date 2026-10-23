@@ -433,3 +433,167 @@
   .dashboard-category-visits__chart { height:90px; width:90px; }
   .dashboard-category-visits__chart::before { height:58px; width:58px; }
 }
+
+/* Dashboard composition: restore clear spacing and a two-area desktop layout. */
+.app-shell { grid-template-columns:256px minmax(0,1fr); }
+.sidebar { min-width:0; padding-inline:16px; }
+.sidebar__link { gap:11px; line-height:1.25; min-width:0; padding:8px 10px; white-space:normal; }
+.sidebar__link span { min-width:0; overflow-wrap:anywhere; }
+.sidebar__link .ui-icon { flex:0 0 18px; }
+.topbar { gap:18px; min-width:0; padding:14px 28px; }
+.topbar__left { flex:0 1 auto; min-width:190px; }
+.topbar__left>div { min-width:0; }
+.topbar__title { line-height:1.15; }
+.topbar__subtitle { color:var(--muted); font-size:11px; margin-top:3px; }
+.topbar__actions { flex:0 1 auto; gap:12px; min-width:0; }
+.topbar-search { flex:0 1 290px; min-width:150px; }
+.profile-card>div:last-child { min-width:0; }
+.profile-card strong,.profile-card span { max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.app-shell__content { padding:24px 28px 38px; }
+.home-page { display:block; }
+.dashboard-layout { align-items:start; display:grid; gap:22px; grid-template-columns:minmax(0,1fr) minmax(310px,340px); }
+.dashboard-primary { display:grid; gap:19px; min-width:0; padding:0; }
+.dashboard-primary>.tourism-hero { grid-row:1; }
+.dashboard-primary>.statistics-grid { grid-row:2; }
+.dashboard-primary>.section-heading { grid-row:3; margin:4px 0 -3px; }
+.dashboard-primary>.tourist-places-grid { grid-row:4; }
+.dashboard-primary>.quick-actions { grid-row:5; }
+.tourism-hero { border-radius:16px; height:350px; margin:0; }
+.tourism-hero__content { max-width:570px; padding:39px 38px; }
+.tourism-hero__content h2 { font-size:clamp(36px,3vw,46px); }
+.tourism-hero__description { font-size:14px; line-height:1.55; }
+.tourism-hero__information { gap:10px; margin-top:21px; }
+.tourism-hero__info-card { gap:9px; padding:10px; }
+.tourism-hero__info-card strong { font-size:12px; }
+.tourism-hero__info-card span { font-size:10px; }
+.tourism-hero__indicators { left:38px; }
+.statistics-grid { gap:13px; grid-template-columns:repeat(2,minmax(0,1fr)); }
+.statistic-card { align-items:center; border-radius:15px; gap:13px; min-height:116px; padding:17px; }
+.statistic-card__icon { flex-basis:44px; height:44px; }
+.statistic-card__title { font-size:11px; line-height:1.35; }
+.statistic-card__value { font-size:29px; margin-top:7px; }
+.statistic-card__footer { font-size:10px; }
+.dashboard-primary>.section-heading { align-items:center; }
+.dashboard-primary>.section-heading .eyebrow { display:block; }
+.dashboard-primary>.section-heading p:not(.eyebrow) { display:block; font-size:12px; margin-top:4px; }
+.dashboard-primary>.section-heading h1 { font-size:clamp(21px,2vw,26px); }
+.tourist-places-grid--featured { gap:15px; grid-template-columns:repeat(2,minmax(0,1fr)); }
+.dashboard-place-card { height:100%; }
+.dashboard-place-card__media { height:clamp(165px,17vw,220px); }
+.dashboard-place-card__category { left:10px; right:auto; top:10px; }
+.dashboard-place-card__status { display:block; }
+.dashboard-place-card__body { gap:9px; padding:14px; }
+.dashboard-place-card__body h2 { font-size:15px; line-height:1.25; }
+.dashboard-place-card__location { font-size:10px; }
+.dashboard-place-card__description { display:-webkit-box; font-size:11px; min-height:46px; }
+.dashboard-place-card__facts { align-items:center; flex-direction:row; gap:9px; }
+.dashboard-place-card__facts span { font-size:10px; }
+.dashboard-place-card__facts span + span { font-size:9px; }
+.dashboard-place-card__bottom { padding-top:10px; }
+.dashboard-place-card__bottom>span { display:block; }
+.quick-actions { border:1px solid var(--line); box-shadow:var(--shadow); padding:18px; }
+.quick-actions .section-heading { margin-bottom:12px; }
+.quick-actions .section-heading h2 { font-size:18px; }
+.quick-actions__grid { gap:9px; grid-template-columns:repeat(3,minmax(0,1fr)); }
+.quick-action { font-size:10px; min-height:44px; padding:8px; }
+.dashboard-right-sidebar { gap:15px; min-width:0; }
+.dashboard-right-sidebar__panel { border-radius:15px; padding:18px; }
+.dashboard-right-sidebar__panel h2 { font-size:15px; }
+.dashboard-summary-metrics { gap:10px; grid-template-columns:repeat(2,minmax(0,1fr)); }
+.dashboard-summary-metric { padding:12px; }
+.dashboard-summary-metric>p { font-size:10px; line-height:1.35; }
+.dashboard-summary-metric>strong { font-size:18px; }
+.dashboard-summary-metric span { font-size:10px; line-height:1.4; }
+.dashboard-category-visits { gap:14px; grid-template-columns:112px minmax(0,1fr); }
+.dashboard-category-visits__chart { height:104px; width:104px; }
+.dashboard-category-visits__chart::before { height:68px; width:68px; }
+.dashboard-category-visits__legend { gap:10px; }
+.dashboard-category-visits__legend li { font-size:10px; gap:7px; }
+.dashboard-events-list { gap:13px; margin-top:17px; }
+.dashboard-events-list li { gap:10px; grid-template-columns:58px minmax(0,1fr); padding-bottom:10px; }
+.dashboard-events-list time { padding:6px; }
+.dashboard-events-list time strong,.dashboard-events-list time span { font-size:9px; }
+.dashboard-events-list h3 { font-size:12px; line-height:1.35; }
+.dashboard-events-list p { font-size:10px; line-height:1.45; }
+.dashboard-events-list small { font-size:10px; line-height:1.35; }
+
+@media (min-width:1500px) {
+  .dashboard-layout { grid-template-columns:minmax(0,1fr) 350px; }
+  .dashboard-primary { gap:22px; }
+  .tourist-places-grid--featured { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .dashboard-place-card__media { height:175px; }
+  .quick-actions__grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+
+@media (max-width:1180px) {
+  .dashboard-layout { grid-template-columns:minmax(0,1fr); }
+  .dashboard-right-sidebar { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .dashboard-category-visits { grid-template-columns:1fr; justify-items:center; }
+  .dashboard-category-visits__legend { width:100%; }
+  .dashboard-right-sidebar__panel:last-child { grid-column:auto; }
+  .dashboard-primary { gap:17px; }
+  .topbar-search { flex-basis:220px; }
+}
+
+@media (max-width:850px) {
+  .app-shell,.app-shell--sidebar-collapsed { display:block; }
+  .sidebar { width:290px; }
+  .app-shell__content { padding:20px; }
+  .topbar { align-items:center; flex-wrap:wrap; padding:13px 20px; }
+  .topbar__left { flex:1 1 230px; }
+  .topbar__actions { flex:1 1 100%; justify-content:flex-end; }
+  .topbar-search { display:flex; flex:1 1 220px; max-width:360px; }
+  .profile-card>div:last-child { display:block; }
+  .dashboard-layout { grid-template-columns:minmax(0,1fr); }
+  .dashboard-right-sidebar { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .dashboard-right-sidebar__panel:last-child { grid-column:1/-1; }
+  .dashboard-category-visits { grid-template-columns:112px minmax(0,1fr); justify-items:initial; }
+  .dashboard-category-visits__legend { width:auto; }
+  .tourism-hero { height:340px; margin:0; }
+  .statistics-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .tourist-places-grid--featured { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
+@media (max-width:600px) {
+  .topbar { align-items:flex-start; gap:10px; padding:12px 15px; }
+  .topbar__left { flex-basis:100%; gap:10px; }
+  .topbar__title { font-size:21px; }
+  .topbar__actions { align-items:center; flex-wrap:wrap; justify-content:flex-start; gap:8px; }
+  .topbar-search { flex:1 1 100%; max-width:none; order:2; }
+  .profile-card { margin-left:auto; }
+  .profile-card>div:last-child { display:none; }
+  .app-shell__content { padding:16px 14px 28px; }
+  .dashboard-layout { gap:18px; }
+  .dashboard-primary { gap:15px; }
+  .tourism-hero { height:auto; min-height:465px; }
+  .tourism-hero__content { max-width:100%; padding:29px 22px 64px; }
+  .tourism-hero__content h2 { font-size:34px; }
+  .tourism-hero__description { font-size:13px; }
+  .tourism-hero__information { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .tourism-hero__info-card:last-child { grid-column:1/-1; }
+  .tourism-hero__indicators { bottom:20px; left:22px; }
+  .statistics-grid { gap:10px; grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .statistic-card { align-items:flex-start; flex-direction:column; gap:9px; min-height:138px; padding:13px; }
+  .statistic-card__value { font-size:25px; }
+  .statistic-card__footer { margin-top:8px; }
+  .dashboard-primary>.section-heading { align-items:flex-start; flex-direction:column; }
+  .dashboard-primary>.section-heading h1 { font-size:22px; }
+  .tourist-places-grid--featured { grid-template-columns:1fr; }
+  .dashboard-place-card__media { height:205px; }
+  .dashboard-place-card__description { min-height:0; }
+  .quick-actions { padding:15px; }
+  .quick-actions__grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .dashboard-right-sidebar { grid-template-columns:1fr; }
+  .dashboard-right-sidebar__panel:last-child { grid-column:auto; }
+  .dashboard-category-visits { grid-template-columns:104px minmax(0,1fr); }
+  .dashboard-category-visits__chart { height:96px; width:96px; }
+  .dashboard-category-visits__chart::before { height:62px; width:62px; }
+}
+
+@media (max-width:390px) {
+  .topbar__actions { gap:7px; }
+  .language-selector { padding-inline:6px; }
+  .dashboard-summary-metrics { grid-template-columns:1fr; }
+  .dashboard-category-visits { grid-template-columns:1fr; justify-items:center; }
+  .dashboard-category-visits__legend { width:100%; }
+}
