@@ -157,6 +157,30 @@ export const events: EventRecord[] = [
     status: "RECURRENTE",
     source: "https://sucre.bo/%F0%9D%97%A3%F0%9D%97%94%F0%9D%97%A5%F0%9D%97%A5%F0%9D%97%A2%F0%9D%97%A4%F0%9D%97%A8%F0%9D%97%9C%F0%9D%97%94%F0%9D%97%A6-%F0%9D%97%97%F0%9D%97%98-%F0%9D%97%A6%F0%9D%97%A8%F0%9D%97%96%F0%9D%97%A5/",
   },
+  {
+    id: "domingos-peatonalizacion-cultural-sucre",
+    name: "Domingos de Peatonalización Cultural de Sucre",
+    category: "Evento cultural / recreativo",
+    description: "Actividad cultural y turística recurrente que habilita espacios del Centro Histórico para peatones y programa propuestas culturales, artísticas, recreativas y de integración ciudadana. La Ley Municipal 518/2026, vigente desde el 7 de octubre de 2026, establece tres domingos al mes con la Plaza 25 de Mayo como área peatonal y un cuarto domingo con restricción vehicular ampliada a una cuadra alrededor de la plaza. Las jornadas pueden incluir música, danzas, actividades culturales y familiares, exposiciones y ferias artesanales o gastronómicas según la programación municipal; no todas se realizan cada domingo. Las fuentes consultadas no confirman el horario ni enumeran las calles del perímetro ampliado, por lo que deben verificarse en el anuncio municipal de cada jornada.",
+    location: "Plaza 25 de Mayo; el cuarto domingo del mes, restricción vehicular ampliada a una cuadra alrededor de la plaza, en el Centro Histórico de Sucre, Bolivia",
+    periodicity: "Tres domingos al mes en la plaza y un cuarto domingo con área ampliada, según Ley Municipal 518/2026; horario y programación por confirmar en el anuncio municipal",
+    usualMonthLabel: "Domingos durante el año",
+    status: "RECURRENTE",
+    source: "https://gacetamunicipalsucre.gob.bo/leyes?direction=asc&page=27&sort=fecha_promulgacion",
+  },
+  {
+    id: "dia-del-peaton-y-ciclista-sucre",
+    name: "Día del Peatón y del Ciclista en Sucre",
+    category: "Evento cívico / ambiental",
+    description: "Jornada distinta de los Domingos de Peatonalización Cultural: prioriza peatones y ciclistas, restringe la circulación motorizada y promueve actividades deportivas, recreativas y de concienciación ambiental. La Ley Municipal 500/2026 redujo el calendario municipal a dos jornadas anuales: el cuarto domingo de junio y el primer domingo de septiembre. En 2026, la jornada de junio no se realizó y la de septiembre se efectuó el día 6; la Alcaldía puede anunciar ajustes o suspensiones, así que se debe confirmar cada fecha anual.",
+    location: "Vías y espacios públicos de Sucre, Bolivia; actividades municipales distribuidas por puntos de la ciudad",
+    periodicity: "Dos jornadas al año: cuarto domingo de junio y primer domingo de septiembre, de acuerdo con la Ley Municipal 500/2026; sujeto a convocatoria o ajuste anual",
+    usualMonthLabel: "Junio y septiembre",
+    startTime: "07:00",
+    endTime: "18:00",
+    status: "RECURRENTE",
+    source: "https://gacetamunicipalsucre.gob.bo/leyes?page=2",
+  },
 ];
 
 export type { EventRecord } from "../types/event";

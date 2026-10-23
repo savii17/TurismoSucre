@@ -500,6 +500,10 @@ export const imageCatalog: ImageCatalog = {
         ? "Danzarinas caporales durante la Entrada de la Virgen de Guadalupe en Sucre, Bolivia"
         : item.id === "todos-santos-sucre"
           ? "Panala chuquisaqueña, preparación tradicional de Todos Santos para ofrendar a los difuntos"
+          : item.id === "domingos-peatonalizacion-cultural-sucre"
+            ? "Domingos de Peatonalización Cultural en la Plaza 25 de Mayo de Sucre"
+            : item.id === "dia-del-peaton-y-ciclista-sucre"
+              ? "Jornada del Día del Peatón y del Ciclista en Sucre, Bolivia"
           : `${item.name}, celebración realizada en Sucre`,
     [knownEventImages[item.id]?.main, ...(knownEventImages[item.id]?.gallery ?? []), item.image],
     knownEventCredits[knownEventImages[item.id]?.main ?? ""],
