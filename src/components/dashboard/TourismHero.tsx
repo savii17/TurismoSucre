@@ -13,6 +13,20 @@ const INTERACTION_PAUSE_DELAY = 10_000;
 // Carrusel con fotografías reales de atractivos turísticos de Sucre.
 const heroImages = touristHeroImages;
 const heroPlaceIds = ["casa-de-la-libertad", "parque-cretacico", "la-recoleta", "castillo-de-la-glorieta"];
+const weatherApiUrl = "https://api.open-meteo.com/v1/forecast?latitude=-19.0475&longitude=-65.26&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=America%2FLa_Paz&temperature_unit=celsius&wind_speed_unit=kmh";
+
+type CurrentWeather = { temperature_2m: number; relative_humidity_2m: number; apparent_temperature: number; weather_code: number; wind_speed_10m: number };
+
+function weatherDescription(code: number, language: "es" | "en") {
+  const descriptions: Record<number, [string, string]> = {
+    0: ["Despejado", "Clear"], 1: ["Mayormente despejado", "Mainly clear"], 2: ["Parcialmente nublado", "Partly cloudy"], 3: ["Nublado", "Overcast"],
+    45: ["Niebla", "Fog"], 48: ["Niebla con escarcha", "Rime fog"], 51: ["Llovizna ligera", "Light drizzle"], 53: ["Llovizna", "Drizzle"], 55: ["Llovizna intensa", "Dense drizzle"],
+    61: ["Lluvia ligera", "Light rain"], 63: ["Lluvia", "Rain"], 65: ["Lluvia intensa", "Heavy rain"], 71: ["Nevada ligera", "Light snow"], 73: ["Nevada", "Snow"], 75: ["Nevada intensa", "Heavy snow"],
+    80: ["Chubascos ligeros", "Light showers"], 81: ["Chubascos", "Rain showers"], 82: ["Chubascos intensos", "Heavy showers"], 95: ["Tormenta", "Thunderstorm"], 96: ["Tormenta con granizo", "Thunderstorm with hail"], 99: ["Tormenta intensa con granizo", "Heavy thunderstorm with hail"],
+  };
+  const description = descriptions[code] ?? ["Condiciones variables", "Variable conditions"];
+  return description[language === "es" ? 0 : 1];
+}
 
 type HeroIconName = "sun" | "location" | "calendar";
 
@@ -31,6 +45,7 @@ function TourismHero() {
   const [activeImage, setActiveImage] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [now, setNow] = useState(() => new Date());
+  const [weather, setWeather] = useState<CurrentWeather | null>(null);
 
   const dateFormatter = useMemo(
     () => new Intl.DateTimeFormat(language === "es" ? "es-BO" : "en-US", { dateStyle: "long" }),
@@ -44,6 +59,21 @@ function TourismHero() {
   useEffect(() => {
     const clock = window.setInterval(() => setNow(new Date()), 60_000);
     return () => window.clearInterval(clock);
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch(weatherApiUrl, { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error("Weather request failed");
+        return response.json() as Promise<{ current?: CurrentWeather }>;
+      })
+      .then((data) => {
+        const current = data.current;
+        if (current && Number.isFinite(current.temperature_2m) && Number.isFinite(current.weather_code)) setWeather(current);
+      })
+      .catch(() => undefined);
+    return () => controller.abort();
   }, []);
 
   useEffect(() => {
@@ -96,7 +126,7 @@ function TourismHero() {
         <div className="tourism-hero__information" aria-label={t("heroInformation")}>
           <div className="tourism-hero__info-card">
             <HeroIcon name="sun" />
-            <div><strong>—</strong><span>{t("weatherUnavailable")}</span></div>
+            <div className="tourism-hero__weather">{weather ? <><strong>{Math.round(weather.temperature_2m)}°C</strong><span>{weatherDescription(weather.weather_code, language)}</span><small>{language === "es" ? `Sensación ${Math.round(weather.apparent_temperature)}° · Humedad ${weather.relative_humidity_2m}% · Viento ${Math.round(weather.wind_speed_10m)} km/h` : `Feels like ${Math.round(weather.apparent_temperature)}° · Humidity ${weather.relative_humidity_2m}% · Wind ${Math.round(weather.wind_speed_10m)} km/h`}</small></> : <><strong>{language === "es" ? "Clima de Sucre" : "Sucre weather"}</strong><a href={weatherApiUrl} target="_blank" rel="noreferrer">{language === "es" ? "Consultar condiciones actuales" : "Check current conditions"}</a></>}</div>
           </div>
           <div className="tourism-hero__info-card">
             <HeroIcon name="location" />

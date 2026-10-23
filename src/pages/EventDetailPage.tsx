@@ -4,7 +4,7 @@ import { events } from "../data/events";
 import type { EventStatus } from "../types/event";
 import { getImageSet } from "../data/imageCatalog";
 
-const statusLabels: Record<EventStatus, string> = { RECURRENTE: "Anual · próxima fecha por confirmar", PROXIMO: "Próximo", EN_CURSO: "En curso", FINALIZADO: "Finalizado", CANCELADO: "Cancelado" };
+const statusLabels: Record<EventStatus, string> = { RECURRENTE: "Evento recurrente", PROXIMO: "Próximo", EN_CURSO: "En curso", FINALIZADO: "Finalizado", CANCELADO: "Cancelado" };
 const getCurrentStatus = (startDate: string | undefined, endDate: string | undefined, fallback: EventStatus): EventStatus => {
   if (!startDate || !endDate) return fallback === "CANCELADO" ? fallback : "RECURRENTE";
   if (fallback === "CANCELADO") return fallback;
@@ -22,7 +22,7 @@ export default function EventDetailPage() {
   const currentStatus = event && getCurrentStatus(event.startDate, event.endDate, event.status);
   const dateRange = event && (event.startDate && event.endDate
     ? event.startDate === event.endDate ? formatDate(event.startDate) : formatDate(event.startDate) + " – " + formatDate(event.endDate)
-    : `${event.periodicity ?? "Recurrente"}${event.usualMonthLabel ? ` · ${event.usualMonthLabel}` : ""}; próxima fecha por confirmar`);
+    : `${event.periodicity ?? "Evento recurrente"}${event.usualMonthLabel ? ` · ${event.usualMonthLabel}` : ""}; fecha publicada en el programa anual`);
   const hours = event && [event.startTime, event.endTime].filter(Boolean).join(" – ");
   const statusIsInactive = currentStatus === "FINALIZADO" || currentStatus === "CANCELADO";
   const eventHasCoordinates = event?.latitude != null && event.longitude != null;
@@ -57,7 +57,6 @@ export default function EventDetailPage() {
       { label: "Organizador", value: event.organizer },
       { label: "Teléfono", value: event.phone },
       { label: "Precio / entrada", value: event.price },
-      { label: "Fuente", value: event.source },
     ],
   };
 

@@ -8,7 +8,7 @@ import { getImageSet } from "../data/imageCatalog";
 
 const eventStatuses: Array<"Todos" | EventStatus> = ["Todos", "RECURRENTE", "PROXIMO", "EN_CURSO", "FINALIZADO", "CANCELADO"];
 const statusLabels: Record<EventStatus, string> = {
-  RECURRENTE: "Anual · próxima fecha por confirmar",
+  RECURRENTE: "Evento recurrente",
   PROXIMO: "Próximo",
   EN_CURSO: "En curso",
   FINALIZADO: "Finalizado",
@@ -62,7 +62,7 @@ export default function EventsPage() {
       const eventStatus = getStatus(event, today);
       const dateText = event.startDate && event.endDate
         ? event.startDate === event.endDate ? formatDate(event.startDate) : `${formatDate(event.startDate)} – ${formatDate(event.endDate)}`
-        : `${event.usualMonthLabel ?? event.periodicity ?? "Fecha"} · próxima edición por confirmar`;
+        : `${event.usualMonthLabel ?? event.periodicity ?? "Calendario local"} · fecha publicada en el programa anual`;
       return <article className="admin-card" key={event.id}>
         <div className="admin-card__media"><ImageWithFallback imageSet={getImageSet("event", event.id, event.image ? [event.image] : [])} category="event" alt={`${event.name}, evento cultural en Sucre, Bolivia`} /><b className={`status-badge events-status events-status--${eventStatus.toLowerCase()}`}>{statusLabels[eventStatus]}</b></div>
         <div className="admin-card__body"><p className="admin-card__category">{event.category}</p><h2>{event.name}</h2><p className="admin-card__date">◷ {dateText}{event.startTime ? ` · ${event.startTime}` : ""}{event.endTime ? `–${event.endTime}` : ""}</p><p className="admin-card__location">⌖ {event.location}</p><p className="admin-card__description">{event.description}</p>{event.price && <div className="admin-card__meta"><strong>{event.price}</strong></div>}<Link className="admin-card__details" to={`/eventos/${encodeURIComponent(event.id)}`}>Ver detalles <span>→</span></Link></div>

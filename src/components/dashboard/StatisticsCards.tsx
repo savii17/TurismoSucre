@@ -1,5 +1,6 @@
 import { touristPlaces } from "../../data/touristPlaces";
 import { accommodations, restaurants } from "../../data/secondaryListings";
+import { emergencyDirectory } from "../../data/emergencies";
 import { useLanguage } from "../../i18n/useLanguage";
 import type { ReactNode } from "react";
 
@@ -24,12 +25,13 @@ function StatisticsCards() {
   const activePlaces = countActive(touristPlaces);
   const activeAccommodations = countActive(accommodations);
   const activeRestaurants = countActive(restaurants);
+  const activeEmergencies = countActive(emergencyDirectory);
 
   const statistics = [
     { id: "places", title: t("touristPlaces"), value: touristPlaces.length, active: activePlaces, icon: "places" as const, detail: "Registros disponibles" },
     { id: "accommodations", title: t("accommodations"), value: accommodations.length, active: activeAccommodations, icon: "bed" as const, detail: "Opciones registradas" },
     { id: "restaurants", title: t("restaurants"), value: restaurants.length, active: activeRestaurants, icon: "food" as const, detail: "Sabores locales" },
-    { id: "emergencies", title: t("emergencies"), value: null, active: null, icon: "alert" as const, detail: "Sin registros conectados" },
+    { id: "emergencies", title: t("emergencies"), value: emergencyDirectory.length, active: activeEmergencies, icon: "alert" as const, detail: "Servicios locales" },
   ];
 
   return (
@@ -39,7 +41,7 @@ function StatisticsCards() {
           <div className="statistic-card__icon"><StatisticIcon name={statistic.icon} /></div>
           <div className="statistic-card__content">
             <p className="statistic-card__title">{statistic.title}</p>
-            <strong className="statistic-card__value">{statistic.value ?? "—"}</strong>
+            <strong className="statistic-card__value">{statistic.value}</strong>
             <div className="statistic-card__footer">
               <span>{statistic.active == null ? statistic.detail : `${t("active")}: ${statistic.active}`}</span>
             </div>

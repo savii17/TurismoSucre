@@ -48,7 +48,7 @@ export default function ImageWithFallback({ imageSet, category, alt, className, 
   };
 
   if (fallbackFailed) {
-    return <span className={`image-fallback image-fallback--${category}${className ? ` ${className}` : ""}`} role="img" aria-label={`Ilustración de reserva de ${categoryLabels[category]}; fotografía no disponible para ${alt}`} style={style}><span>Sucre</span></span>;
+    return <span className={`image-fallback image-fallback--${category}${className ? ` ${className}` : ""}`} role="img" aria-label={`Ilustración de ${categoryLabels[category]} de ${alt}`} style={style}><span>Sucre</span></span>;
   }
 
   return <span className={`image-frame image-frame--${category}${className ? ` ${className}` : ""}`} style={style}>
@@ -56,7 +56,7 @@ export default function ImageWithFallback({ imageSet, category, alt, className, 
       key={`${sources[sourceIndex]}-${sourceIndex}`}
       className={imageClassName}
       src={sources[sourceIndex]}
-      alt={sourceIndex === sources.length - 1 ? `Ilustración de reserva de ${categoryLabels[category]}; fotografía no disponible para ${alt}` : alt}
+      alt={sourceIndex === sources.length - 1 ? `Ilustración de ${categoryLabels[category]} de ${alt}` : alt}
       loading={priority ? "eager" : "lazy"}
       decoding="async"
       fetchPriority={priority ? "high" : "auto"}

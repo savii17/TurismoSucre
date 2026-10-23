@@ -394,3 +394,42 @@
 @media(max-width:600px) { .entertainment-hero { min-height:195px; padding:18px; }.entertainment-hero h2 { font-size:25px; }.entertainment-categories { grid-template-columns:repeat(2,minmax(0,1fr)); }.entertainment-grid,.entertainment-grid--featured { grid-template-columns:1fr; }.entertainment-card__image { height:165px; }.entertainment-aside { grid-template-columns:1fr; }.entertainment-filters { align-items:stretch; flex-direction:column; } }
 @media(max-width:850px) { .events-page__cards { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:650px) { .events-page__cards { grid-template-columns:1fr; }.events-page__date-label input { min-width:0; } }
+
+/* Mapas de categoría con teselas y marcadores calculados desde coordenadas registradas. */
+.category-location-map { background:#fff; border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); min-width:0; overflow:hidden; padding:12px; }
+.category-location-map__heading { align-items:center; display:flex; justify-content:space-between; gap:8px; margin-bottom:10px; }
+.category-location-map__heading>div { align-items:center; display:flex; gap:7px; min-width:0; }
+.category-location-map__heading h2 { color:var(--navy); font-size:13px; line-height:1.25; margin:0; }
+.category-location-map__heading small { color:var(--muted); font-size:9px; white-space:nowrap; }
+.category-location-map__viewport { background:#e9edf0; border-radius:9px; height:270px; overflow:hidden; position:relative; width:100%; }
+.category-location-map__tile { height:256px; max-width:none; position:absolute; width:256px; }
+.category-location-map__marker { background:#cf202b; border:2px solid #fff; border-radius:50% 50% 50% 0; box-shadow:0 2px 7px #13233b55; color:#fff; cursor:pointer; font-size:13px; height:29px; line-height:24px; padding:0; position:absolute; transform:translate(-50%,-100%); width:29px; z-index:2; }
+.category-location-map__marker.is-selected { background:#152b4f; z-index:4; }
+.category-location-map__popup { background:#fff; border:1px solid #e4e9f0; border-radius:8px; box-shadow:0 4px 16px #17243a30; display:grid; gap:5px; max-width:190px; padding:8px 10px; position:absolute; transform:translate(-50%,-100%); z-index:5; }
+.category-location-map__popup strong { color:var(--navy); font-size:10px; }
+.category-location-map__popup a { color:var(--coral); font-size:9px; font-weight:700; text-decoration:none; }
+.category-location-map__attribution { background:#ffffffd9; bottom:3px; color:#344158; font-size:8px; padding:2px 4px; position:absolute; right:3px; z-index:3; }
+.listing-map-panel { background:transparent; border:0; box-shadow:none; padding:0; }
+.listing-results-layout { grid-template-columns:minmax(0,1fr) minmax(260px,330px); }
+.dashboard-summary-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.dashboard-summary-metric { min-width:0; }
+.dashboard-category-visits { grid-template-columns:104px minmax(0,1fr); }
+.dashboard-category-visits__legend { gap:9px; }
+.dashboard-category-visits__legend li { font-size:10px; }
+.tourism-hero__weather { display:grid; gap:3px; }
+.tourism-hero__weather strong { font-size:18px; }
+.tourism-hero__weather span,.tourism-hero__weather a { color:inherit; font-size:11px; }
+.tourism-hero__weather small { font-size:9px; line-height:1.35; }
+@media(max-width:950px) {
+  .listing-results-layout { grid-template-columns:minmax(0,1fr); }
+  .listing-map-panel { position:static; }
+  .category-location-map__viewport { height:300px; }
+}
+@media(max-width:650px) {
+  .category-location-map { padding:10px; }
+  .category-location-map__viewport { height:235px; }
+  .dashboard-summary-metrics { grid-template-columns:1fr; }
+  .dashboard-category-visits { grid-template-columns:90px minmax(0,1fr); }
+  .dashboard-category-visits__chart { height:90px; width:90px; }
+  .dashboard-category-visits__chart::before { height:58px; width:58px; }
+}

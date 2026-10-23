@@ -9,6 +9,8 @@ function TouristPlacesPage() {
     category: place.category,
     status: (place.estado === "INACTIVO" ? "INACTIVO" : "ACTIVO") as "ACTIVO" | "INACTIVO",
     location: place.ubicacion ?? place.address,
+    latitude: place.latitud,
+    longitude: place.longitud,
     description: place.descripcion ?? place.shortDescription,
     image: getTouristPlaceImage(
       place.id,

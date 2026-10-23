@@ -29,13 +29,13 @@ export default function LocationMap({ latitude, longitude, name, address, allowA
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([name.trim(), address?.trim(), locationSuffix].filter(Boolean).join(", "))}`
     : undefined;
   const text = language === "en" ? {
-    map: "Location", notVerified: address ? (allowAddressSearch ? "Coordinates are unavailable. Search this place in Google Maps." : "The venue or route varies; check the announcement for this edition.") : "Location is currently unavailable.",
+    map: "Location", notVerified: address ? (allowAddressSearch ? "Search this place in Google Maps." : "The venue or route varies; check the announcement for this edition.") : "Check the official information for this place.",
     directions: "Get directions", search: "Search address in Google Maps", denied: "Your location was unavailable. Opening directions to the destination.",
-    geolocationError: "Could not access your location. Opening directions to the destination.", noAddress: address ? "The venue or route varies; check the announced location for this edition." : "Location is currently unavailable.",
+    geolocationError: "Could not access your location. Opening directions to the destination.", noAddress: address ? "The venue or route varies; check the announced location for this edition." : "Check the official information for this place.",
   } : {
-    map: "Ubicación", notVerified: address ? (allowAddressSearch ? "Ubicación no disponible actualmente en el mapa. Puedes buscarla en Google Maps." : "La sede o el recorrido varía; consulta el anuncio de esta edición.") : "Ubicación no disponible actualmente.",
+    map: "Ubicación", notVerified: address ? (allowAddressSearch ? "Busca este lugar en Google Maps." : "La sede o el recorrido varía; consulta el anuncio de esta edición.") : "Consulta la información oficial del lugar.",
     directions: "Cómo llegar", search: "🔎 Buscar en Google Maps", denied: "No se pudo obtener tu ubicación. Abrimos la ruta al destino.",
-    geolocationError: "No se pudo acceder a tu ubicación. Abrimos la ruta al destino.", noAddress: address ? "La sede o el recorrido varía; consulta la ubicación anunciada para esta edición." : "Ubicación no disponible actualmente.",
+    geolocationError: "No se pudo acceder a tu ubicación. Abrimos la ruta al destino.", noAddress: address ? "La sede o el recorrido varía; consulta la ubicación anunciada para esta edición." : "Consulta la información oficial del lugar.",
   };
 
   const openRoute = () => {

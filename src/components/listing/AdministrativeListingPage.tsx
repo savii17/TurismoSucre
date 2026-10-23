@@ -2,11 +2,12 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { AdministrativeListing } from "../../types/listing";
 import ListingCategoryCards from "./ListingCategoryCards";
-import ListingPageVisuals, { ListingRatedList, type ListingPageKind } from "./ListingPageVisuals";
+import ListingPageVisuals, { ListingCategoryMap, type ListingPageKind } from "./ListingPageVisuals";
 import ImageWithFallback from "../ImageWithFallback";
 import { getImageSet } from "../../data/imageCatalog";
 
 type Props = { title: string; description: string; actionLabel: string; items: AdministrativeListing[]; showDate?: boolean; detailPath?: string; kind?: ListingPageKind };
+const isDisplayable = (value?: string) => Boolean(value?.trim()) && !/(?:no disponible|sin informaci[oó]n|no especificad[oa]|no registrado|pendiente de verificaci[oó]n)/i.test(value ?? "");
 
 export default function AdministrativeListingPage({ title, description, actionLabel, items, showDate, detailPath, kind }: Props) {
   const [query, setQuery] = useState("");
@@ -33,12 +34,12 @@ export default function AdministrativeListingPage({ title, description, actionLa
         <div className="admin-cards">{visibleItems.map((item) => {
           const imageCategory = kind === "places" ? "tourist-place" : kind === "accommodations" ? "accommodation" : "restaurant";
           const imageSet = getImageSet(imageCategory, item.id, [item.image ?? "", ...(item.images ?? [])]);
-          return <article className="admin-card" key={item.id}><div className="admin-card__media"><ImageWithFallback imageSet={imageSet} category={imageCategory} alt={imageSet.main?.alt ?? `${item.name} en Sucre, Bolivia`} /><b className={`status-badge status-badge--${item.status.toLowerCase()}`}>{item.status === "ACTIVO" ? "Activo" : "Inactivo"}</b></div><div className="admin-card__body"><p className="admin-card__category">{item.category}</p><h2>{item.name}</h2>{showDate && <p className="admin-card__date">◷ {item.date}</p>}<p className="admin-card__location">⌖ {item.location}</p><p className="admin-card__description">{item.description}</p>{item.services && <div className="admin-card__services">{item.services.slice(0, 3).map((service) => <span key={service}>{service}</span>)}</div>}<div className="admin-card__meta">{item.rating != null && <span>★ {item.rating.toFixed(1)} {item.reviews != null && <small>({item.reviews})</small>}</span>}{item.price && <strong>{item.price}</strong>}</div>{detailPath ? <Link className="admin-card__details" to={`${detailPath}/${encodeURIComponent(item.id)}`}>Ver detalles <span>→</span></Link> : <button className="admin-card__details" type="button">Ver detalles <span>→</span></button>}</div></article>;
+          return <article className="admin-card" key={item.id}><div className="admin-card__media"><ImageWithFallback imageSet={imageSet} category={imageCategory} alt={imageSet.main?.alt ?? `${item.name} en Sucre, Bolivia`} /><b className={`status-badge status-badge--${item.status.toLowerCase()}`}>{item.status === "ACTIVO" ? "Activo" : "Inactivo"}</b></div><div className="admin-card__body"><p className="admin-card__category">{item.category}</p><h2>{item.name}</h2>{showDate && isDisplayable(item.date) && <p className="admin-card__date">◷ {item.date}</p>}{isDisplayable(item.location) && <p className="admin-card__location">⌖ {item.location}</p>}{isDisplayable(item.description) && <p className="admin-card__description">{item.description}</p>}{item.services?.length ? <div className="admin-card__services">{item.services.slice(0, 3).map((service) => <span key={service}>{service}</span>)}</div> : null}<div className="admin-card__meta">{item.rating != null && <span>★ {item.rating.toFixed(1)} {item.reviews != null && <small>({item.reviews})</small>}</span>}{item.price && <strong>{item.price}</strong>}</div>{detailPath ? <Link className="admin-card__details" to={`${detailPath}/${encodeURIComponent(item.id)}`}>Ver detalles <span>→</span></Link> : <button className="admin-card__details" type="button">Ver detalles <span>→</span></button>}</div></article>;
         })}</div>
         {visibleItems.length === 0 && <p className="admin-empty">No se encontraron registros con los filtros seleccionados.</p>}
         <nav className="pagination" aria-label="Paginación"><button type="button" disabled>← Anterior</button><button type="button" className="active">1</button><button type="button">Siguiente →</button></nav>
       </div>
-      {kind && <ListingRatedList kind={kind} items={items} />}
+      {kind && <ListingCategoryMap kind={kind} items={items} />}
     </div>
   </section>;
 }

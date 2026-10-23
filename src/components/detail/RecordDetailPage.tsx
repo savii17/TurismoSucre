@@ -62,7 +62,7 @@ const copy = {
     dashboard: "Inicio", detail: "Detalle", statusActive: "Activo", statusInactive: "Inactivo",
     address: "Dirección", phone: "Teléfono", category: "Categoría", locationLabel: "Ubicación", rating: "Valoración", reviews: "opiniones",
     description: "Descripción", readMore: "Leer más", readLess: "Leer menos", features: "Características", practical: "Información práctica",
-    call: "Llamar", services: "Servicios e instalaciones", related: "También te puede interesar", noDescription: "No hay descripción registrada.",
+    call: "Llamar", services: "Servicios e instalaciones", related: "También te puede interesar",
     ratingLabel: "Calificación", price: "Precio", hours: "Horario", registeredBy: "Registrado por", registeredAt: "Fecha de registro",
   },
   en: {
@@ -70,10 +70,16 @@ const copy = {
     dashboard: "Home", detail: "Details", statusActive: "Active", statusInactive: "Inactive",
     address: "Address", phone: "Phone", category: "Category", locationLabel: "Location", rating: "Rating", reviews: "reviews",
     description: "Description", readMore: "Read more", readLess: "Read less", features: "Features", practical: "Visitor information",
-    call: "Call", services: "Services and facilities", related: "You may also like", noDescription: "No description is available.",
+    call: "Call", services: "Services and facilities", related: "You may also like",
     ratingLabel: "Rating", price: "Price", hours: "Hours", registeredBy: "Registered by", registeredAt: "Registration date",
   },
 } as const;
+
+const isDisplayable = (value: DetailField["value"]): boolean => {
+  if (typeof value !== "string") return value != null;
+  const normalized = value.trim();
+  return Boolean(normalized) && !/(?:no disponible|sin informaci[oó]n|no especificad[oa]|no registrado|pendiente de verificaci[oó]n)/i.test(normalized);
+};
 
 export default function RecordDetailPage({ record, moduleName, detailTitle, backTo, summary, summaryLabels, imageCategory, related = [] }: Props) {
   const { language } = useLanguage();
@@ -98,16 +104,18 @@ export default function RecordDetailPage({ record, moduleName, detailTitle, back
     ...(record.fields ?? []),
     { label: text.registeredBy, value: record.registeredBy },
     { label: text.registeredAt, value: record.registeredAt },
-  ].filter((field, index, all) => field.value != null && field.value !== "" && all.findIndex((other) => other.label === field.label) === index);
+  ].filter((field, index, all) => isDisplayable(field.value) && all.findIndex((other) => other.label === field.label) === index);
   const statItems = [
     { label: summaryLabels?.rating ?? text.ratingLabel, value: summary.rating, icon: "★" },
     { label: summaryLabels?.price ?? text.price, value: summary.price, icon: "Bs" },
     { label: summaryLabels?.hours ?? text.hours, value: summary.hours, icon: "◷" },
-  ].filter((item) => item.value != null && item.value !== "");
+  ].filter((item) => isDisplayable(item.value));
   const status = record.statusLabel ?? (record.status === "INACTIVO" ? text.statusInactive : record.status === "ACTIVO" ? text.statusActive : undefined);
-  const tags = [...new Set([...(record.tags ?? []), ...(record.services ?? []).slice(0, 3)])].slice(0, 4);
-  const hasDescription = Boolean(record.description?.trim());
-  const primaryAction = record.action ?? (record.phone ? { label: text.call, href: `tel:${record.phone.replace(/[^+\d]/g, "")}` } : undefined);
+  const services = (record.services ?? []).filter((service) => isDisplayable(service));
+  const tags = [...new Set([...(record.tags ?? []), ...services.slice(0, 3)].filter(isDisplayable))].slice(0, 4);
+  const hasDescription = isDisplayable(record.description);
+  const address = [record.address, record.mapLocation, record.location].find(isDisplayable);
+  const primaryAction = record.action ?? (isDisplayable(record.phone) ? { label: text.call, href: `tel:${record.phone!.replace(/[^+\d]/g, "")}` } : undefined);
 
   return <article className="record-detail">
     <div className="record-detail__heading">
@@ -122,7 +130,7 @@ export default function RecordDetailPage({ record, moduleName, detailTitle, back
           <div className="record-detail__identity">
             <div className="record-detail__badges">{record.category && <span className="record-detail__category">{record.category}</span>}{status && <span className={`status-badge status-badge--${record.status === "INACTIVO" ? "inactivo" : "activo"}`}>{status}</span>}</div>
             <h1>{record.name}</h1>
-            {(record.address || record.location) && <p className="record-detail__location"><span aria-hidden="true">⌖</span> {record.address ?? record.location}</p>}
+            {address && <p className="record-detail__location"><span aria-hidden="true">⌖</span> {address}</p>}
             {record.rating != null && <p className="record-detail__rating"><span aria-label="Valoración">★</span> {record.rating.toFixed(1)}{record.reviews != null && <small> · {record.reviews} {text.reviews}</small>}</p>}
             {tags.length > 0 && <ul className="record-detail__tags">{tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>}
             {hasDescription && <p className="record-detail__intro">{record.description!.length > 185 ? `${record.description!.slice(0, 182).trimEnd()}…` : record.description}</p>}
@@ -134,15 +142,14 @@ export default function RecordDetailPage({ record, moduleName, detailTitle, back
 
         <div className="record-detail__cards">
           {hasDescription && <section className="record-detail__panel record-detail__panel--description"><span className="record-detail__panel-icon" aria-hidden="true">✦</span><div><h3>{text.description}</h3><details className="record-detail__read-more"><summary><span className="record-detail__read-more-open">{text.readMore}</span><span className="record-detail__read-more-close">{text.readLess}</span></summary><p>{record.description}</p></details></div></section>}
-          {record.services?.length ? <section className="record-detail__panel"><span className="record-detail__panel-icon" aria-hidden="true">✓</span><div><h3>{text.services}</h3><ul className="record-detail__services">{record.services.map((service) => <li key={service}>{service}</li>)}</ul></div></section> : null}
+          {services.length > 0 ? <section className="record-detail__panel"><span className="record-detail__panel-icon" aria-hidden="true">✓</span><div><h3>{text.services}</h3><ul className="record-detail__services">{services.map((service) => <li key={service}>{service}</li>)}</ul></div></section> : null}
           {fields.length > 0 && <section className="record-detail__panel"><span className="record-detail__panel-icon" aria-hidden="true">⌑</span><div><h3>{text.features}</h3><dl>{fields.map((field, index) => <div key={`${field.label}-${index}`}><dt>{field.label}</dt><dd>{field.value}</dd></div>)}</dl></div></section>}
-          {!hasDescription && !record.services?.length && fields.length === 0 && <section className="record-detail__panel"><span className="record-detail__panel-icon" aria-hidden="true">i</span><div><h3>{text.practical}</h3><p className="record-detail__unavailable">{text.noDescription}</p></div></section>}
         </div>
       </div>
 
       <aside className="record-detail__aside">
-        {record.showLocationMap !== false && <div className="record-detail__panel record-detail__map-panel"><LocationMap latitude={record.latitude} longitude={record.longitude} name={record.name} address={record.address ?? record.mapLocation ?? record.location} allowAddressSearch={record.allowLocationSearch ?? true} /></div>}
-        {(record.phone || record.hours || record.price || record.address || record.location) && <section className="record-detail__panel record-detail__practical"><h3>{text.practical}</h3><dl>{record.address && <div><dt>{text.address}</dt><dd>{record.address}</dd></div>}{record.location && record.location !== record.address && <div><dt>{text.locationLabel}</dt><dd>{record.location}</dd></div>}{record.phone && <div><dt>{text.phone}</dt><dd><a href={`tel:${record.phone.replace(/[^+\d]/g, "")}`}>{record.phone}</a></dd></div>}{record.hours && <div><dt>{text.hours}</dt><dd>{record.hours}</dd></div>}{record.price && <div><dt>{text.price}</dt><dd>{record.price}</dd></div>}</dl></section>}
+        {record.showLocationMap !== false && <div className="record-detail__panel record-detail__map-panel"><LocationMap latitude={record.latitude} longitude={record.longitude} name={record.name} address={address} allowAddressSearch={record.allowLocationSearch ?? true} /></div>}
+        {(isDisplayable(record.phone) || isDisplayable(record.hours) || isDisplayable(record.price) || address) && <section className="record-detail__panel record-detail__practical"><h3>{text.practical}</h3><dl>{record.address && isDisplayable(record.address) && <div><dt>{text.address}</dt><dd>{record.address}</dd></div>}{record.location && isDisplayable(record.location) && record.location !== record.address && <div><dt>{text.locationLabel}</dt><dd>{record.location}</dd></div>}{isDisplayable(record.phone) && <div><dt>{text.phone}</dt><dd><a href={`tel:${record.phone!.replace(/[^+\d]/g, "")}`}>{record.phone}</a></dd></div>}{isDisplayable(record.hours) && <div><dt>{text.hours}</dt><dd>{record.hours}</dd></div>}{isDisplayable(record.price) && <div><dt>{text.price}</dt><dd>{record.price}</dd></div>}</dl></section>}
       </aside>
     </div>
 
