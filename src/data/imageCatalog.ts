@@ -263,6 +263,63 @@ const knownEventCredits: Record<string, ImageCredit> = {
   },
 };
 
+const knownEntertainmentImages: Record<string, string> = {
+  "goblin-cerveza-artesanal": "/images/entertainment/goblin-cerveza-artesanal-main.jpg",
+  "terraza-625": "/images/entertainment/terraza-625-main.jpg",
+  "joy-ride-cafe": "/images/entertainment/joy-ride-cafe-main.jpg",
+  "joy-ride-disco": "/images/entertainment/joy-ride-disco-main.jpg",
+  "kultur-cafe-berlin": "/images/entertainment/kultur-cafe-berlin-main.jpg",
+  "la-quimba": "/images/entertainment/la-quimba-main.jpg",
+  "la-chicheria-by-samary": "/images/entertainment/la-chicheria-by-samary-main.webp",
+  "rockerz-hard-rock-cafe": "/images/entertainment/rockerz-hard-rock-cafe-main.jpg",
+};
+
+const knownEntertainmentAlts: Record<string, string> = {
+  "goblin-cerveza-artesanal": "Interior de Goblin Cerveza Artesanal, con el mostrador de la cervecería en Sucre",
+  "terraza-625": "Terraza panorámica de Terraza 625 sobre los tejados de Sucre al atardecer",
+  "joy-ride-cafe": "Interior de Joy Ride Café en Sucre con mesas, chimenea y ambiente de pub",
+  "joy-ride-disco": "Presentación musical en Joy Ride Disco en Sucre",
+  "kultur-cafe-berlin": "Interior de Kultur Café Berlin en Sucre, con su barra y decoración característica",
+  "la-quimba": "Interior del espacio cultural y gastronómico La Quimba en Sucre",
+  "la-chicheria-by-samary": "Barra de La Chichería by Samary en Sucre, con botellas y letrero del local",
+  "rockerz-hard-rock-cafe": "Interior de Rockerz Hard Rock Cafe en Sucre, con el rótulo ROCKERZ y decoración de rock",
+};
+
+const knownEntertainmentCredits: Record<string, ImageCredit> = {
+  "goblin-cerveza-artesanal": {
+    source: "https://correodelsur.com/capitales/20150811/goblin-cerveza-100--artesanal-aires-europeos-pasion-boliviana.html",
+    sourceConsultedAt: "2026-10-23",
+  },
+  "terraza-625": {
+    source: "https://www.tripadvisor.es/LocationPhotoDirectLink-g295432-d25539548-i687919619-Terraza_625-Sucre_Chuquisaca_Department.html",
+    sourceConsultedAt: "2026-10-23",
+  },
+  "joy-ride-cafe": {
+    source: "https://www.tripadvisor.com/Restaurant_Review-g295432-d1069717-Reviews-Joy_Ride_Cafe-Sucre_Chuquisaca_Department.html",
+    sourceConsultedAt: "2026-10-23",
+  },
+  "joy-ride-disco": {
+    source: "https://www.tripadvisor.es/Attraction_Review-g295432-d10606160-Reviews-Joy_Ride_Disco-Sucre_Chuquisaca_Department.html",
+    sourceConsultedAt: "2026-10-23",
+  },
+  "kultur-cafe-berlin": {
+    source: "https://www.tripadvisor.es/Restaurant_Review-g295432-d2214713-Reviews-Kultur_Cafe_Berlin-Sucre_Chuquisaca_Department.html",
+    sourceConsultedAt: "2026-10-23",
+  },
+  "la-quimba": {
+    source: "https://www.tripadvisor.es/LocationPhotoDirectLink-g295432-d12279001-i249028329-La_Quimba-Sucre_Chuquisaca_Department.html",
+    sourceConsultedAt: "2026-10-23",
+  },
+  "la-chicheria-by-samary": {
+    source: "https://www.samaryhotel.com/bar.html",
+    sourceConsultedAt: "2026-10-23",
+  },
+  "rockerz-hard-rock-cafe": {
+    source: "https://correodelsur.com/genteflash/20180315/poker-en-su-segunda-visita-a-la-capital.html",
+    sourceConsultedAt: "2026-10-23",
+  },
+};
+
 const knownAccommodationImages: Record<string, string> = {
   "hotel-independencia": "/images/accommodations/hotel-independencia-main.jpg",
   "hostal-colonial": "/images/accommodations/hostal-colonial-main.webp",
@@ -430,7 +487,10 @@ export const imageCatalog: ImageCatalog = {
     "restaurant", knownRestaurantAlts[item.id] ?? `${item.name}, restaurante en Sucre, Bolivia`, [knownRestaurantImages[item.id], item.image, ...(item.images ?? [])], knownRestaurantCredits[item.id],
   )])),
   ...Object.fromEntries(entertainment.map((item) => [keyFor("entertainment", item._id), makeImageSet(
-    "entertainment", `${item.nombre_lugar}, establecimiento de entretenimiento en Sucre`, item.imagenes_url,
+    "entertainment",
+    knownEntertainmentAlts[item._id] ?? `${item.nombre_lugar}, establecimiento de entretenimiento en Sucre`,
+    [knownEntertainmentImages[item._id], ...item.imagenes_url],
+    knownEntertainmentCredits[item._id],
   )])),
   ...Object.fromEntries(calendarEvents.map((item) => [keyFor("event", item.id), makeImageSet(
     "event",

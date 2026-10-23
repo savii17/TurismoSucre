@@ -20,6 +20,9 @@
 .image-gallery__thumbnails button.is-selected { border-color:var(--coral); box-shadow:0 0 0 2px rgba(232,80,91,.15); }
 .image-gallery__thumbnails .image-frame { border-radius:6px; }
 .listing-hero { position:relative; }
+.listing-hero--accommodations { background-image:url("/images/accommodations/hotel-monasterio-main.jpg"); background-position:center 48%; background-size:cover; }
+.listing-hero--restaurants { background-image:url("/images/restaurants/cafe-florin-main.jpg"); background-position:center 50%; background-size:cover; }
+.listing-hero--accommodations .listing-hero__image,.listing-hero--restaurants .listing-hero__image { display:none; }
 .listing-hero::after { background:linear-gradient(90deg,rgba(8,27,47,.94),rgba(8,27,47,.65) 54%,rgba(8,27,47,.22)); content:""; inset:0; pointer-events:none; position:absolute; }
 .listing-hero__image { inset:0; position:absolute; }
 .listing-hero__image img { object-fit:cover; }
