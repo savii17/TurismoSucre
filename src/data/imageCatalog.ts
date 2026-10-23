@@ -326,6 +326,60 @@ const knownAccommodationAlts: Record<string, string> = {
   "la-escondida-hostal": "Patio exterior de La Escondida Hostal en Sucre",
 };
 
+const knownRestaurantImages: Record<string, string> = {
+  "restaurant-el-solar": "/images/restaurants/restaurant-el-solar-main.jpg",
+  "la-taverne": "/images/restaurants/la-taverne-main.jpg",
+  "el-huerto-restaurante": "/images/restaurants/el-huerto-restaurante-main.jpg",
+  "pizzeria-napolitana": "/images/restaurants/pizzeria-napolitana-main.jpg",
+  "time-coffee-parque-bolivar": "/images/restaurants/time-coffee-parque-bolivar-main.jpg",
+  "time-coffee-recoleta": "/images/restaurants/time-coffee-recoleta-main.jpg",
+  "cafe-mirador-san-miguel": "/images/restaurants/cafe-mirador-san-miguel-main.jpg",
+  "cafe-florin": "/images/restaurants/cafe-florin-main.jpg",
+  "cosmo-cafe-restaurante": "/images/restaurants/cosmo-cafe-restaurante-main.jpg",
+  "picanteria-dona-irma": "/images/restaurants/picanteria-dona-irma-main.jpg",
+  "la-posada-restaurante": "/images/restaurants/la-posada-restaurante-main.jpg",
+  "antojos-cafe": "/images/restaurants/antojos-cafe-main.jpg",
+  "el-germen": "/images/restaurants/el-germen-main.jpg",
+  "restaurante-rolos": "/images/restaurants/restaurante-rolos-main.jpg",
+  "azafran-restaurant": "/images/restaurants/azafran-restaurant-main.jpg",
+};
+
+const knownRestaurantCredits: Record<string, ImageCredit> = {
+  "restaurant-el-solar": { source: "https://www.tripadvisor.com/Restaurant_Review-g295432-d10179078-Reviews-Restaurant_El_Solar-Sucre_Chuquisaca_Department.html", sourceConsultedAt: "2026-10-22" },
+  "la-taverne": { source: "https://www.tripadvisor.com/Restaurant_Review-g295432-d1069738-Reviews-La_Taverne-Sucre_Chuquisaca_Department.html", sourceConsultedAt: "2026-10-22" },
+  "el-huerto-restaurante": { source: "https://www.tripadvisor.co/Restaurants-g295432-Sucre_Chuquisaca_Department.html", sourceConsultedAt: "2026-10-22" },
+  "pizzeria-napolitana": { source: "https://www.tripadvisor.es/Restaurant_Review-g295432-d6961081-Reviews-Pizzeria_Napolitana-Sucre_Chuquisaca_Department.html", sourceConsultedAt: "2026-10-22" },
+  "time-coffee-parque-bolivar": { source: "https://www.sluurpy.com/es/sucre/restaurant/5474558/caf%C3%A9-time-and-coffee", sourceConsultedAt: "2026-10-23" },
+  "time-coffee-recoleta": { source: "https://www.tripadvisor.es/LocationPhotoDirectLink-g295432-d12378584-i416186172-Cafe_Time_Coffee-Sucre_Chuquisaca_Department.html", sourceConsultedAt: "2026-10-23" },
+  "cafe-mirador-san-miguel": { source: "https://www.soysucre.info/es/cafe-mirador-san-miguel/", sourceConsultedAt: "2026-10-22" },
+  "cafe-florin": { source: "https://cafe-restaurant-florin.goto-where.com/", sourceConsultedAt: "2026-10-22" },
+  "cosmo-cafe-restaurante": { source: "https://www.soysucre.info/cosmo-cafe/", sourceConsultedAt: "2026-10-22" },
+  "picanteria-dona-irma": { source: "https://pedidosdeuna.com/4246307-picanteria-dona-irma.html", sourceConsultedAt: "2026-10-23" },
+  "antojos-cafe": { source: "https://gacetamunicipalsucre.gob.bo/docs/normas/reglamento/33508/rg.m-054-2022-reglamento-de-anuncios-y-letreros-para-el-centro-historico-de-sucre.pdf", sourceConsultedAt: "2026-10-23" },
+  "el-germen": { source: "https://www.happycow.net/reviews/el-germen-sucre-15722", sourceConsultedAt: "2026-10-23" },
+  "restaurante-rolos": { source: "https://www.tripadvisor.es/Restaurant_Review-g295432-d10666883-Reviews-Rolo_s_Restaurante-Sucre_Chuquisaca_Department.html", sourceConsultedAt: "2026-10-23" },
+  "la-posada-restaurante": { source: "https://www.tripadvisor.com/Hotel_Review-g295432-d1603959-Reviews-Hotel_Boutique_La_Posada-Sucre_Chuquisaca_Department.html", sourceConsultedAt: "2026-10-22" },
+  "azafran-restaurant": { source: "https://correodelsur.com/capitales/20211207/azafran-restaurant-catering-vuelve-renovado.html", sourceConsultedAt: "2026-10-22" },
+};
+
+const knownRestaurantAlts: Record<string, string> = {
+  "restaurant-el-solar": "Interior del Restaurant El Solar en Sucre, Bolivia",
+  "la-taverne": "Patio del restaurante La Taverne en Sucre, Bolivia",
+  "el-huerto-restaurante": "Jardín del restaurante El Huerto en Sucre, Bolivia",
+  "pizzeria-napolitana": "Entrada de Pizzería Napolitana en la Plaza 25 de Mayo de Sucre",
+  "time-coffee-parque-bolivar": "Fachada nocturna de Café Time & Coffee junto a su letrero en Sucre, Bolivia",
+  "time-coffee-recoleta": "Interior de Café Time & Coffee en su sucursal de La Recoleta, Sucre",
+  "cafe-mirador-san-miguel": "Acceso al Café Mirador San Miguel en la iglesia San Miguel de Sucre",
+  "cafe-florin": "Fachada del Café Florin en Sucre, Bolivia",
+  "cosmo-cafe-restaurante": "Fachada de Cosmo Café Restaurante en la Plaza 25 de Mayo de Sucre",
+  "picanteria-dona-irma": "Puchero del menú de Picantería Doña Irma, Sucre",
+  "la-posada-restaurante": "Patio comedor del restaurante La Posada en Sucre, Bolivia",
+  "antojos-cafe": "Letrero colgante de Café Antojos en Sucre, Bolivia",
+  "el-germen": "Letrero del menú del día de El Germen Café en Sucre, Bolivia",
+  "restaurante-rolos": "Comedor de Rolo's Restaurante con el rótulo del local en Sucre",
+  "azafran-restaurant": "Comedor del Azafrán Restaurant en Sucre, Bolivia",
+};
+
 function makeImageSet(
   category: ImageCategory,
   alt: string,
@@ -373,7 +427,7 @@ export const imageCatalog: ImageCatalog = {
     "accommodation", knownAccommodationAlts[item.id] ?? `Exterior o espacio interior de ${item.name}, hospedaje en Sucre`, [knownAccommodationImages[item.id], item.image, ...(item.images ?? [])], knownAccommodationCredits[item.id],
   )])),
   ...Object.fromEntries(restaurants.map((item) => [keyFor("restaurant", item.id), makeImageSet(
-    "restaurant", `${item.name}, restaurante en Sucre`, [item.image, ...(item.images ?? [])],
+    "restaurant", knownRestaurantAlts[item.id] ?? `${item.name}, restaurante en Sucre, Bolivia`, [knownRestaurantImages[item.id], item.image, ...(item.images ?? [])], knownRestaurantCredits[item.id],
   )])),
   ...Object.fromEntries(entertainment.map((item) => [keyFor("entertainment", item._id), makeImageSet(
     "entertainment", `${item.nombre_lugar}, establecimiento de entretenimiento en Sucre`, item.imagenes_url,
