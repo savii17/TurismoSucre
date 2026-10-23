@@ -35,6 +35,8 @@ export default function EventDetailPage() {
     description: event.description,
     image: event.image,
     images: event.image ? [event.image] : [],
+    phone: event.phone,
+    action: event.source ? { label: "Consultar información del evento", href: event.source } : undefined,
     imageSet: getImageSet("event", event.id, event.image ? [event.image] : []),
     latitude: event.latitude,
     longitude: event.longitude,
@@ -52,8 +54,11 @@ export default function EventDetailPage() {
     ],
   };
 
+  const related = event ? events.filter((item) => item.id !== event.id).slice(0, 4).map((item) => ({ id: item.id, name: item.name, category: item.category, location: item.location, imageSet: getImageSet("event", item.id, item.image ? [item.image] : []), to: `/eventos/${item.id}` })) : [];
+
   return <RecordDetailPage
     record={record}
+    related={related}
     moduleName="Eventos"
     detailTitle="evento"
     backTo="/eventos"

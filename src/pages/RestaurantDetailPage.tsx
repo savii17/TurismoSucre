@@ -12,8 +12,10 @@ export default function RestaurantDetailPage() {
     hours: item.hours,
     price: item.price,
     services: item.services,
-    fields: [{ label: "Teléfono", value: item.phone }],
+    address: item.address,
+    phone: item.phone,
     imageSet: getImageSet("restaurant", item.id, [item.image ?? "", ...(item.images ?? [])]),
   };
-  return <RecordDetailPage record={record} moduleName="Restaurantes" detailTitle="Restaurante" backTo="/restaurantes" imageCategory="restaurant" summary={{ rating: record?.rating?.toFixed(1), price: record?.price, hours: record?.hours }} />;
+  const related = item ? restaurants.filter((entry) => entry.id !== item.id).slice(0, 4).map((entry) => ({ id: entry.id, name: entry.name, category: entry.category, location: entry.location, imageSet: getImageSet("restaurant", entry.id, [entry.image ?? "", ...(entry.images ?? [])]), to: `/restaurantes/${entry.id}` })) : [];
+  return <RecordDetailPage record={record} related={related} moduleName="Restaurantes" detailTitle="Restaurante" backTo="/restaurantes" imageCategory="restaurant" summary={{ rating: record?.rating?.toFixed(1), price: record?.price, hours: record?.hours }} />;
 }
