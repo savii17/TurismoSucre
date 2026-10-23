@@ -30,7 +30,7 @@ function ListingPageVisuals({ kind }: { kind: ListingPageKind }) {
 
   return <div className="listing-top-layout">
     <section className={`listing-hero listing-hero--${kind}`} aria-labelledby="listing-hero-title">
-      <ImageWithFallback imageSet={heroImageSet} category={imageCategory} className="listing-hero__image" alt={kind === "places" ? "Casa de la Libertad en Sucre" : `${kind === "accommodations" ? "Hospedajes" : "Restaurantes"} de Sucre`} />
+      <ImageWithFallback imageSet={heroImageSet} category={imageCategory} className="listing-hero__image" alt={language === "es" ? (kind === "places" ? "Casa de la Libertad en Sucre" : `${kind === "accommodations" ? "Hospedajes" : "Restaurantes"} de Sucre`) : (kind === "places" ? "Casa de la Libertad in Sucre" : `${kind === "accommodations" ? "Accommodations" : "Restaurants"} in Sucre`)} />
       <div className="listing-hero__copy"><p>{kicker}</p><h2 id="listing-hero-title">{heading}</h2><span>{description}</span><a href="#listing-title">{action} <b aria-hidden="true">→</b></a></div>
     </section>
   </div>;

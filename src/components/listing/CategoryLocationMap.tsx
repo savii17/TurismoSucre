@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../../i18n/useLanguage";
 
 export type MappableListing = {
   id: string;
@@ -26,6 +27,7 @@ const toWorld = (latitude: number, longitude: number, zoom: number) => {
 };
 
 export default function CategoryLocationMap({ title, items, className = "" }: Props) {
+  const { language, tx } = useLanguage();
   const viewportRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 720, height: MAP_HEIGHT });
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -82,12 +84,12 @@ export default function CategoryLocationMap({ title, items, className = "" }: Pr
   const selected = map?.points.find((point) => point.id === selectedId);
 
   return <section className={`category-location-map ${className}`} aria-label={title}>
-    <div className="category-location-map__heading"><div><span>🗺️</span><h2>{title}</h2></div><small>{map?.points.length ?? 0} {map?.points.length === 1 ? "marcador" : "marcadores"}</small></div>
+    <div className="category-location-map__heading"><div><span>🗺️</span><h2>{title}</h2></div><small>{map?.points.length ?? 0} {map?.points.length === 1 ? tx("marcador") : tx("marcadores")}</small></div>
     <div className="category-location-map__viewport" ref={viewportRef}>
       {map?.tiles.map((tile) => <img key={`${map.zoom}-${tile.x}-${tile.y}`} className="category-location-map__tile" alt="" draggable="false" loading="lazy" src={`https://tile.openstreetmap.org/${map.zoom}/${tile.x}/${tile.y}.png`} style={{ left: tile.left, top: tile.top }} />)}
-      {map?.points.map((point) => <button key={point.id} type="button" className={`category-location-map__marker${selectedId === point.id ? " is-selected" : ""}`} aria-label={`Ver ${point.name} en el mapa`} title={point.name} style={{ left: `${point.x}px`, top: `${point.y}px` }} onClick={() => setSelectedId(selectedId === point.id ? null : point.id)}>📍</button>)}
+      {map?.points.map((point) => <button key={point.id} type="button" className={`category-location-map__marker${selectedId === point.id ? " is-selected" : ""}`} aria-label={`${language === "es" ? "Ver" : "View"} ${point.name} ${language === "es" ? "en el mapa" : "on the map"}`} title={point.name} style={{ left: `${point.x}px`, top: `${point.y}px` }} onClick={() => setSelectedId(selectedId === point.id ? null : point.id)}>📍</button>)}
       {selected && <div className="category-location-map__popup" style={{ left: `${Math.min(Math.max(selected.x, 100), size.width - 100)}px`, top: `${Math.max(8, selected.y - 39)}px` }}>
-        <strong>{selected.name}</strong>{selected.href && <Link to={selected.href}>Ver detalles →</Link>}
+        <strong>{selected.name}</strong>{selected.href && <Link to={selected.href}>{tx("Ver detalles")} →</Link>}
       </div>}
       <span className="category-location-map__attribution">© OpenStreetMap contributors</span>
     </div>

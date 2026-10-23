@@ -6,6 +6,7 @@ import { useLanguage } from "../i18n/useLanguage";
 import ImageWithFallback from "../components/ImageWithFallback";
 import { getImageSet } from "../data/imageCatalog";
 import CategoryLocationMap from "../components/listing/CategoryLocationMap";
+import { translateRecordText } from "../i18n/contentTranslations";
 
 const categories = [...entertainmentCategories];
 const categoryLabels: Record<(typeof entertainmentCategories)[number], { es: string; en: string }> = {
@@ -17,7 +18,7 @@ const categoryLabels: Record<(typeof entertainmentCategories)[number], { es: str
   "Centro de entretenimiento": { es: "Centros de entretenimiento", en: "Entertainment centers" },
   "Sala de eventos": { es: "Salas de eventos", en: "Event venues" },
   "Música en vivo": { es: "Música en vivo", en: "Live music" },
-  Peña: { es: "Peñas", en: "Peñas" },
+  Peña: { es: "Peñas", en: "Folk music venues" },
   Otros: { es: "Otros", en: "Other" },
 };
 
@@ -31,8 +32,8 @@ export default function EntertainmentPage() {
   const popular = [...entertainment].filter((place) => place.calificacion != null).sort((a, b) => (b.calificacion ?? 0) - (a.calificacion ?? 0)).slice(0, 5);
   const featured = [...entertainment].slice(0, 4);
   const card = (place: typeof entertainment[number]) => <article className="entertainment-card" key={place._id}>
-    <div className="entertainment-card__image"><ImageWithFallback imageSet={getImageSet("entertainment", place._id, place.imagenes_url)} category="entertainment" alt={`${place.nombre_lugar}, ${place.tipo.toLocaleLowerCase()} en Sucre, Bolivia`} /><b>{place.tipo}</b></div>
-    <div className="entertainment-card__body"><h3>{place.nombre_lugar}</h3>{place.calificacion != null && <p className="entertainment-card__rating">★ <strong>{place.calificacion.toFixed(1)}</strong></p>}<p className="entertainment-card__location">⌖ {place.ubicacion}</p><p className="entertainment-card__description">{place.descripcion}</p>{place.horario_inicio && place.horario_fin && <p className="entertainment-card__hours">◷ {place.horario_inicio}–{place.horario_fin}</p>}<Link to={`/entretenimiento/${encodeURIComponent(place._id)}`}>{es ? "Ver detalles" : "View details"} <span>→</span></Link></div>
+    <div className="entertainment-card__image"><ImageWithFallback imageSet={getImageSet("entertainment", place._id, place.imagenes_url)} category="entertainment" alt={`${place.nombre_lugar}, ${place.tipo.toLocaleLowerCase()} ${es ? "en" : "in"} Sucre, Bolivia`} /><b>{translateRecordText("entertainment", place._id, "category", place.tipo, language)}</b></div>
+    <div className="entertainment-card__body"><h3>{place.nombre_lugar}</h3>{place.calificacion != null && <p className="entertainment-card__rating">★ <strong>{place.calificacion.toFixed(1)}</strong></p>}<p className="entertainment-card__location">⌖ {translateRecordText("entertainment", place._id, "location", place.ubicacion, language)}</p><p className="entertainment-card__description">{translateRecordText("entertainment", place._id, "description", place.descripcion, language)}</p>{place.horario_inicio && place.horario_fin && <p className="entertainment-card__hours">◷ {translateRecordText("entertainment", place._id, "hours", `${place.horario_inicio}–${place.horario_fin}`, language)}</p>}<Link to={`/entretenimiento/${encodeURIComponent(place._id)}`}>{es ? "Ver detalles" : "View details"} <span>→</span></Link></div>
   </article>;
 
   return <section className="entertainment-page">
@@ -45,6 +46,6 @@ export default function EntertainmentPage() {
       <div className="entertainment-filters"><label><span className="sr-only">{es ? "Buscar entretenimiento" : "Search entertainment"}</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={es ? "Buscar por nombre, ubicación o servicio…" : "Search name, location or service…"} /></label><button type="button" onClick={() => { setCategory("Todas"); setQuery(""); }}>{es ? "Limpiar filtros" : "Clear filters"}</button></div>
       <div className="entertainment-filter-chips"><button className={category === "Todas" ? "is-selected" : ""} onClick={() => setCategory("Todas")}>{es ? "Todas" : "All"}</button>{categories.map((item) => <button key={item} className={category === item ? "is-selected" : ""} onClick={() => setCategory(item)}>{categoryLabels[item][language]}</button>)}</div>
       <div className="entertainment-grid">{visible.map(card)}</div>{visible.length === 0 && <p className="admin-empty">{es ? "No se encontraron lugares con esos filtros." : "No places match those filters."}</p>}
-    </div><aside className="entertainment-aside"><CategoryLocationMap title={es ? "Mapa de entretenimiento" : "Entertainment map"} items={entertainment.map((place) => ({ id: place._id, name: place.nombre_lugar, latitude: place.latitud, longitude: place.longitud, href: `/entretenimiento/${encodeURIComponent(place._id)}` }))} /><section className="entertainment-popular"><h2> {es ? "Más populares" : "Most popular"}</h2>{popular.map((place, index) => <Link key={place._id} to={`/entretenimiento/${encodeURIComponent(place._id)}`}><b>{index + 1}</b><span>{place.nombre_lugar}<small>{place.tipo}</small></span>{place.calificacion != null && <strong>★ {place.calificacion.toFixed(1)}</strong>}</Link>)}</section></aside></div>
+    </div><aside className="entertainment-aside"><CategoryLocationMap title={es ? "Mapa de entretenimiento" : "Entertainment map"} items={entertainment.map((place) => ({ id: place._id, name: place.nombre_lugar, latitude: place.latitud, longitude: place.longitud, href: `/entretenimiento/${encodeURIComponent(place._id)}` }))} /><section className="entertainment-popular"><h2> {es ? "Más populares" : "Most popular"}</h2>{popular.map((place, index) => <Link key={place._id} to={`/entretenimiento/${encodeURIComponent(place._id)}`}><b>{index + 1}</b><span>{place.nombre_lugar}<small>{categoryLabels[place.tipo][language]}</small></span>{place.calificacion != null && <strong>★ {place.calificacion.toFixed(1)}</strong>}</Link>)}</section></aside></div>
   </section>;
 }

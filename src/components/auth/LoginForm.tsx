@@ -11,7 +11,7 @@ interface LoginFormProps {
 
 
 function LoginForm({ error, onSubmit }: LoginFormProps) {
-  const { t } = useLanguage();
+  const { t, tx } = useLanguage();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -43,9 +43,9 @@ function LoginForm({ error, onSubmit }: LoginFormProps) {
       </div>
 
       <div className="login-form__heading">
-        <p>Panel de gestión turística</p>
+        <p>{tx("Panel de gestión turística")}</p>
         <h1>{t("signIn")}</h1>
-        <span>Ingresa tus credenciales para continuar.</span>
+        <span>{tx("Ingresa tus credenciales para continuar.")}</span>
       </div>
 
 

@@ -5,6 +5,7 @@ import type { Language } from "./LanguageContext";
 export type LanguageContextValue = {
   language: Language;
   setLanguage: (language: Language) => void;
+  tx: (value: string | undefined) => string;
 
   t: (
     key:

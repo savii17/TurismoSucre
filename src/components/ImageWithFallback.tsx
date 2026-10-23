@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import "./images.css";
 import { getFallbackImage } from "../data/imageCatalog";
 import type { ImageCategory, ImageSet } from "../types/images";
+import { useLanguage } from "../i18n/useLanguage";
 
 type Props = {
   imageSet?: ImageSet;
@@ -26,6 +27,8 @@ const categoryLabels: Record<ImageCategory, string> = {
 };
 
 export default function ImageWithFallback({ imageSet, category, alt, className, imageClassName, objectFit = "cover", priority = false, sizes, style }: Props) {
+  const { language } = useLanguage();
+  const categoryLabel = language === "es" ? categoryLabels[category] : ({ "tourist-place": "tourist places", accommodation: "accommodations", restaurant: "restaurants", entertainment: "entertainment venues", event: "events", emergency: "emergency services" } satisfies Record<ImageCategory, string>)[category];
   const fallback = imageSet?.fallback ?? getFallbackImage(category);
   const sources = useMemo(() => {
     const ordered = [...(imageSet?.main ? [imageSet.main] : []), ...(imageSet?.gallery ?? [])]
@@ -48,7 +51,7 @@ export default function ImageWithFallback({ imageSet, category, alt, className, 
   };
 
   if (fallbackFailed) {
-    return <span className={`image-fallback image-fallback--${category}${className ? ` ${className}` : ""}`} role="img" aria-label={`Ilustración de ${categoryLabels[category]} de ${alt}`} style={style}><span>Sucre</span></span>;
+    return <span className={`image-fallback image-fallback--${category}${className ? ` ${className}` : ""}`} role="img" aria-label={`${language === "es" ? "Ilustración de" : "Illustration of"} ${categoryLabel}: ${alt}`} style={style}><span>Sucre</span></span>;
   }
 
   return <span className={`image-frame image-frame--${category}${className ? ` ${className}` : ""}`} style={style}>
@@ -56,7 +59,7 @@ export default function ImageWithFallback({ imageSet, category, alt, className, 
       key={`${sources[sourceIndex]}-${sourceIndex}`}
       className={imageClassName}
       src={sources[sourceIndex]}
-      alt={sourceIndex === sources.length - 1 ? `Ilustración de ${categoryLabels[category]} de ${alt}` : alt}
+      alt={sourceIndex === sources.length - 1 ? `${language === "es" ? "Ilustración de" : "Illustration of"} ${categoryLabel}: ${alt}` : alt}
       loading={priority ? "eager" : "lazy"}
       decoding="async"
       fetchPriority={priority ? "high" : "auto"}

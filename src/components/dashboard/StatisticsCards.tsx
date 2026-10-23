@@ -18,7 +18,7 @@ function StatisticIcon({ name }: { name: StatisticIconName }) {
 }
 
 function StatisticsCards() {
-  const { t } = useLanguage();
+  const { t, tx } = useLanguage();
   const countActive = (records: Array<{ estado?: string; status?: string }>) =>
     records.filter((record) => (record.estado ?? record.status)?.toUpperCase() === "ACTIVO").length;
 
@@ -28,10 +28,10 @@ function StatisticsCards() {
   const activeEmergencies = countActive(emergencyDirectory);
 
   const statistics = [
-    { id: "places", title: t("touristPlaces"), value: touristPlaces.length, active: activePlaces, icon: "places" as const, detail: "Registros disponibles" },
-    { id: "accommodations", title: t("accommodations"), value: accommodations.length, active: activeAccommodations, icon: "bed" as const, detail: "Opciones registradas" },
-    { id: "restaurants", title: t("restaurants"), value: restaurants.length, active: activeRestaurants, icon: "food" as const, detail: "Sabores locales" },
-    { id: "emergencies", title: t("emergencies"), value: emergencyDirectory.length, active: activeEmergencies, icon: "alert" as const, detail: "Servicios locales" },
+    { id: "places", title: t("touristPlaces"), value: touristPlaces.length, active: activePlaces, icon: "places" as const, detail: tx("Registros disponibles") },
+    { id: "accommodations", title: t("accommodations"), value: accommodations.length, active: activeAccommodations, icon: "bed" as const, detail: tx("Opciones registradas") },
+    { id: "restaurants", title: t("restaurants"), value: restaurants.length, active: activeRestaurants, icon: "food" as const, detail: tx("Sabores locales") },
+    { id: "emergencies", title: t("emergencies"), value: emergencyDirectory.length, active: activeEmergencies, icon: "alert" as const, detail: tx("Servicios locales") },
   ];
 
   return (

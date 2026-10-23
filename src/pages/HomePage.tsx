@@ -29,7 +29,7 @@ function QuickActionIcon({ name }: { name: (typeof quickActions)[number]["icon"]
 }
 
 function HomePage() {
-  const { t } = useLanguage();
+  const { t, tx } = useLanguage();
   const featuredPlaces = [...featuredTouristPlaces]
     .sort((first, second) => (second.calificacion ?? -1) - (first.calificacion ?? -1));
 
@@ -47,8 +47,8 @@ function HomePage() {
             {featuredPlaces.slice(0, 4).map((place) => <DashboardTouristPlaceCard key={place.id} place={place} />)}
           </div>
           <section className="quick-actions" aria-labelledby="quick-actions-title">
-            <div className="section-heading"><div><h2 id="quick-actions-title">Acciones Rápidas</h2></div></div>
-            <div className="quick-actions__grid">{quickActions.map((action) => <Link key={action.to} className="quick-action" to={action.to}><span><QuickActionIcon name={action.icon} /></span>{action.label}</Link>)}</div>
+            <div className="section-heading"><div><h2 id="quick-actions-title">{tx("Acciones Rápidas")}</h2></div></div>
+            <div className="quick-actions__grid">{quickActions.map((action) => <Link key={action.to} className="quick-action" to={action.to}><span><QuickActionIcon name={action.icon} /></span>{tx(action.label)}</Link>)}</div>
           </section>
         </section>
 

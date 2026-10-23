@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { LanguageContext } from "./languageStore";
+import { translateText } from "./contentTranslations";
 
 export type Language = "es" | "en";
 
@@ -269,6 +270,7 @@ export function LanguageProvider({
       language,
       setLanguage,
       t: (key: TranslationKey) => translations[language][key],
+      tx: (value: string | undefined) => translateText(value, language),
     }),
     [language]
   );

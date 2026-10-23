@@ -1,5 +1,6 @@
 import ImageWithFallback from "../ImageWithFallback";
 import type { ImageCategory, ImageSet } from "../../types/images";
+import { useLanguage } from "../../i18n/useLanguage";
 
 export type ListingCategory = {
   value: string;
@@ -18,9 +19,10 @@ type Props = {
 };
 
 function ListingCategoryCards({ categories, totalCount, selectedCategory, onSelect, allLabel = "Todos", imageCategory }: Props) {
+  const { tx } = useLanguage();
   return (
-    <section className="listing-categories" aria-label="Explorar por categoría">
-      <div className="listing-categories__heading"><h2>Explora por categoría</h2></div>
+    <section className="listing-categories" aria-label={tx("Explora por categoría")}>
+      <div className="listing-categories__heading"><h2>{tx("Explora por categoría")}</h2></div>
       <div className="listing-categories__grid">
       <button
         className={`listing-category-card${selectedCategory === "Todas" ? " listing-category-card--active" : ""}`}
@@ -29,7 +31,7 @@ function ListingCategoryCards({ categories, totalCount, selectedCategory, onSele
         onClick={() => onSelect("Todas")}
       >
         <span className="listing-category-card__visual listing-category-card__visual--all" aria-hidden="true">✦</span>
-        <span className="listing-category-card__label">{allLabel}</span>
+        <span className="listing-category-card__label">{tx(allLabel)}</span>
         <strong>{totalCount}</strong>
       </button>
       {categories.map((category) => (
@@ -42,9 +44,9 @@ function ListingCategoryCards({ categories, totalCount, selectedCategory, onSele
         >
           <span className="listing-category-card__visual">
             <span aria-hidden="true">{category.label.slice(0, 1)}</span>
-            <ImageWithFallback imageSet={category.imageSet} category={imageCategory} className="listing-category-card__image" alt={category.imageSet?.main?.alt ?? `${category.label} en Sucre, Bolivia`} />
+            <ImageWithFallback imageSet={category.imageSet} category={imageCategory} className="listing-category-card__image" alt={category.imageSet?.main?.alt ?? `${tx(category.label)} in Sucre, Bolivia`} />
           </span>
-          <span className="listing-category-card__label">{category.label}</span>
+          <span className="listing-category-card__label">{tx(category.label)}</span>
           <strong>{category.count}</strong>
         </button>
       ))}
