@@ -487,7 +487,7 @@
   .admin-listing--accommodations .listing-results-main .admin-filters { flex-direction:column; }
   .admin-listing--accommodations .listing-results-main .admin-filters select { min-width:0; }
 }
-@media (max-width:1050px) {
+@media (max-width:950px) {
   .admin-listing--accommodations { gap:19px; }
   .admin-listing--accommodations .listing-results-layout { grid-template-columns:minmax(0,1fr); }
   .admin-listing--accommodations .listing-map-panel { position:static; }
@@ -526,7 +526,7 @@
 .profile-card strong,.profile-card span { max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .app-shell__content { padding:24px 28px 38px; }
 .home-page { display:block; }
-.dashboard-layout { align-items:start; display:grid; gap:22px; grid-template-columns:minmax(0,1fr) minmax(310px,340px); }
+.dashboard-layout { align-items:start; display:grid; gap:22px; grid-template-columns:minmax(0,1fr) minmax(300px,320px); }
 .dashboard-primary { display:grid; gap:19px; min-width:0; padding:0; }
 .dashboard-primary>.tourism-hero { grid-row:1; }
 .dashboard-primary>.statistics-grid { grid-row:2; }
@@ -593,7 +593,7 @@
 .dashboard-events-list small { font-size:10px; line-height:1.35; }
 
 @media (min-width:1500px) {
-  .dashboard-layout { grid-template-columns:minmax(0,1fr) 350px; }
+  .dashboard-layout { grid-template-columns:minmax(0,1fr) 320px; }
   .dashboard-primary { gap:22px; }
   .tourist-places-grid--featured { grid-template-columns:repeat(4,minmax(0,1fr)); }
   .dashboard-place-card__media { height:175px; }
@@ -671,4 +671,94 @@
   .dashboard-summary-metrics { grid-template-columns:1fr; }
   .dashboard-category-visits { grid-template-columns:1fr; justify-items:center; }
   .dashboard-category-visits__legend { width:100%; }
+}
+
+/* Keep dashboard panels compact and choose columns from the content width. */
+.dashboard-primary { container-name:dashboard-primary; container-type:inline-size; }
+.dashboard-right-sidebar { align-items:start; grid-auto-rows:min-content; }
+.dashboard-right-sidebar__panel { align-self:start; min-width:0; }
+.dashboard-events-list { max-height:min(58vh,520px); overflow-y:auto; overscroll-behavior:contain; padding-right:4px; }
+.dashboard-place-card { height:auto; }
+.home-page .statistics-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.home-page .tourist-places-grid--featured { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.home-page .quick-actions__grid { grid-template-columns:repeat(6,minmax(0,1fr)); }
+
+@container dashboard-primary (max-width:719px) {
+  .home-page .statistics-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .home-page .statistic-card { align-items:flex-start; flex-direction:column; gap:8px; min-height:134px; padding:13px; }
+  .home-page .statistic-card__icon { flex:0 0 44px; width:44px; }
+  .home-page .quick-actions__grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@container dashboard-primary (max-width:599px) {
+  .home-page .statistics-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .home-page .statistic-card { align-items:center; flex-direction:row; min-height:116px; padding:13px; }
+}
+@container dashboard-primary (max-width:459px) {
+  .home-page .statistics-grid { grid-template-columns:minmax(0,1fr); }
+  .home-page .tourist-places-grid--featured { grid-template-columns:minmax(0,1fr); }
+  .home-page .quick-actions__grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@container dashboard-primary (min-width:800px) {
+  .home-page .tourist-places-grid--featured { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@container dashboard-primary (min-width:1100px) {
+  .home-page .tourist-places-grid--featured { grid-template-columns:repeat(4,minmax(0,1fr)); }
+}
+@media (min-width:1051px) and (max-width:1180px) {
+  .dashboard-layout { grid-template-columns:minmax(0,1fr) minmax(280px,300px); }
+  .dashboard-right-sidebar { grid-template-columns:minmax(0,1fr); }
+}
+@media (max-width:1050px) {
+  .dashboard-layout { grid-template-columns:minmax(0,1fr); }
+  .dashboard-right-sidebar { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .dashboard-right-sidebar__panel:last-child { grid-column:1/-1; }
+  .dashboard-category-visits { grid-template-columns:112px minmax(0,1fr); justify-items:initial; }
+  .dashboard-category-visits__legend { width:auto; }
+}
+@media (max-width:850px) {
+  .home-page .statistics-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .home-page .quick-actions__grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@media (max-width:600px) {
+  .dashboard-events-list { max-height:50vh; }
+  .dashboard-right-sidebar { grid-template-columns:minmax(0,1fr); }
+  .dashboard-right-sidebar__panel:last-child { grid-column:auto; }
+  .dashboard-category-visits { grid-template-columns:104px minmax(0,1fr); }
+  .home-page .statistics-grid,.home-page .tourist-places-grid--featured { grid-template-columns:minmax(0,1fr); }
+  .home-page .quick-actions__grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:390px) {
+  .dashboard-category-visits { grid-template-columns:minmax(0,1fr); justify-items:center; }
+  .dashboard-category-visits__legend { width:100%; }
+}
+
+/* Share the available listing width between readable cards and a practical map. */
+.listing-results-layout { grid-template-columns:minmax(0,2.1fr) minmax(300px,1fr); }
+.listing-results-main .admin-cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.listing-map-panel { position:sticky; top:96px; }
+.category-location-map__viewport { height:min(58vh,520px); min-height:360px; }
+.entertainment-layout { grid-template-columns:minmax(0,2.1fr) minmax(270px,1fr); }
+.entertainment-aside { align-self:start; position:sticky; top:96px; }
+.entertainment-grid--featured { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.module-page { grid-template-columns:minmax(0,1fr); min-width:0; }
+.module-page>.module-heading,.module-page>.module-stats,.module-page>.emergency-insights,.module-page>.module-panel { min-width:0; width:100%; }
+.module-stats,.emergency-insights,.emergency-insights>.module-panel,.bar-list,.bar-list li,.bar-list li>span { min-width:0; }
+.bar-list li>span { overflow-wrap:anywhere; }
+@media (min-width:1550px) {
+  .listing-results-main .admin-cards { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@media (max-width:1150px) {
+  .entertainment-grid--featured,.events-page__cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:950px) {
+  .listing-results-layout,.entertainment-layout { grid-template-columns:minmax(0,1fr); }
+  .listing-map-panel { position:static; }
+  .entertainment-aside { position:static; }
+  .category-location-map__viewport { height:320px; min-height:0; }
+  .entertainment-grid--featured { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .events-page__cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:600px) {
+  .listing-results-main .admin-cards,.entertainment-grid--featured,.events-page__cards { grid-template-columns:minmax(0,1fr); }
+  .category-location-map__viewport { height:260px; }
 }
