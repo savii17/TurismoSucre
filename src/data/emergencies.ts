@@ -63,6 +63,10 @@ export const emergencyDirectory: Emergency[] = [
     PK_id: "hospital-santa-barbara",
     nombre_lugar: "Hospital Santa Bárbara",
     ubicacion: "Plazuela Libertad #1, Sucre, Bolivia",
+    latitud: -19.04478,
+    longitud: -65.26337,
+    locationVerificationStatus: "VERIFICADA",
+    locationSourceUrl: "https://mapcarta.com/es/W122660760",
     descripcion: "Hospital que brinda atención médica integral. El número publicado en su sitio oficial es la central telefónica; no se identifica como línea exclusiva de emergencias.",
     telefono: "(04) 645-1900",
     tipo: "Hospitales",
@@ -77,6 +81,10 @@ export const emergencyDirectory: Emergency[] = [
     PK_id: "hospital-tercer-nivel-chuquisaca",
     nombre_lugar: "Hospital de Tercer Nivel de Chuquisaca",
     ubicacion: "Avenida Navarra s/n, zona Lajastambo, Sucre, Bolivia",
+    latitud: -19.00897,
+    longitud: -65.30924,
+    locationVerificationStatus: "VERIFICADA",
+    locationSourceUrl: "https://mapcarta.com/es/W1208505270",
     descripcion: "Hospital público de tercer nivel. La central telefónica publicada es +591 4 6940046; la consulta externa atiende de lunes a viernes de 08:00 a 20:00 en dos turnos. La fuente no confirma que todos los servicios sean 24 horas.",
     telefono: "+591 4 6940046",
     horario: "Consulta externa: lunes a viernes, 08:00–14:00 y 14:00–20:00",
@@ -199,3 +207,12 @@ export const emergencyDirectory: Emergency[] = [
     fecha_registro: "2026-10-21T00:00:00.000Z",
   },
 ];
+
+for (const service of emergencyDirectory) {
+  if (service.locationVerificationStatus) continue;
+  service.locationVerificationStatus = service.latitud != null && service.longitud != null
+    ? "VERIFICADA"
+    : ["gams-salud-emergencias", "dimger-reten-emergencia", "policia-110-sucre", "bomberos-119-sucre"].includes(service.PK_id)
+      ? "SIN_SEDE_FIJA"
+      : "PENDIENTE_VERIFICACION";
+}

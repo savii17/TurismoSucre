@@ -139,6 +139,8 @@ export const events: EventRecord[] = [
     category: "Evento cultural / recreativo",
     description: "Actividad cultural y turística recurrente que habilita espacios del Centro Histórico para peatones y programa propuestas culturales, artísticas, recreativas y de integración ciudadana. La Ley Municipal 518/2026, vigente desde el 7 de octubre de 2026, establece tres domingos al mes con la Plaza 25 de Mayo como área peatonal y un cuarto domingo con restricción vehicular ampliada a una cuadra alrededor de la plaza. Las jornadas pueden incluir música, danzas, actividades culturales y familiares, exposiciones y ferias artesanales o gastronómicas según la programación municipal; no todas se realizan cada domingo. Las fuentes consultadas no confirman el horario ni enumeran las calles del perímetro ampliado, por lo que deben verificarse en el anuncio municipal de cada jornada.",
     location: "Plaza 25 de Mayo; el cuarto domingo del mes, restricción vehicular ampliada a una cuadra alrededor de la plaza, en el Centro Histórico de Sucre, Bolivia",
+    latitude: -19.0479,
+    longitude: -65.25952,
     periodicity: "Tres domingos al mes en la plaza y un cuarto domingo con área ampliada, según Ley Municipal 518/2026; horario y programación por confirmar en el anuncio municipal",
     usualMonthLabel: "Domingos durante el año",
     status: "RECURRENTE",
@@ -169,5 +171,13 @@ export const events: EventRecord[] = [
     source: "https://gacetamunicipalsucre.gob.bo/leyes?page=2",
   },
 ];
+
+for (const event of events) {
+  event.locationVerificationStatus = event.latitude != null && event.longitude != null
+    ? "VERIFICADA"
+    : ["domingos-peatonalizacion-cultural-sucre", "conmemoracion-25-mayo-sucre"].includes(event.id)
+      ? "PENDIENTE_VERIFICACION"
+      : "SIN_SEDE_FIJA";
+}
 
 export type { EventRecord } from "../types/event";

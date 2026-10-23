@@ -22,6 +22,8 @@ export const entertainment: EntertainmentRecord[] = [
     _id: "terraza-625",
     nombre_lugar: "Terraza 625",
     ubicacion: "Calle Bolívar 625, Sucre",
+    latitud: -19.0496602,
+    longitud: -65.2591583,
     descripcion: "Rooftop bar con coctelería, música y vistas panorámicas de Sucre.",
     horario_inicio: "16:00",
     horario_fin: "22:30",
@@ -159,3 +161,15 @@ export const entertainment: EntertainmentRecord[] = [
     // Canal del establecimiento: https://linktr.ee/hangarbolivia
   },
 ];
+
+for (const listing of entertainment) {
+  listing.locationVerificationStatus = listing.latitud != null && listing.longitud != null
+    ? "VERIFICADA"
+    : "PENDIENTE_VERIFICACION";
+  if (listing._id === "joy-ride-cafe") {
+    listing.locationSourceUrl = "https://www.tripadvisor.com/Restaurant_Review-g295432-d1069717-Reviews-Joy_Ride_Cafe-Sucre_Chuquisaca_Department.html";
+  }
+  if (listing._id === "terraza-625") {
+    listing.locationSourceUrl = "https://mapcarta.com/es/N12586267001";
+  }
+}

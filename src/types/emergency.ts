@@ -6,6 +6,8 @@ export type Emergency = {
   ubicacion: string;
   latitud?: number;
   longitud?: number;
+  locationVerificationStatus?: "VERIFICADA" | "PENDIENTE_VERIFICACION" | "SIN_SEDE_FIJA";
+  locationSourceUrl?: string;
   descripcion: string;
   telefono: string;
   telefono_emergencia?: string;

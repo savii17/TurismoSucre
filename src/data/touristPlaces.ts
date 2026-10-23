@@ -1,5 +1,5 @@
 import type { TouristPlace } from "../types/listing";
-import { additionalTouristPlaces } from "./touristPlacesAdditional";
+import { additionalTouristPlaces, touristPlaceSources } from "./touristPlacesAdditional";
 
 export type { TouristPlace } from "../types/listing";
 
@@ -9,6 +9,8 @@ export const touristPlaces: TouristPlace[] = [
     name: "Casa de la Libertad",
     category: "Patrimonio histórico",
     address: "Plaza 25 de Mayo N.º 11, Sucre",
+    latitud: -19.0474713,
+    longitud: -65.2603846,
     hours: "",
     image: "/images/lugares-turisticos/casa-de-la-libertad.jpg",
     shortDescription:
@@ -27,6 +29,8 @@ export const touristPlaces: TouristPlace[] = [
     name: "Parque Cretácico",
     category: "Paleontología",
     address: "Carretera a Cochabamba km 5, Sucre",
+    latitud: -19.0066667,
+    longitud: -65.2361111,
     hours: "Lun. a vie. · 09:00 – 17:00 · Sáb. y dom. · 10:00 – 17:00",
     image: "/images/lugares-turisticos/parque-cretacico.jpg",
     shortDescription:
@@ -45,6 +49,8 @@ export const touristPlaces: TouristPlace[] = [
     name: "La Recoleta",
     category: "Miradores",
     address: "Plaza Pedro de Anzúrez, Cerro Churuquella, Sucre",
+    latitud: -19.054687,
+    longitud: -65.25343,
     hours: "",
     image: "/images/lugares-turisticos/la-recoleta.jpg",
     shortDescription:
@@ -63,6 +69,8 @@ export const touristPlaces: TouristPlace[] = [
     name: "Castillo de La Glorieta",
     category: "Patrimonio histórico",
     address: "Km 5, carretera Sucre – Potosí",
+    latitud: -19.08466,
+    longitud: -65.26861,
     hours: "",
     image: "/images/lugares-turisticos/castillo-de-la-glorieta.jpg",
     shortDescription:
@@ -81,6 +89,8 @@ export const touristPlaces: TouristPlace[] = [
     name: "Museo de Arte Indígena ASUR",
     category: "Museos",
     address: "Pasaje Agustín Iturricha N.º 314, Sucre",
+    latitud: -19.0538,
+    longitud: -65.253884,
     hours: "Mon. to Fri. · 09:00 – 12:15 and 14:30 – 18:00 · Sat. · 09:00 – 12:00 and 14:30 – 18:00",
     image: "/images/lugares-turisticos/museo-arte-indigena-asur.jpg",
     shortDescription:
@@ -99,6 +109,8 @@ export const touristPlaces: TouristPlace[] = [
     name: "Templo de San Felipe Neri",
     category: "Iglesias y templos",
     address: "Calle Nicolás Ortiz N.º 165, esquina Colón, Sucre",
+    latitud: -19.0499986,
+    longitud: -65.2611267,
     hours: "Mon. to Sat. · 14:30 – 17:30",
     image: "/images/lugares-turisticos/san-felipe-neri.jpg",
     shortDescription:
@@ -114,6 +126,21 @@ export const touristPlaces: TouristPlace[] = [
   },
   ...additionalTouristPlaces,
 ];
+
+const verifiedTouristLocationSources: Record<string, string> = {
+  "casa-de-la-libertad": "https://es.wikipedia.org/wiki/Casa_de_la_Libertad",
+  "parque-cretacico": "https://es.wikipedia.org/wiki/Parque_Cret%C3%A1cico",
+  "la-recoleta": "https://es.wikipedia.org/wiki/La_Recoleta",
+  "castillo-de-la-glorieta": "https://es.wikipedia.org/wiki/Castillo_de_La_Glorieta",
+  "museo-arte-indigena-asur": "https://www.fundacionasur.org.bo/museo/direccion_museo.html",
+  "san-felipe-neri": "https://es.wikipedia.org/wiki/Convento_de_San_Felipe_de_Neri_(Sucre)",
+};
+touristPlaces.forEach((place) => {
+  place.locationVerificationStatus = place.latitud != null && place.longitud != null
+    ? "VERIFICADA"
+    : "PENDIENTE_VERIFICACION";
+  place.locationSourceUrl = verifiedTouristLocationSources[place.id] ?? touristPlaceSources[place.id];
+});
 
 export const getTouristPlaceById = (id: string | undefined) =>
   touristPlaces.find((place) => place.id === id);

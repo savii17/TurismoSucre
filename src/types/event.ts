@@ -21,6 +21,8 @@ export type EventRecord = {
   price?: string;
   latitude?: number;
   longitude?: number;
+  locationVerificationStatus?: "VERIFICADA" | "PENDIENTE_VERIFICACION" | "SIN_SEDE_FIJA";
+  locationSourceUrl?: string;
   image?: string;
   status: EventStatus;
   source: string;

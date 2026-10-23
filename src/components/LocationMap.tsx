@@ -25,17 +25,17 @@ export default function LocationMap({ latitude, longitude, name, address, allowA
     address?.toLocaleLowerCase().includes("sucre") ? undefined : "Sucre",
     address?.toLocaleLowerCase().includes("bolivia") ? undefined : "Bolivia",
   ].filter(Boolean).join(", ");
-  const searchUrl = address
-    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([name, address, locationSuffix].filter(Boolean).join(", "))}`
+  const searchUrl = allowAddressSearch && (name.trim() || address?.trim())
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([name.trim(), address?.trim(), locationSuffix].filter(Boolean).join(", "))}`
     : undefined;
   const text = language === "en" ? {
-    map: "Location map", notVerified: "Exact coordinates have not been verified for this place.",
+    map: "Location", notVerified: address ? (allowAddressSearch ? "Coordinates are unavailable. Search this place in Google Maps." : "The venue or route varies; check the announcement for this edition.") : "Location is currently unavailable.",
     directions: "Get directions", search: "Search address in Google Maps", denied: "Your location was unavailable. Opening directions to the destination.",
-    geolocationError: "Could not access your location. Opening directions to the destination.", noAddress: "No physical address is available for map search.",
+    geolocationError: "Could not access your location. Opening directions to the destination.", noAddress: address ? "The venue or route varies; check the announced location for this edition." : "Location is currently unavailable.",
   } : {
-    map: "Mapa de ubicación", notVerified: "Este lugar todavía no tiene coordenadas exactas verificadas.",
-    directions: "Cómo llegar", search: "Buscar dirección en Google Maps", denied: "No se pudo obtener tu ubicación. Abrimos la ruta al destino.",
-    geolocationError: "No se pudo acceder a tu ubicación. Abrimos la ruta al destino.", noAddress: "No hay una dirección física para buscar en el mapa.",
+    map: "Ubicación", notVerified: address ? (allowAddressSearch ? "Ubicación no disponible actualmente en el mapa. Puedes buscarla en Google Maps." : "La sede o el recorrido varía; consulta el anuncio de esta edición.") : "Ubicación no disponible actualmente.",
+    directions: "Cómo llegar", search: "🔎 Buscar en Google Maps", denied: "No se pudo obtener tu ubicación. Abrimos la ruta al destino.",
+    geolocationError: "No se pudo acceder a tu ubicación. Abrimos la ruta al destino.", noAddress: address ? "La sede o el recorrido varía; consulta la ubicación anunciada para esta edición." : "Ubicación no disponible actualmente.",
   };
 
   const openRoute = () => {
@@ -74,7 +74,7 @@ export default function LocationMap({ latitude, longitude, name, address, allowA
     <div className="location-map__heading"><span className="location-map__pin" aria-hidden="true">⌖</span><div><h3>{text.map}</h3><strong>{name}</strong>{address && <p>{address}</p>}</div></div>
     {mapEmbed
       ? <iframe className="location-map__frame" title={`${text.map}: ${name}`} src={mapEmbed} loading="lazy" referrerPolicy="no-referrer" />
-      : <div className="location-map__unverified"><span aria-hidden="true">⌖</span><p>{text.notVerified}</p></div>}
+      : <div className="location-map__unverified"><p>{text.notVerified}</p></div>}
     <div className="location-map__actions">
       {fallbackRoute
         ? <button className="location-map__directions" type="button" onClick={openRoute}><span aria-hidden="true">➤</span>{text.directions}</button>

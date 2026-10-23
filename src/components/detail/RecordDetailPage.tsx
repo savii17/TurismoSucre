@@ -22,6 +22,7 @@ export type DetailRecord = {
   status?: string;
   location?: string;
   address?: string;
+  mapLocation?: string;
   description?: string;
   image?: string;
   images?: string[];
@@ -41,6 +42,7 @@ export type DetailRecord = {
   tags?: string[];
   action?: { label: string; href: string };
   showLocationMap?: boolean;
+  allowLocationSearch?: boolean;
 };
 
 type Props = {
@@ -139,7 +141,7 @@ export default function RecordDetailPage({ record, moduleName, detailTitle, back
       </div>
 
       <aside className="record-detail__aside">
-        {record.showLocationMap !== false && ((record.latitude != null && record.longitude != null) || Boolean(record.address || record.location)) && <div className="record-detail__panel record-detail__map-panel"><LocationMap latitude={record.latitude} longitude={record.longitude} name={record.name} address={record.address ?? record.location} allowAddressSearch={imageCategory !== "event" || Boolean(record.address)} /></div>}
+        {record.showLocationMap !== false && <div className="record-detail__panel record-detail__map-panel"><LocationMap latitude={record.latitude} longitude={record.longitude} name={record.name} address={record.address ?? record.mapLocation ?? record.location} allowAddressSearch={record.allowLocationSearch ?? true} /></div>}
         {(record.phone || record.hours || record.price || record.address || record.location) && <section className="record-detail__panel record-detail__practical"><h3>{text.practical}</h3><dl>{record.address && <div><dt>{text.address}</dt><dd>{record.address}</dd></div>}{record.location && record.location !== record.address && <div><dt>{text.locationLabel}</dt><dd>{record.location}</dd></div>}{record.phone && <div><dt>{text.phone}</dt><dd><a href={`tel:${record.phone.replace(/[^+\d]/g, "")}`}>{record.phone}</a></dd></div>}{record.hours && <div><dt>{text.hours}</dt><dd>{record.hours}</dd></div>}{record.price && <div><dt>{text.price}</dt><dd>{record.price}</dd></div>}</dl></section>}
       </aside>
     </div>

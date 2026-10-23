@@ -13,6 +13,8 @@ export type AdministrativeListing = {
   address?: string;
   latitude?: number;
   longitude?: number;
+  locationVerificationStatus?: "VERIFICADA" | "PENDIENTE_VERIFICACION" | "SIN_SEDE_FIJA";
+  locationSourceUrl?: string;
   phone?: string;
   hours?: string;
   openingTime?: string;
@@ -51,6 +53,8 @@ export type TouristPlace = {
   localizacion?: string;
   latitud?: number;
   longitud?: number;
+  locationVerificationStatus?: "VERIFICADA" | "PENDIENTE_VERIFICACION" | "SIN_SEDE_FIJA";
+  locationSourceUrl?: string;
   descripcion?: string;
   horario_inicio?: string;
   horario_fin?: string;
@@ -70,6 +74,8 @@ export type CatalogRecord = {
   ubicacion: string;
   latitud?: number;
   longitud?: number;
+  locationVerificationStatus?: "VERIFICADA" | "PENDIENTE_VERIFICACION" | "SIN_SEDE_FIJA";
+  locationSourceUrl?: string;
   descripcion: string;
   horario_inicio?: string;
   horario_fin?: string;
