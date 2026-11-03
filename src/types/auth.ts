@@ -1,4 +1,4 @@
-export type UserRole = "ADMIN" | "USUARIO";
+export type UserRole = "ADMIN" | "USUARIO" | "INVITADO";
 export type UserStatus = "ACTIVO" | "INACTIVO";
 
 export interface User {
@@ -20,6 +20,14 @@ export interface UserRecord extends User {
 
 
 export interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+export interface RegistrationInput {
+  nombres: string;
+  apellido_paterno: string;
+  apellido_materno: string;
   email: string;
   password: string;
 }

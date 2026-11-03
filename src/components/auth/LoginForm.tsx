@@ -7,10 +7,11 @@ import { useLanguage } from "../../i18n/useLanguage";
 interface LoginFormProps {
   error?: string;
   onSubmit: (credentials: LoginCredentials) => void;
+  title?: string;
 }
 
 
-function LoginForm({ error, onSubmit }: LoginFormProps) {
+function LoginForm({ error, onSubmit, title }: LoginFormProps) {
   const { t, tx } = useLanguage();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,8 +44,8 @@ function LoginForm({ error, onSubmit }: LoginFormProps) {
       </div>
 
       <div className="login-form__heading">
-        <p>{tx("Panel de gestión turística")}</p>
-        <h1>{t("signIn")}</h1>
+        <p>{tx(title === "Acceso de administrador" ? "Panel de gestión turística" : "Turismo Sucre")}</p>
+        <h1>{title ?? t("signIn")}</h1>
         <span>{tx("Ingresa tus credenciales para continuar.")}</span>
       </div>
 

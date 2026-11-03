@@ -1,5 +1,14 @@
 # React + TypeScript + Vite
 
+## Acceso local de TurismoSucre
+
+- La navegación turística y las páginas de consulta son públicas para invitados.
+- El acceso de usuario está en `/login`; el registro abierto está en `/registro` y siempre asigna el rol `USUARIO`.
+- El acceso administrativo independiente está en `/admin/login`. La cuenta de demostración existente se mantiene en `src/data/users.json` (`admin@example.com` / `admin123`); cámbiala antes de cualquier demostración compartida.
+- La sesión y las cuentas creadas se conservan en `localStorage` en el mismo navegador/dispositivo. Las contraseñas nuevas se guardan como hash PBKDF2 con salt mediante Web Crypto; las cuentas de prueba antiguas se mantienen intactas y siguen usando el formato heredado del archivo JSON.
+
+**Limitación de seguridad:** este proyecto no tiene backend. Los roles, rutas y registros locales solo ayudan a probar los flujos en el navegador. Una persona con acceso al dispositivo puede inspeccionar o modificar el almacenamiento y los archivos publicados; por eso esta autenticación no ofrece seguridad real para producción ni protege datos sensibles. La validación definitiva de credenciales y permisos requiere un servidor.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

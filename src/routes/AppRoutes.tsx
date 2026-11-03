@@ -21,6 +21,18 @@ import UsersPage from "../pages/UsersPage";
 import EntertainmentPage from "../pages/EntertainmentPage";
 import EntertainmentDetailPage from "../pages/EntertainmentDetailPage";
 import { useLanguage } from "../i18n/useLanguage";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { authRepository } from "../repositories/authRepository";
+import RegisterPage from "../pages/auth/RegisterPage";
+import AdminHomePage from "../pages/AdminHomePage";
+
+function RequireRole({ role }: { role: "ADMIN" | "USUARIO" }) {
+  const user = authRepository.getCurrentUser();
+  const location = useLocation();
+  if (!user || user.estado !== "ACTIVO") return <Navigate to={role === "ADMIN" ? "/admin/login" : "/login"} state={{ from: location.pathname }} replace />;
+  if (user.rol !== role) return <Navigate to={user.rol === "ADMIN" ? "/administrador" : "/"} replace />;
+  return <Outlet />;
+}
 
 
 function AppRoutes() {
@@ -56,35 +68,21 @@ function AppRoutes() {
             path="/emergencias"
             element={<EmergenciesPage />}
           />
-          <Route
-            path="/usuario"
-            element={<UsersPage />}
-          />
-          <Route path="/usuarios" element={<UsersPage />} />
-          <Route
-            path="/categorias"
-            element={<PlaceholderPage title={t("categories")} description={t("categoriesDescription")} />}
-          />
-          <Route
-            path="/servicios"
-            element={<PlaceholderPage title={t("services")} description={t("servicesDescription")} />}
-          />
-          <Route
-            path="/reportes"
-            element={<PlaceholderPage title={t("reports")} description={t("reportsDescription")} />}
-          />
-          <Route
-            path="/configuracion"
-            element={<PlaceholderPage title={t("settings")} description={t("settingsDescription")} />}
-          />
-          <Route
-            path="/administrador"
-            element={<PlaceholderPage title={t("administrator")} description={t("administratorDescription")} />}
-          />
+          <Route element={<RequireRole role="ADMIN" />}>
+            <Route path="/usuario" element={<UsersPage />} />
+            <Route path="/usuarios" element={<UsersPage />} />
+            <Route path="/categorias" element={<PlaceholderPage title={t("categories")} description={t("categoriesDescription")} />} />
+            <Route path="/servicios" element={<PlaceholderPage title={t("services")} description={t("servicesDescription")} />} />
+            <Route path="/reportes" element={<PlaceholderPage title={t("reports")} description={t("reportsDescription")} />} />
+            <Route path="/configuracion" element={<PlaceholderPage title={t("settings")} description={t("settingsDescription")} />} />
+            <Route path="/administrador" element={<AdminHomePage />} />
+          </Route>
         </Route>
       
         
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/admin/login" element={<LoginPage role="ADMIN" />} />
+        <Route path="/registro" element={<RegisterPage />} />
       </Routes>
     </BrowserRouter>
   );
