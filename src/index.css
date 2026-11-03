@@ -218,6 +218,11 @@
 .location-map__message { color:#946216; font-size:9px; line-height:1.5; margin-top:9px; }
 .emergency-detail-map { margin-top:16px; }
 .module-form__error { color:#bd3946; font-size:11px; grid-column:1/-1; line-height:1.45; }
+.admin-card__management { display:flex; gap:7px; }
+.admin-card__management button { background:#fff; border:1px solid #dce2ec; border-radius:6px; color:var(--navy); cursor:pointer; flex:1; font-size:10px; font-weight:700; padding:7px; }
+.admin-card__management button:hover { border-color:var(--coral); color:var(--coral); }
+.admin-card__management button.danger { color:#bd4550; }
+.admin-permission-message { background:#fff8ed; border:1px solid #f0dfc5; border-radius:8px; color:#80551b; font-size:12px; padding:10px 13px; }
 .record-detail__practical h3 { margin-bottom:9px; }
 .record-detail__practical dd a { color:var(--coral); text-decoration:none; }
 .record-detail__related { display:grid; gap:13px; }

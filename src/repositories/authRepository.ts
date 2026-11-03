@@ -19,12 +19,12 @@ export const authRepository = {
   login(credentials: LoginCredentials): User | null {
     const foundUser = users.find(
       (user) =>
-        user.email === credentials.email &&
+        user.email.toLocaleLowerCase() === credentials.email.trim().toLocaleLowerCase() &&
         user.password === credentials.password
     );
 
 
-    if (!foundUser) {
+    if (!foundUser || foundUser.estado !== "ACTIVO") {
       return null;
     }
 
@@ -56,7 +56,13 @@ export const authRepository = {
 
 
   isAuthenticated(): boolean {
-    return this.getCurrentUser() !== null;
+    const user = this.getCurrentUser();
+    return user !== null && user.estado === "ACTIVO";
+  },
+
+  canManage(): boolean {
+    const user = this.getCurrentUser();
+    return user?.estado === "ACTIVO" && user.rol === "ADMIN";
   },
 
 

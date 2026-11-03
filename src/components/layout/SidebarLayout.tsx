@@ -5,7 +5,7 @@ import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-do
 import { touristPlaceImages } from "../../data/touristImages";
 import ImageWithFallback from "../ImageWithFallback";
 import { getImageSet } from "../../data/imageCatalog";
-import { touristPlaces } from "../../data/touristPlaces";
+import { touristPlaceRepository } from "../../repositories/touristPlaceRepository";
 import { accommodations, events, restaurants } from "../../data/secondaryListings";
 import { entertainment } from "../../data/entertainment";
 import TourismHero from "../dashboard/TourismHero";
@@ -41,7 +41,7 @@ function SidebarLayout() {
   const pageTitle = managementRoutes.find((route) => route.to === location.pathname)?.label ?? (location.pathname.startsWith("/lugares-turisticos/") ? t("touristPlaces") : location.pathname.startsWith("/hospedajes/") ? t("accommodations") : location.pathname.startsWith("/restaurantes/") ? t("restaurants") : location.pathname.startsWith("/entretenimiento/") ? t("entertainment") : location.pathname.startsWith("/eventos/") ? t("events") : t("systemTitle"));
   const searchItems = [
     ...managementRoutes.map(({ to, label }) => ({ to, label })),
-    ...touristPlaces.map((place) => ({ to: `/lugares-turisticos/${place.id}`, label: place.name })),
+    ...touristPlaceRepository.list().map((place) => ({ to: `/lugares-turisticos/${place.id}`, label: place.nombre_lugar ?? place.name })),
     ...accommodations.map((accommodation) => ({ to: `/hospedajes/${accommodation.id}`, label: accommodation.name })),
     ...restaurants.map((restaurant) => ({ to: `/restaurantes/${restaurant.id}`, label: restaurant.name })),
     ...entertainment.map((place) => ({ to: `/entretenimiento/${place._id}`, label: place.nombre_lugar })),

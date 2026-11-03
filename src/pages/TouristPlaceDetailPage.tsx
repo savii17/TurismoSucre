@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import RecordDetailPage, { type DetailRecord } from "../components/detail/RecordDetailPage";
-import { getTouristPlaceById, touristPlaces } from "../data/touristPlaces";
+import { touristPlaceRepository } from "../repositories/touristPlaceRepository";
 import { getTouristPlaceImage } from "../data/touristImages";
 import { getImageSet } from "../data/imageCatalog";
 import { useLanguage } from "../i18n/useLanguage";
@@ -9,10 +9,11 @@ import { translateRecordText } from "../i18n/contentTranslations";
 export default function TouristPlaceDetailPage() {
   const { language } = useLanguage();
   const { placeId } = useParams<{ placeId: string }>();
-  const place = getTouristPlaceById(placeId);
+  const touristPlaces = touristPlaceRepository.list();
+  const place = touristPlaceRepository.getById(placeId);
   const record: DetailRecord | undefined = place && {
     id: place.id, name: place.nombre_lugar ?? place.name, category: translateRecordText("tourist-place", place.id, "category", place.category, language),
-    status: translateRecordText("tourist-place", place.id, "status", place.estado, language), location: translateRecordText("tourist-place", place.id, "location", place.ubicacion ?? place.address, language),
+    status: translateRecordText("tourist-place", place.id, "status", place.estado ?? "ACTIVO", language), location: translateRecordText("tourist-place", place.id, "location", place.ubicacion ?? place.address, language),
     description: translateRecordText("tourist-place", place.id, "description", place.descripcion ?? place.description, language),
     image: getTouristPlaceImage(place.id, place.imagenes_url?.[0] ?? place.image),
     images: [getTouristPlaceImage(place.id, place.imagenes_url?.[0] ?? place.image)],

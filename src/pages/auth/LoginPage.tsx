@@ -29,9 +29,9 @@ function LoginPage() {
 
 
     if (!user) {
-       setError(t("invalidLogin"));
+      setError(t("invalidLogin"));
+      return;
     }
-
 
     navigate("/", { replace: true });
   };
