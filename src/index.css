@@ -820,3 +820,14 @@
   .listing-results-main .admin-cards,.entertainment-grid--featured,.events-page__cards { grid-template-columns:minmax(0,1fr); }
   .category-location-map__viewport { height:260px; }
 }
+
+/* Guest dashboard: use the full content width for the existing image carousel. */
+.dashboard-layout { grid-template-columns:minmax(0,1fr); }
+.dashboard-primary>.tourism-hero { height:clamp(370px,38vw,470px); }
+.guest-login-button { align-items:center; background:var(--coral); border:1px solid var(--coral); border-radius:9px; color:#fff; display:inline-flex; font-size:11px; font-weight:700; justify-content:center; min-height:39px; padding:0 13px; text-decoration:none; white-space:nowrap; transition:background .2s,transform .2s; }
+.guest-login-button:hover { background:#f15d67; transform:translateY(-1px); }
+@media (max-width:650px) {
+  .guest-login-button { font-size:10px; min-height:35px; padding:0 9px; }
+  .topbar__actions { flex-wrap:wrap; justify-content:flex-end; }
+  .dashboard-primary>.tourism-hero { height:auto; min-height:470px; }
+}

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
 import StatisticsCards from "../components/dashboard/StatisticsCards";
-import DashboardRightSidebar from "../components/dashboard/DashboardRightSidebar";
 import DashboardTouristPlaceCard from "../components/dashboard/DashboardTouristPlaceCard";
 import TourismHero from "../components/dashboard/TourismHero";
 import { featuredTouristPlaces } from "../data/touristPlaces";
@@ -50,7 +49,6 @@ function HomePage() {
           </section>
         </section>
 
-        <DashboardRightSidebar />
       </div>
     </section>
   );
