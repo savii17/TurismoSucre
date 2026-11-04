@@ -25,6 +25,19 @@ const readAccounts = (): StoredAccount[] => storageService.get<StoredAccount[]>(
 const readOverrides = (): Record<string, Partial<UserRecord>> => storageService.get<Record<string, Partial<UserRecord>>>(ACCOUNT_OVERRIDES_KEY) ?? {};
 const readDeletedSeedIds = (): string[] => storageService.get<string[]>(DELETED_SEED_USERS_KEY) ?? [];
 const readLegacyUsers = (): ManagedUser[] => storageService.get<ManagedUser[]>(LEGACY_USERS_KEY) ?? [];
+const readSession = (): User | null => {
+  try {
+    const currentSession = sessionStorage.getItem(SESSION_KEY);
+    if (currentSession) return JSON.parse(currentSession) as User;
+    const legacySession = storageService.get<User>(SESSION_KEY);
+    if (!legacySession?.email) return null;
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(legacySession));
+    storageService.remove(SESSION_KEY);
+    return legacySession;
+  } catch {
+    return null;
+  }
+};
 const seedId = (email: string) => `seed:${email.toLocaleLowerCase()}`;
 const registeredId = (account: StoredAccount) => `registered:${account.accountId ?? account.email.toLocaleLowerCase()}`;
 const effectiveSeedAccounts = (): UserRecord[] => {
@@ -48,7 +61,7 @@ const effectiveSeedAccounts = (): UserRecord[] => {
   });
 };
 const isAdminSession = () => {
-  const session = storageService.get<User>(SESSION_KEY);
+  const session = readSession();
   if (!session?.email) return false;
   const deleted = readDeletedSeedIds();
   return effectiveSeedAccounts().some((account, index) => !deleted.includes(seedId(users[index].email)) && account.email.toLocaleLowerCase() === session.email.toLocaleLowerCase() && account.rol === "ADMIN" && account.estado === "ACTIVO");
@@ -82,7 +95,16 @@ const derivePassword = async (password: string, salt: string) => {
   const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", salt: Uint8Array.from(atob(salt), (char) => char.charCodeAt(0)), iterations: 120000, hash: "SHA-256" }, material, 256);
   return btoa(String.fromCharCode(...new Uint8Array(bits)));
 };
-const saveSession = (user: User) => storageService.set<User>(SESSION_KEY, user);
+const saveSession = (user: User): boolean => {
+  try {
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(user));
+    storageService.remove(SESSION_KEY);
+    return true;
+  } catch {
+    return false;
+  }
+};
+const validEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 
 export const authRepository = {
@@ -90,16 +112,55 @@ export const authRepository = {
     const email = credentials.email.trim().toLocaleLowerCase();
     const deleted = readDeletedSeedIds();
     const seedAccounts = effectiveSeedAccounts().filter((_, index) => !deleted.includes(seedId(users[index].email)));
-    const foundUser = seedAccounts.find((user) => user.email.toLocaleLowerCase() === email && user.password === credentials.password);
-    const registered = readAccounts().find((account) => account.email.toLocaleLowerCase() === email);
-    let sessionUser: User | null = null;
-    if (foundUser) sessionUser = toSessionUser(foundUser);
-    else if (registered && await derivePassword(credentials.password, registered.passwordSalt) === registered.passwordHash) sessionUser = toSessionUser(registered);
-    if (!sessionUser || sessionUser.estado !== "ACTIVO" || (role && sessionUser.rol !== role)) {
-      return null;
+    if (!validEmail(email) || !credentials.password.trim()) return null;
+
+    if (role === "ADMIN") {
+      const admin = seedAccounts.find((account) => account.email.toLocaleLowerCase() === email && account.rol === "ADMIN" && account.password === credentials.password && account.estado === "ACTIVO");
+      if (!admin) return null;
+      const sessionUser = toSessionUser(admin);
+      return saveSession(sessionUser) ? sessionUser : null;
     }
-    saveSession(sessionUser);
-    return sessionUser;
+
+    // Demo access is limited to the USUARIO role; known administrator identities remain reserved.
+    if (seedAccounts.some((account) => account.email.toLocaleLowerCase() === email && account.rol === "ADMIN")) return null;
+
+    const seedUser = seedAccounts.find((account) => account.email.toLocaleLowerCase() === email && account.rol === "USUARIO");
+    if (seedUser) {
+      if (seedUser.estado !== "ACTIVO") return null;
+      const sessionUser = toSessionUser(seedUser);
+      return saveSession(sessionUser) ? sessionUser : null;
+    }
+
+    const registered = readAccounts().find((account) => account.email.toLocaleLowerCase() === email);
+    if (registered) {
+      if (registered.rol !== "USUARIO" || registered.estado !== "ACTIVO") return null;
+      const sessionUser = toSessionUser(registered);
+      return saveSession(sessionUser) ? sessionUser : null;
+    }
+
+    const legacy = readLegacyUsers().find((account) => account.email.toLocaleLowerCase() === email);
+    if (legacy) {
+      if (legacy.rol !== "USUARIO" || legacy.estado !== "ACTIVO") return null;
+      const sessionUser: User = {
+        nombres: legacy.nombres, apellido_paterno: legacy.apellido_paterno, apellido_materno: legacy.apellido_materno,
+        edad: legacy.edad, email: legacy.email, nacionalidad: legacy.nacionalidad, idioma: legacy.idioma,
+        rol: "USUARIO", estado: legacy.estado, fecha_registrro: legacy.fecha_registro,
+      };
+      return saveSession(sessionUser) ? sessionUser : null;
+    }
+
+    const saltBytes = crypto.getRandomValues(new Uint8Array(16));
+    const salt = btoa(String.fromCharCode(...saltBytes));
+    const displayName = email.slice(0, email.lastIndexOf("@")).replace(/[._+-]+/g, " ").trim().replace(/\b\p{L}/gu, (letter) => letter.toLocaleUpperCase()) || "Usuario";
+    const demoAccount: StoredAccount = {
+      nombres: displayName, apellido_paterno: "Demo", apellido_materno: "TurismoSucre", edad: 18,
+      email, nacionalidad: "No especificada", idioma: "es", rol: "USUARIO", estado: "ACTIVO",
+      fecha_registrro: new Date().toISOString(), accountId: crypto.randomUUID(), passwordSalt: salt,
+      passwordHash: await derivePassword(credentials.password, salt),
+    };
+    if (!storageService.set(REGISTERED_USERS_KEY, [...readAccounts(), demoAccount])) return null;
+    const sessionUser = toSessionUser(demoAccount);
+    return saveSession(sessionUser) ? sessionUser : null;
   },
 
   async register(input: RegistrationInput): Promise<{ user: User | null; error?: "invalid" | "duplicate" }> {
@@ -121,7 +182,7 @@ export const authRepository = {
 
 
   getCurrentUser(): User | null {
-    const session = storageService.get<User>(SESSION_KEY);
+    const session = readSession();
     if (!session?.email) return null;
     const email = session.email.toLocaleLowerCase();
     const deleted = readDeletedSeedIds();
@@ -129,6 +190,12 @@ export const authRepository = {
     if (seedIndex >= 0) return toSessionUser(effectiveSeedAccounts()[seedIndex]);
     const account = readAccounts().find((entry) => entry.email.toLocaleLowerCase() === email);
     if (account) return toSessionUser({ ...account, rol: "USUARIO" });
+    const legacy = readLegacyUsers().find((entry) => entry.email.toLocaleLowerCase() === email && entry.rol === "USUARIO");
+    if (legacy) return {
+      nombres: legacy.nombres, apellido_paterno: legacy.apellido_paterno, apellido_materno: legacy.apellido_materno,
+      edad: legacy.edad, email: legacy.email, nacionalidad: legacy.nacionalidad, idioma: legacy.idioma,
+      rol: "USUARIO", estado: legacy.estado, fecha_registrro: legacy.fecha_registro,
+    };
     return null;
   },
 
@@ -191,6 +258,7 @@ export const authRepository = {
 
 
   logout(): void {
+    sessionStorage.removeItem(SESSION_KEY);
     storageService.remove(SESSION_KEY);
   },
 };

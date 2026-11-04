@@ -3,6 +3,7 @@ import { storageService } from "../services/storageService";
 
 export type FavoriteRecord = { id: string; kind: string; name: string; to: string; savedAt: string };
 export type VisitRecord = { id: string; kind: string; name: string; visits: number };
+export type NotificationRecord = { id: string; recordId?: string; title: string; name?: string; category?: string; to: string; read: boolean; createdAt: string };
 const VISITS_KEY = "tourism_public_visits_v1";
 const accountKey = () => {
   const user = authRepository.getCurrentUser();
@@ -11,13 +12,19 @@ const accountKey = () => {
 };
 const favoritesKey = () => `tourism_favorites_${encodeURIComponent(accountKey())}`;
 
-export function publishEventNotification(emails: string[], eventId: string, title: string): void {
+export function publishNewContentNotification(emails: string[], category: string, recordId: string, name: string, to: string): void {
   for (const email of emails) {
     const key = `tourism_notifications_${encodeURIComponent(email.toLocaleLowerCase())}`;
-    const list = storageService.get<Array<{ id: string; title: string; to: string; read: boolean; createdAt: string }>>(key) ?? [];
-    const notification = { id: `event:${eventId}`, title, to: `/eventos/${encodeURIComponent(eventId)}`, read: false, createdAt: new Date().toISOString() };
-    storageService.set(key, [notification, ...list.filter((item) => item.id !== notification.id)]);
+    const list = storageService.get<NotificationRecord[]>(key) ?? [];
+    const notification: NotificationRecord = { id: crypto.randomUUID(), recordId, title: "Nueva publicación en TurismoSucre", name, category, to, read: false, createdAt: new Date().toISOString() };
+    storageService.set(key, [notification, ...list]);
   }
+}
+
+export function claimBrowserNotification(email: string, notificationId: string): boolean {
+  const key = `tourism_browser_notification_${encodeURIComponent(email.toLocaleLowerCase())}_${encodeURIComponent(notificationId)}`;
+  if (storageService.get<boolean>(key)) return false;
+  return storageService.set(key, true);
 }
 
 export const personalRepository = {
@@ -31,7 +38,12 @@ export const personalRepository = {
   removeFavorite(kind: string, id: string): void { storageService.set(favoritesKey(), this.listFavorites().filter((item) => item.kind !== kind || item.id !== id)); },
   listNotifications() {
     accountKey();
-    return storageService.get<Array<{ id: string; title: string; to: string; read: boolean; createdAt: string }>>(`tourism_notifications_${encodeURIComponent(accountKey())}`) ?? [];
+    return storageService.get<NotificationRecord[]>(`tourism_notifications_${encodeURIComponent(accountKey())}`) ?? [];
+  },
+  unreadNotificationCount(): number { return this.listNotifications().filter((item) => !item.read).length; },
+  markNotificationRead(id: string): void {
+    const notifications = this.listNotifications().map((item) => item.id === id ? { ...item, read: true } : item);
+    storageService.set(`tourism_notifications_${encodeURIComponent(accountKey())}`, notifications);
   },
   markNotificationsRead(): void {
     const notifications = this.listNotifications().map((item) => ({ ...item, read: true }));

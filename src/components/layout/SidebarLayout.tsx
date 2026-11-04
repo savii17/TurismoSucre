@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent, ReactNode } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 
@@ -12,6 +12,7 @@ import type { EventRecord } from "../../types/event";
 import TourismHero from "../dashboard/TourismHero";
 import { useLanguage } from "../../i18n/useLanguage";
 import { authRepository } from "../../repositories/authRepository";
+import { claimBrowserNotification, personalRepository, type NotificationRecord } from "../../repositories/personalRepository";
 
 type IconName = "grid" | "pin" | "bed" | "food" | "music" | "calendar" | "alert" | "users" | "tag" | "sparkles" | "report" | "settings" | "menu" | "search" | "bell" | "globe";
 type NavigationRoute = { to: string; label: string; icon: IconName };
@@ -28,13 +29,18 @@ function Icon({ name }: { name: IconName }) {
 function SidebarLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => window.innerWidth > 850);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [notificationItems, setNotificationItems] = useState<NotificationRecord[]>([]);
+  const [browserPermission, setBrowserPermission] = useState<NotificationPermission>(() => typeof window !== "undefined" && "Notification" in window ? window.Notification.permission : "denied");
+  const seenNotificationIds = useRef(new Set<string>());
   const { language, setLanguage, t, tx } = useLanguage();
   const location = useLocation();
   const isDirectoryPage = ["/lugares-turisticos", "/hospedajes", "/restaurantes", "/entretenimiento"].some((path) => location.pathname === path || location.pathname.startsWith(`${path}/`));
   const isDetailPage = /^\/(lugares-turisticos|hospedajes|restaurantes|entretenimiento|eventos)\/[^/]+$/.test(location.pathname);
+  const isAccountPage = location.pathname === "/mi-cuenta/favoritos" || location.pathname === "/mi-cuenta/notificaciones";
   const navigate = useNavigate();
   const sessionUser = authRepository.getCurrentUser();
   const user = sessionUser?.estado === "ACTIVO" ? sessionUser : null;
+  const supportsBrowserNotifications = typeof window !== "undefined" && "Notification" in window && window.isSecureContext;
   const [searchTerm, setSearchTerm] = useState("");
   const [searchMessage, setSearchMessage] = useState("");
   const managementRoutes: NavigationRoute[] = [{ to: "/", label: t("dashboard"), icon: "grid" }, { to: "/lugares-turisticos", label: t("touristPlaces"), icon: "pin" }, { to: "/hospedajes", label: t("accommodations"), icon: "bed" }, { to: "/restaurantes", label: t("restaurants"), icon: "food" }, { to: "/entretenimiento", label: t("entertainment"), icon: "music" }, { to: "/eventos", label: t("events"), icon: "calendar" }, { to: "/emergencias", label: t("emergencies"), icon: "alert" }];
@@ -42,9 +48,8 @@ function SidebarLayout() {
   const restaurants = catalogRepository.list("restaurantes") as RestaurantListing[];
   const entertainment = catalogRepository.list("entretenimiento") as EntertainmentRecord[];
   const events = catalogRepository.list("eventos") as EventRecord[];
-  const notifications = language === "es" ? ["No hay una fuente de notificaciones conectada."] : ["No notification source is connected."];
   const initials = useMemo(() => user ? `${user.nombres?.charAt(0) ?? ""}${user.apellido_paterno?.charAt(0) ?? ""}`.toUpperCase() : "TS", [user]);
-  const pageTitle = managementRoutes.find((route) => route.to === location.pathname)?.label ?? (location.pathname.startsWith("/lugares-turisticos/") ? t("touristPlaces") : location.pathname.startsWith("/hospedajes/") ? t("accommodations") : location.pathname.startsWith("/restaurantes/") ? t("restaurants") : location.pathname.startsWith("/entretenimiento/") ? t("entertainment") : location.pathname.startsWith("/eventos/") ? t("events") : t("systemTitle"));
+  const pageTitle = managementRoutes.find((route) => route.to === location.pathname)?.label ?? (location.pathname === "/mi-cuenta/favoritos" ? tx("Mis favoritos") : location.pathname === "/mi-cuenta/notificaciones" ? tx("Eventos y notificaciones") : location.pathname.startsWith("/lugares-turisticos/") ? t("touristPlaces") : location.pathname.startsWith("/hospedajes/") ? t("accommodations") : location.pathname.startsWith("/restaurantes/") ? t("restaurants") : location.pathname.startsWith("/entretenimiento/") ? t("entertainment") : location.pathname.startsWith("/eventos/") ? t("events") : t("systemTitle"));
   const searchItems = [
     ...managementRoutes.map(({ to, label }) => ({ to, label })),
     ...touristPlaceRepository.list().map((place) => ({ to: `/lugares-turisticos/${place.id}`, label: place.nombre_lugar ?? place.name })),
@@ -82,10 +87,57 @@ function SidebarLayout() {
     return () => mobileQuery.removeEventListener("change", updateSidebarForViewport);
   }, []);
 
+  useEffect(() => {
+    if (!user || user.rol !== "USUARIO") {
+      setNotificationItems([]);
+      seenNotificationIds.current.clear();
+      return undefined;
+    }
+    const existing = personalRepository.listNotifications();
+    seenNotificationIds.current = new Set(existing.map((item) => item.id));
+    setNotificationItems(existing);
+    const refreshNotifications = () => {
+      const latest = personalRepository.listNotifications();
+      const newlyAdded = latest.filter((item) => !seenNotificationIds.current.has(item.id));
+      latest.forEach((item) => seenNotificationIds.current.add(item.id));
+      setNotificationItems(latest);
+
+      if (!("Notification" in window) || !window.isSecureContext || window.Notification.permission !== "granted") return;
+      for (const item of newlyAdded) {
+        if (!claimBrowserNotification(user.email, item.id)) continue;
+        try {
+          const popup = new window.Notification(item.title, {
+            body: `${item.name ?? item.title} · ${item.category ?? tx("Eventos y festividades")}`,
+            icon: "/favicon.svg",
+            tag: `turismosucre-${item.id}`,
+          });
+          popup.onclick = () => {
+            window.focus();
+            navigate(item.to);
+            popup.close();
+          };
+        } catch (error) {
+          console.warn("No se pudo mostrar la notificación del navegador.", error);
+        }
+      }
+    };
+    window.addEventListener("storage", refreshNotifications);
+    return () => window.removeEventListener("storage", refreshNotifications);
+  }, [user?.email, user?.estado, user?.rol, navigate, tx]);
+
+  const requestBrowserNotificationPermission = async () => {
+    if (!("Notification" in window) || !window.isSecureContext) return;
+    try {
+      setBrowserPermission(await window.Notification.requestPermission());
+    } catch {
+      setBrowserPermission("denied");
+    }
+  };
+
   return <div className={`app-shell ${isSidebarOpen ? "" : "app-shell--sidebar-collapsed"}`}>
     <button className="sidebar-backdrop" type="button" aria-label={tx("Cerrar menú")} onClick={closeSidebar} tabIndex={isSidebarOpen ? 0 : -1} />
-    <aside className="sidebar" aria-label={t("navigation")}><div className="sidebar__brand"><span className="sidebar__brand-mark">TS</span><div><strong>TURISMO</strong><small>SUCRE · {tx("La Ciudad Blanca")}</small></div></div><button className="sidebar__close" type="button" aria-label={tx("Cerrar menú")} onClick={closeSidebar}>×</button><nav className="sidebar__nav"><section className="sidebar__section"><h2 className="sidebar__heading">{tx("Explorar Sucre")}</h2>{managementRoutes.map((route) => <NavLink key={route.to} to={route.to} end={route.to === "/"} className="sidebar__link" onClick={closeMobileSidebar}><Icon name={route.icon} /><span>{route.label}</span></NavLink>)}</section></nav><div className="sidebar__promo"><ImageWithFallback imageSet={getImageSet("tourist-place", "la-recoleta", [touristPlaceImages["la-recoleta"]])} category="tourist-place" alt={tx("Vista de La Recoleta en Sucre, Bolivia")} /><div><strong>{tx("Sucre te espera")}</strong><p>{tx("Historia, cultura y experiencias que hacen única a Sucre.")}</p><Link to="/lugares-turisticos" onClick={closeMobileSidebar}>{tx("Explorar destinos")} <span aria-hidden="true">→</span></Link></div></div><div className="sidebar__footer"><div className="sidebar__profile"><span className="profile-card__avatar">{initials}</span><span><strong>{t("guest")}</strong><small>{tx("INVITADO")}</small></span></div><div className="sidebar-account-links"><Link to="/login">{tx("Iniciar sesión")}</Link><Link to="/registro">{tx("Registrarse")}</Link></div></div></aside>
-    <div className="app-shell__main"><header className="topbar"><div className="topbar__left"><button type="button" className="hamburger-button" aria-label={isSidebarOpen ? t("hideSidebar") : t("showSidebar")} aria-expanded={isSidebarOpen} onClick={() => setIsSidebarOpen((current) => !current)}><Icon name="menu" /></button><div><p className="breadcrumb">{t("dashboard")} <span>/</span> {pageTitle}</p><h1 className="topbar__title">{pageTitle}</h1>{location.pathname === "/" && <p className="topbar__subtitle">{t("systemTitle")}</p>}</div></div><div className="topbar__actions"><label className="topbar-search"><Icon name="search" /><span className="sr-only">{tx("Buscar en Turismo Sucre")}</span><input type="search" value={searchTerm} onChange={(event) => { setSearchTerm(event.target.value); setSearchMessage(""); }} onKeyDown={searchForRecord} placeholder={tx("Buscar en Turismo Sucre")} aria-describedby={searchMessage ? "topbar-search-message" : undefined} />{searchMessage && <span id="topbar-search-message" className="topbar-search__message" role="status">{searchMessage}</span>}</label>{user && <div className="notifications"><button type="button" className="icon-button" aria-label={t("viewNotifications")} aria-expanded={isNotificationsOpen} onClick={() => setIsNotificationsOpen((current) => !current)}><Icon name="bell" /></button>{isNotificationsOpen && <div className="notifications__panel" role="status"><h2>{t("notifications")}</h2><ul>{notifications.map((notification) => <li key={notification}>{notification}</li>)}</ul></div>}</div>}<label className="language-selector"><Icon name="globe" /><span className="sr-only">{t("language")}</span><select value={language} onChange={(event) => setLanguage(event.target.value as "es" | "en")} aria-label={t("language")}><option value="es">ES</option><option value="en">EN</option></select></label><div className="profile-card" aria-label={t("accountProfile")}><div className="profile-card__avatar">{initials}</div><div><strong>{user ? `${user.nombres} ${user.apellido_paterno}` : t("guest")}</strong><span>{user?.rol ? tx(user.rol) : t("noSession")}</span></div></div>{!user && <Link className="guest-login-button" to="/login">{tx("Iniciar sesión")}</Link>}</div></header>{location.pathname !== "/" && !isDirectoryPage && !isDetailPage && <TourismHero />}<main className="app-shell__content"><Outlet /></main></div>
+    <aside className="sidebar" aria-label={t("navigation")}><div className="sidebar__brand"><span className="sidebar__brand-mark">TS</span><div><strong>TURISMO</strong><small>SUCRE · {tx("La Ciudad Blanca")}</small></div></div><button className="sidebar__close" type="button" aria-label={tx("Cerrar menú")} onClick={closeSidebar}>×</button><nav className="sidebar__nav"><section className="sidebar__section"><h2 className="sidebar__heading">{tx("Explorar Sucre")}</h2>{managementRoutes.map((route) => <NavLink key={route.to} to={route.to} end={route.to === "/"} className="sidebar__link" onClick={closeMobileSidebar}><Icon name={route.icon} /><span>{route.label}</span></NavLink>)}</section></nav><div className="sidebar__promo"><ImageWithFallback imageSet={getImageSet("tourist-place", "la-recoleta", [touristPlaceImages["la-recoleta"]])} category="tourist-place" alt={tx("Vista de La Recoleta en Sucre, Bolivia")} /><div><strong>{tx("Sucre te espera")}</strong><p>{tx("Historia, cultura y experiencias que hacen única a Sucre.")}</p><Link to="/lugares-turisticos" onClick={closeMobileSidebar}>{tx("Explorar destinos")} <span aria-hidden="true">→</span></Link></div></div><div className="sidebar__footer"><div className="sidebar__profile"><span className="profile-card__avatar">{initials}</span><span><strong>{user ? `${user.nombres} ${user.apellido_paterno}` : t("guest")}</strong><small>{user?.rol ? tx(user.rol) : tx("INVITADO")}</small></span></div><div className="sidebar-account-links">{user ? <><Link to="/mi-cuenta/favoritos">{tx("Mis favoritos")}</Link><Link to="/mi-cuenta/notificaciones">{tx("Eventos y notificaciones")}</Link><button type="button" onClick={() => { authRepository.logout(); navigate("/", { replace: true }); }}>{tx("Cerrar sesión")}</button></> : <><Link to="/login">{tx("Iniciar sesión")}</Link><Link to="/registro">{tx("Registrarse")}</Link></>}</div></div></aside>
+    <div className="app-shell__main"><header className="topbar"><div className="topbar__left"><button type="button" className="hamburger-button" aria-label={isSidebarOpen ? t("hideSidebar") : t("showSidebar")} aria-expanded={isSidebarOpen} onClick={() => setIsSidebarOpen((current) => !current)}><Icon name="menu" /></button><div><p className="breadcrumb">{t("dashboard")} <span>/</span> {pageTitle}</p><h1 className="topbar__title">{pageTitle}</h1>{location.pathname === "/" && <p className="topbar__subtitle">{t("systemTitle")}</p>}</div></div><div className="topbar__actions"><label className="topbar-search"><Icon name="search" /><span className="sr-only">{tx("Buscar en Turismo Sucre")}</span><input type="search" value={searchTerm} onChange={(event) => { setSearchTerm(event.target.value); setSearchMessage(""); }} onKeyDown={searchForRecord} placeholder={tx("Buscar en Turismo Sucre")} aria-describedby={searchMessage ? "topbar-search-message" : undefined} />{searchMessage && <span id="topbar-search-message" className="topbar-search__message" role="status">{searchMessage}</span>}</label>{user?.rol === "USUARIO" && <div className="notifications"><button type="button" className="icon-button" aria-label={`${t("viewNotifications")}${notificationItems.some((item) => !item.read) ? `, ${notificationItems.filter((item) => !item.read).length} ${tx("no leídas")}` : ""}`} aria-expanded={isNotificationsOpen} onClick={() => setIsNotificationsOpen((current) => !current)}><Icon name="bell" />{notificationItems.some((item) => !item.read) && <span className="notification-badge">{notificationItems.filter((item) => !item.read).length}</span>}</button>{isNotificationsOpen && <div className="notifications__panel"><h2>{t("notifications")}</h2>{notificationItems.length ? <ul>{notificationItems.slice(0, 5).map((notification) => <li key={notification.id} className={notification.read ? "notification-item is-read" : "notification-item is-unread"}><Link to={notification.to} onClick={() => { personalRepository.markNotificationRead(notification.id); setNotificationItems(personalRepository.listNotifications()); setIsNotificationsOpen(false); }}><strong>{notification.title}</strong><span>{notification.name ?? notification.title}</span><small>{tx(notification.category ?? "Eventos y festividades")} · {new Date(notification.createdAt).toLocaleString(language === "es" ? "es-BO" : "en-US")}</small></Link></li>)}</ul> : <p className="notifications__empty">{tx("Todavía no hay publicaciones nuevas.")}</p>}<Link className="notifications__all" to="/mi-cuenta/notificaciones" onClick={() => setIsNotificationsOpen(false)}>{tx("Ver todas las notificaciones")}</Link>{supportsBrowserNotifications && browserPermission === "default" && <button className="notification-permission" type="button" onClick={() => void requestBrowserNotificationPermission()}>{tx("Activar avisos emergentes")}</button>}{supportsBrowserNotifications && browserPermission === "granted" && <p className="notification-permission__status" role="status">{tx("Avisos emergentes activados mientras TurismoSucre está abierto.")}</p>}{supportsBrowserNotifications && browserPermission === "denied" && <p className="notification-permission__status" role="status">{tx("El permiso de avisos está bloqueado en el navegador.")}</p>}{!supportsBrowserNotifications && <p className="notification-permission__status" role="status">{tx("Este navegador o conexión no admite avisos emergentes.")}</p>}</div>}</div>}<label className="language-selector"><Icon name="globe" /><span className="sr-only">{t("language")}</span><select value={language} onChange={(event) => setLanguage(event.target.value as "es" | "en")} aria-label={t("language")}><option value="es">ES</option><option value="en">EN</option></select></label><div className="profile-card" aria-label={t("accountProfile")}><div className="profile-card__avatar">{initials}</div><div><strong>{user ? `${user.nombres} ${user.apellido_paterno}` : t("guest")}</strong><span>{user?.rol ? tx(user.rol) : t("noSession")}</span></div></div>{!user && <Link className="guest-login-button" to="/login">{tx("Iniciar sesión")}</Link>}</div></header>{location.pathname !== "/" && !isDirectoryPage && !isDetailPage && !isAccountPage && <TourismHero />}<main className="app-shell__content"><Outlet /></main></div>
   </div>;
 }
 export default SidebarLayout;

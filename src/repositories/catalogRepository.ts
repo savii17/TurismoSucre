@@ -5,7 +5,7 @@ import { storageService } from "../services/storageService";
 import { authRepository } from "./authRepository";
 import type { AccommodationListing, RestaurantListing, EntertainmentRecord } from "../types/listing";
 import type { EventRecord } from "../types/event";
-import { publishEventNotification } from "./personalRepository";
+import { publishNewContentNotification } from "./personalRepository";
 
 export type CatalogKind = "hospedajes" | "restaurantes" | "entretenimiento" | "eventos";
 export type CatalogItem = AccommodationListing | RestaurantListing | EntertainmentRecord | EventRecord;
@@ -14,6 +14,8 @@ const seeds: Record<CatalogKind, CatalogItem[]> = { hospedajes: accommodations, 
 const idOf = (item: CatalogItem) => "id" in item ? item.id : item._id;
 const requireAdmin = () => { if (!authRepository.canManage()) throw new Error("Se requiere una sesión ADMIN activa para modificar el catálogo."); };
 const slug = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const categoryNames: Record<CatalogKind, string> = { hospedajes: "Hospedajes", restaurantes: "Restaurantes", entretenimiento: "Entretenimiento", eventos: "Eventos y festividades" };
+const publicPath = (kind: CatalogKind, id: string) => `/${kind}/${encodeURIComponent(id)}`;
 
 export const catalogRepository = {
   list(kind: CatalogKind): CatalogItem[] {
@@ -36,8 +38,9 @@ export const catalogRepository = {
     else item = { id, name, category: String(value.category ?? (kind === "hospedajes" ? "Hospedaje" : "Restaurante")), status: "ACTIVO", location: String(value.location ?? ""), address: String(value.location ?? ""), description: String(value.description ?? ""), image: String(value.image ?? ""), phone: String(value.phone ?? ""), hours: String(value.hours ?? ""), services: Array.isArray(value.services) ? value.services as string[] : [], registeredAt: now } as CatalogItem;
     if (idKey === "_id" && "_id" in item) item = { ...item, _id: id };
     const updated = [item, ...list];
-    storageService.set(keys[kind], updated);
-    if (kind === "eventos") publishEventNotification(authRepository.listManagedAccounts().filter((account) => account.rol === "USUARIO").map((account) => account.email), id, `Nuevo evento: ${name}`);
+    if (!storageService.set(keys[kind], updated)) throw new Error("No se pudo guardar el registro.");
+    const recipients = authRepository.listManagedAccounts().filter((account) => account.rol === "USUARIO" && account.estado === "ACTIVO").map((account) => account.email);
+    publishNewContentNotification(recipients, categoryNames[kind], id, name, publicPath(kind, id));
     return item;
   },
   update(kind: CatalogKind, id: string, value: Record<string, unknown>): CatalogItem | null {
@@ -51,7 +54,6 @@ export const catalogRepository = {
       return result;
     });
     storageService.set(keys[kind], list);
-    if (kind === "eventos" && result) publishEventNotification(authRepository.listManagedAccounts().filter((account) => account.rol === "USUARIO").map((account) => account.email), id, `Evento actualizado: ${(result as EventRecord).name}`);
     return result;
   },
   remove(kind: CatalogKind, id: string): void {

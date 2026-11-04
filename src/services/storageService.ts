@@ -17,11 +17,13 @@ export const storageService = {
   },
 
 
-  set<T>(key: string, value: T): void {
+  set<T>(key: string, value: T): boolean {
     try {
       localStorage.setItem(key, JSON.stringify(value));
+      return true;
     } catch (error) {
       console.error(`Error al guardar ${key} en localStorage:`, error);
+      return false;
     }
   },
 

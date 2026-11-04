@@ -14,7 +14,7 @@ export default function LoginPage({ role = "USUARIO" }: { role?: "ADMIN" | "USUA
     try {
       const user = await authRepository.login(credentials, role);
       if (!user) { setError(tx(role === "ADMIN" ? "Credenciales inválidas o cuenta sin permisos de administrador." : "Correo o contraseña incorrectos.")); return; }
-      navigate(role === "ADMIN" ? "/administrador" : "/mi-cuenta", { replace: true });
+      navigate(role === "ADMIN" ? "/administrador" : "/", { replace: true });
     } catch { setError(tx("No se pudo verificar la contraseña en este navegador.")); }
   };
   return <main className="login-page"><div className="auth-card-wrap"><LoginForm error={error} onSubmit={handleLogin} title={role === "ADMIN" ? "Acceso de administrador" : "Acceso de usuario"} />

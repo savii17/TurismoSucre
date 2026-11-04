@@ -2,6 +2,7 @@ import { touristPlaces as initialPlaces } from "../data/touristPlaces";
 import { storageService } from "../services/storageService";
 import { authRepository } from "./authRepository";
 import type { TouristPlace } from "../types/listing";
+import { publishNewContentNotification } from "./personalRepository";
 
 const PLACES_KEY = "lugares-turisticos-v1";
 
@@ -55,7 +56,9 @@ export const touristPlaceRepository = {
       fecha_registro: new Date().toISOString(),
       locationVerificationStatus: input.latitud != null && input.longitud != null ? "VERIFICADA" : "PENDIENTE_VERIFICACION",
     };
-    writeAll([item, ...existing]);
+    if (!writeAll([item, ...existing])) throw new Error("No se pudo guardar el lugar turístico.");
+    const recipients = authRepository.listManagedAccounts().filter((account) => account.rol === "USUARIO" && account.estado === "ACTIVO").map((account) => account.email);
+    publishNewContentNotification(recipients, "Lugares turísticos", id, item.name, `/lugares-turisticos/${encodeURIComponent(id)}`);
     return item;
   },
   update(id: string, input: TouristPlaceInput): TouristPlace | null {

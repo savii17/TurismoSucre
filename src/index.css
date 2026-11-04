@@ -156,7 +156,6 @@
 
 @media (max-width:390px) {
   .topbar { padding-inline:12px; }
-  .topbar__actions .notifications { display:none; }
   .app-shell__content { padding:14px; }
   .tourism-hero { margin:14px 14px 0; }
   .statistics-grid { grid-template-columns:1fr; }
@@ -819,6 +818,30 @@
 @media (max-width:600px) {
   .listing-results-main .admin-cards,.entertainment-grid--featured,.events-page__cards { grid-template-columns:minmax(0,1fr); }
   .category-location-map__viewport { height:260px; }
+}
+
+/* Notification inbox in the registered user's shared public dashboard. */
+.notifications__panel { max-height:min(72vh,560px); overflow:auto; width:330px; z-index:30; }
+.notifications__panel .notification-item { background:#fff; border-bottom:1px solid var(--line); border-radius:0; padding:0; }
+.notifications__panel .notification-item a { color:var(--ink); display:grid; gap:4px; padding:11px 9px; text-decoration:none; }
+.notifications__panel .notification-item.is-unread { background:#f2f6ff; }
+.notifications__panel .notification-item strong { color:var(--navy); font-size:11px; }
+.notifications__panel .notification-item span { font-size:11px; font-weight:700; }
+.notifications__panel .notification-item small { color:var(--muted); font-size:9px; }
+.notifications__panel .notification-item a:hover { background:#edf1fa; }
+.notifications__empty { color:var(--muted); font-size:11px; padding:8px 0; }
+.notifications__all { color:var(--coral); display:block; font-size:11px; font-weight:700; margin-top:11px; text-align:center; text-decoration:none; }
+.notifications__all:hover { text-decoration:underline; }
+.notification-permission { background:#f7f8fc; border:1px solid var(--line); border-radius:8px; color:var(--navy); cursor:pointer; display:block; font:inherit; font-size:11px; font-weight:700; margin:12px 0 0; padding:9px 10px; text-align:center; width:100%; }
+.notification-permission:hover { background:#eef2fa; }
+.notification-permission__status { color:var(--muted); font-size:10px; line-height:1.4; margin-top:10px; text-align:center; }
+.user-notifications article.is-unread { background:#f5f7ff; }
+.user-notifications article.is-read { opacity:.68; }
+.user-notifications article p { color:var(--ink); font-size:11px; }
+.user-notifications article a { text-decoration:none; }
+.user-notifications article a:hover { text-decoration:underline; }
+@media (max-width:390px) {
+  .notifications__panel { position:fixed; right:10px; top:70px; width:min(330px,calc(100vw - 20px)); }
 }
 
 /* Guest dashboard: use the full content width for the existing image carousel. */
