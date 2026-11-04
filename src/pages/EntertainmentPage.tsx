@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { entertainment } from "../data/entertainment";
+import { catalogRepository } from "../repositories/catalogRepository";
+import type { EntertainmentRecord } from "../types/listing";
 import { entertainmentCategories } from "../data/listingCategories";
 import { useLanguage } from "../i18n/useLanguage";
 import ImageWithFallback from "../components/ImageWithFallback";
@@ -27,8 +28,9 @@ export default function EntertainmentPage() {
   const es = language === "es";
   const [category, setCategory] = useState("Todas");
   const [query, setQuery] = useState("");
+  const entertainment = (catalogRepository.list("entretenimiento") as EntertainmentRecord[]).filter((item) => item.estado !== "INACTIVO");
   const normalize = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase();
-  const visible = useMemo(() => entertainment.filter((place) => (category === "Todas" || place.tipo === category) && normalize(`${place.nombre_lugar} ${place.ubicacion} ${place.descripcion} ${place.tipo} ${place.servicios.join(" ")}`).includes(normalize(query))), [category, query]);
+  const visible = useMemo(() => entertainment.filter((place) => (category === "Todas" || place.tipo === category) && normalize(`${place.nombre_lugar} ${place.ubicacion} ${place.descripcion} ${place.tipo} ${place.servicios.join(" ")}`).includes(normalize(query))), [category, entertainment, query]);
   const popular = [...entertainment].filter((place) => place.calificacion != null).sort((a, b) => (b.calificacion ?? 0) - (a.calificacion ?? 0)).slice(0, 5);
   const featured = [...entertainment].slice(0, 4);
   const card = (place: typeof entertainment[number]) => <article className="entertainment-card" key={place._id}>

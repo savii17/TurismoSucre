@@ -1,3 +1,4 @@
 import AdministrativeListingPage from "../components/listing/AdministrativeListingPage";
-import { accommodations } from "../data/secondaryListings";
-export default function AccommodationsPage() { return <AdministrativeListingPage title="Hospedajes" description="Administra y consulta todos los hospedajes registrados en el sistema." actionLabel="Nuevo Hospedaje" items={accommodations} detailPath="/hospedajes" kind="accommodations" />; }
+import { catalogRepository } from "../repositories/catalogRepository";
+import type { AccommodationListing } from "../types/listing";
+export default function AccommodationsPage() { const items = (catalogRepository.list("hospedajes") as AccommodationListing[]).filter((item) => item.status === "ACTIVO"); return <AdministrativeListingPage title="Hospedajes" description="Explora hospedajes registrados en Sucre." actionLabel="Nuevo Hospedaje" items={items} detailPath="/hospedajes" kind="accommodations" />; }

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import RecordDetailPage, { type DetailRecord } from "../components/detail/RecordDetailPage";
 import { touristPlaceRepository } from "../repositories/touristPlaceRepository";
 import { getTouristPlaceImage } from "../data/touristImages";
@@ -8,9 +8,11 @@ import { translateRecordText } from "../i18n/contentTranslations";
 
 export default function TouristPlaceDetailPage() {
   const { language } = useLanguage();
+  const isAdminView = useLocation().pathname.startsWith("/admin/");
   const { placeId } = useParams<{ placeId: string }>();
-  const touristPlaces = touristPlaceRepository.list();
-  const place = touristPlaceRepository.getById(placeId);
+  const touristPlaces = touristPlaceRepository.list().filter((item) => isAdminView || item.estado !== "INACTIVO");
+  const foundPlace = touristPlaceRepository.getById(placeId);
+  const place = foundPlace && (isAdminView || foundPlace.estado !== "INACTIVO") ? foundPlace : undefined;
   const record: DetailRecord | undefined = place && {
     id: place.id, name: place.nombre_lugar ?? place.name, category: translateRecordText("tourist-place", place.id, "category", place.category, language),
     status: translateRecordText("tourist-place", place.id, "status", place.estado ?? "ACTIVO", language), location: translateRecordText("tourist-place", place.id, "location", place.ubicacion ?? place.address, language),
@@ -24,6 +26,7 @@ export default function TouristPlaceDetailPage() {
     address: translateRecordText("tourist-place", place.id, "address", place.address, language), phone: place.telefono, reviews: undefined, tags: place.highlights.map((value) => translateRecordText("tourist-place", place.id, "highlights", value, language)),
     latitude: place.latitud, longitude: place.longitud,
   };
-  const related = place ? touristPlaces.filter((item) => item.id !== place.id).slice(0, 4).map((item) => ({ id: item.id, name: item.name, category: translateRecordText("tourist-place", item.id, "category", item.category, language), location: translateRecordText("tourist-place", item.id, "location", item.address, language), imageSet: getImageSet("tourist-place", item.id, [item.image]), to: `/lugares-turisticos/${item.id}` })) : [];
-  return <RecordDetailPage record={record} related={related} moduleName="Lugares turísticos" detailTitle="Lugar turístico" backTo="/lugares-turisticos" imageCategory="tourist-place" summary={{ rating: record?.rating?.toFixed(1), price: record?.price, hours: record?.hours }} />;
+  const listPath = isAdminView ? "/admin/lugares-turisticos" : "/lugares-turisticos";
+  const related = place ? touristPlaces.filter((item) => item.id !== place.id).slice(0, 4).map((item) => ({ id: item.id, name: item.name, category: translateRecordText("tourist-place", item.id, "category", item.category, language), location: translateRecordText("tourist-place", item.id, "location", item.address, language), imageSet: getImageSet("tourist-place", item.id, [item.image]), to: `${listPath}/${item.id}` })) : [];
+  return <RecordDetailPage record={record} related={related} moduleName="Lugares turísticos" detailTitle="Lugar turístico" backTo={listPath} imageCategory="tourist-place" summary={{ rating: record?.rating?.toFixed(1), price: record?.price, hours: record?.hours }} />;
 }

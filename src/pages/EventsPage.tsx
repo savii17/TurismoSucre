@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import ListingCategoryCards from "../components/listing/ListingCategoryCards";
-import { events } from "../data/events";
+import { catalogRepository } from "../repositories/catalogRepository";
+import type { EventRecord } from "../types/event";
 import type { EventStatus } from "../types/event";
 import ImageWithFallback from "../components/ImageWithFallback";
 import { getImageSet } from "../data/imageCatalog";
@@ -10,7 +11,7 @@ import { translateRecordText } from "../i18n/contentTranslations";
 
 const eventStatuses: Array<"Todos" | EventStatus> = ["Todos", "RECURRENTE", "PROXIMO", "EN_CURSO", "FINALIZADO", "CANCELADO"];
 const statusLabels: Record<EventStatus, string> = { RECURRENTE: "Evento recurrente", PROXIMO: "Próximo", EN_CURSO: "En curso", FINALIZADO: "Finalizado", CANCELADO: "Cancelado" };
-const getStatus = (event: (typeof events)[number], today: string): EventStatus => {
+const getStatus = (event: EventRecord, today: string): EventStatus => {
   if (!event.startDate || !event.endDate) return event.status === "CANCELADO" ? "CANCELADO" : "RECURRENTE";
   if (event.status === "CANCELADO") return "CANCELADO";
   if (today < event.startDate) return "PROXIMO";
@@ -27,8 +28,9 @@ export default function EventsPage() {
   const [category, setCategory] = useState("Todas");
   const [status, setStatus] = useState<"Todos" | EventStatus>("Todos");
   const [date, setDate] = useState("");
+  const events = catalogRepository.list("eventos") as EventRecord[];
   const today = todayString();
-  const categories = useMemo(() => [...new Set(events.map((event) => event.category))], []);
+  const categories = useMemo(() => [...new Set(events.map((event) => event.category))], [events]);
   const visibleEvents = useMemo(() => events.filter((event) => {
       const eventStatus = getStatus(event, today);
       const matchesQuery = `${event.name} ${event.category} ${event.location} ${event.description} ${event.organizer ?? ""}`.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase().includes(query.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase());
@@ -36,7 +38,7 @@ export default function EventsPage() {
         ? date >= event.startDate && date <= event.endDate
         : Boolean(event.usualMonth && Number(date.slice(5, 7)) === event.usualMonth));
       return matchesQuery && (category === "Todas" || event.category === category) && (status === "Todos" || eventStatus === status) && matchesDate;
-    }), [category, date, query, status, today]);
+    }), [category, date, events, query, status, today]);
   const categoryCards = categories.map((value) => {
     const matchingEvents = events.filter((event) => event.category === value);
     return { value, label: tx(value), count: matchingEvents.length, imageSet: matchingEvents[0] ? getImageSet("event", matchingEvents[0].id) : undefined };

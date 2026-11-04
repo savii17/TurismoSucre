@@ -26,4 +26,6 @@ export type EventRecord = {
   image?: string;
   status: EventStatus;
   source: string;
+  createdAt?: string;
+  updatedAt?: string;
 };

@@ -63,13 +63,13 @@ function TouristPlaceForm({ value, onCancel, onSave }: { value: TouristPlaceInpu
   </form>;
 }
 
-export default function TouristPlacesPage() {
+export default function TouristPlacesPage({ adminMode = false }: { adminMode?: boolean }) {
   const { tx } = useLanguage();
   const [items, setItems] = useState(() => touristPlaceRepository.list());
   const [editing, setEditing] = useState<TouristPlace | "new" | null>(null);
   const [formError, setFormError] = useState("");
-  const canManage = authRepository.canManage();
-  const places = items.map((place) => ({
+  const canManage = adminMode && authRepository.canManage();
+  const places = items.filter((place) => adminMode || place.estado !== "INACTIVO").map((place) => ({
     id: place.id, name: place.nombre_lugar ?? place.name, category: place.category,
     status: place.estado === "INACTIVO" ? "INACTIVO" as const : "ACTIVO" as const,
     location: place.ubicacion ?? place.address, latitude: place.latitud, longitude: place.longitud,
@@ -97,8 +97,7 @@ export default function TouristPlacesPage() {
   };
   return <>
     {formError && <p className="module-form__error" role="alert">{formError}</p>}
-    {!canManage && <p className="admin-permission-message" role="status">{tx("Solo una cuenta ADMIN puede crear, editar o eliminar lugares turísticos.")}</p>}
-    <AdministrativeListingPage title="Lugares Turísticos" description="Gestiona y consulta todos los lugares turísticos registrados en el sistema." actionLabel="Nuevo Lugar Turístico" items={places} detailPath="/lugares-turisticos" kind="places" canManage={canManage} onCreate={() => { setFormError(""); setEditing("new"); }} onEdit={(id) => { const place = items.find((item) => item.id === id); if (place && canManage) { setFormError(""); setEditing(place); } }} onDelete={remove} />
+    <AdministrativeListingPage title="Lugares Turísticos" description={adminMode ? "Gestiona y consulta todos los lugares turísticos registrados en el sistema." : "Explora los lugares turísticos de Sucre."} actionLabel="Nuevo Lugar Turístico" items={places} detailPath={adminMode ? "/admin/lugares-turisticos" : "/lugares-turisticos"} kind="places" canManage={canManage} onCreate={() => { setFormError(""); setEditing("new"); }} onEdit={(id) => { const place = items.find((item) => item.id === id); if (place && canManage) { setFormError(""); setEditing(place); } }} onDelete={remove} />
     {editing && <div className="module-dialog-backdrop" role="presentation"><section className="module-dialog" role="dialog" aria-modal="true" aria-labelledby="tourist-place-form-title"><button className="module-dialog__close" type="button" aria-label={tx("Cerrar")} onClick={() => setEditing(null)}>×</button><h2 id="tourist-place-form-title">{editing === "new" ? tx("Nuevo Lugar Turístico") : tx("Editar Lugar Turístico")}</h2><TouristPlaceForm key={editing === "new" ? "new" : editing.id} value={editing === "new" ? emptyForm : toForm(editing)} onCancel={() => setEditing(null)} onSave={save} /></section></div>}
   </>;
 }

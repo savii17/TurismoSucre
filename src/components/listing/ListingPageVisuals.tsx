@@ -5,7 +5,7 @@ import ImageWithFallback from "../ImageWithFallback";
 import { getImageSet } from "../../data/imageCatalog";
 import CategoryLocationMap from "./CategoryLocationMap";
 
-export type ListingPageKind = "places" | "accommodations" | "restaurants";
+export type ListingPageKind = "places" | "accommodations" | "restaurants" | "entertainment" | "events";
 
 const pageCopy = {
   places: {
@@ -20,26 +20,29 @@ const pageCopy = {
     es: ["Sabores de Sucre", "La gastronomía sucrense te espera", "Descubre sabores locales y opciones para disfrutar la cocina de la Ciudad Blanca.", "Ver restaurantes"],
     en: ["Taste Sucre", "Sucre's gastronomy awaits", "Discover local flavors and places to enjoy the cuisine of the White City.", "View restaurants"],
   },
+  entertainment: { es: ["Descubre", "Entretenimiento en Sucre", "Espacios para disfrutar la música, la noche y la cultura local.", "Ver lugares"], en: ["Discover", "Entertainment in Sucre", "Places to enjoy music, nightlife and local culture.", "View places"] },
+  events: { es: ["Agenda cultural", "Eventos y festividades", "Conoce las tradiciones y actividades de Sucre.", "Ver agenda"], en: ["Culture calendar", "Events and festivals", "Discover Sucre traditions and activities.", "View events"] },
 } as const;
 
 function ListingPageVisuals({ kind }: { kind: ListingPageKind }) {
   const { language } = useLanguage();
   const [kicker, heading, description, action] = pageCopy[kind][language];
-  const imageCategory = kind === "accommodations" ? "accommodation" : kind === "restaurants" ? "restaurant" : "tourist-place";
+  const imageCategory = kind === "accommodations" ? "accommodation" : kind === "restaurants" ? "restaurant" : kind === "entertainment" ? "entertainment" : kind === "events" ? "event" : "tourist-place";
   const heroImageSet = kind === "places" ? getImageSet("tourist-place", "casa-de-la-libertad", [touristHeroImages[0]]) : getImageSet(imageCategory, `listing-hero-${kind}`);
 
   return <div className="listing-top-layout">
     <section className={`listing-hero listing-hero--${kind}`} aria-labelledby="listing-hero-title">
-      <ImageWithFallback imageSet={heroImageSet} category={imageCategory} className="listing-hero__image" alt={language === "es" ? (kind === "places" ? "Casa de la Libertad en Sucre" : `${kind === "accommodations" ? "Hospedajes" : "Restaurantes"} de Sucre`) : (kind === "places" ? "Casa de la Libertad in Sucre" : `${kind === "accommodations" ? "Accommodations" : "Restaurants"} in Sucre`)} />
+      <ImageWithFallback imageSet={heroImageSet} category={imageCategory} className="listing-hero__image" alt={`${kind} in Sucre`} />
       <div className="listing-hero__copy"><p>{kicker}</p><h2 id="listing-hero-title">{heading}</h2><span>{description}</span><a href="#listing-title">{action} <b aria-hidden="true">→</b></a></div>
     </section>
   </div>;
 }
 
-export function ListingCategoryMap({ kind, items }: { kind: ListingPageKind; items: AdministrativeListing[] }) {
+export function ListingCategoryMap({ kind, items, basePath }: { kind: ListingPageKind; items: AdministrativeListing[]; basePath?: string }) {
   const { language } = useLanguage();
-  const title = kind === "places" ? (language === "es" ? "Mapa de lugares turísticos" : "Tourist places map") : kind === "accommodations" ? (language === "es" ? "Mapa de hospedajes" : "Accommodation map") : (language === "es" ? "Mapa de restaurantes" : "Restaurant map");
-  return <aside className="listing-map-panel"><CategoryLocationMap title={title} items={items.map((item) => ({ id: item.id, name: item.name, latitude: item.latitude, longitude: item.longitude, href: `/${kind === "places" ? "lugares-turisticos" : kind === "accommodations" ? "hospedajes" : "restaurantes"}/${encodeURIComponent(item.id)}` }))} /></aside>;
+  const title = kind === "places" ? (language === "es" ? "Mapa de lugares turísticos" : "Tourist places map") : kind === "accommodations" ? (language === "es" ? "Mapa de hospedajes" : "Accommodation map") : kind === "restaurants" ? (language === "es" ? "Mapa de restaurantes" : "Restaurant map") : kind === "events" ? (language === "es" ? "Mapa de eventos" : "Events map") : (language === "es" ? "Mapa de entretenimiento" : "Entertainment map");
+  const path = kind === "places" ? "lugares-turisticos" : kind === "accommodations" ? "hospedajes" : kind === "restaurants" ? "restaurantes" : kind === "events" ? "eventos" : "entretenimiento";
+  return <aside className="listing-map-panel"><CategoryLocationMap title={title} items={items.map((item) => ({ id: item.id, name: item.name, latitude: item.latitude, longitude: item.longitude, href: `${basePath ?? `/${path}`}/${encodeURIComponent(item.id)}` }))} /></aside>;
 }
 
 export default ListingPageVisuals;

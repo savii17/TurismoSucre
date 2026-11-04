@@ -13,7 +13,7 @@ export default function RegisterPage() {
     const form = new FormData(event.currentTarget);
     const result = await authRepository.register({ nombres: String(form.get("nombres")), apellido_paterno: String(form.get("apellido_paterno")), apellido_materno: String(form.get("apellido_materno")), email: String(form.get("email")), password: String(form.get("password")) });
     if (!result.user) { setError(tx(result.error === "duplicate" ? "Ya existe una cuenta con ese correo." : "Completa los campos con un correo válido.")); return; }
-    navigate("/", { replace: true });
+    navigate("/mi-cuenta", { replace: true });
   }}>
     <div className="login-form__brand" aria-hidden="true"><span>TS</span><div><strong>TURISMO</strong><small>SUCRE</small></div></div>
     <div className="login-form__heading"><p>{tx("Cuenta personal")}</p><h1>{tx("Crear cuenta")}</h1><span>{tx("Regístrate para acceder como usuario.")}</span></div>

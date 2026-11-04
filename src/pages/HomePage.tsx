@@ -12,8 +12,6 @@ const quickActions = [
   { to: "/hospedajes", icon: "bed", label: "Ver hospedajes" },
   { to: "/restaurantes", icon: "food", label: "Ver restaurantes" },
   { to: "/emergencias", icon: "alert", label: "Ver emergencias" },
-  { to: "/usuario", icon: "users", label: "Ver usuarios" },
-  { to: "/reportes", icon: "report", label: "Reportes (provisional)" },
 ] as const;
 
 function QuickActionIcon({ name }: { name: (typeof quickActions)[number]["icon"] }) {

@@ -9,6 +9,14 @@
 
 **Limitación de seguridad:** este proyecto no tiene backend. Los roles, rutas y registros locales solo ayudan a probar los flujos en el navegador. Una persona con acceso al dispositivo puede inspeccionar o modificar el almacenamiento y los archivos publicados; por eso esta autenticación no ofrece seguridad real para producción ni protege datos sensibles. La validación definitiva de credenciales y permisos requiere un servidor.
 
+### Interfaces por tipo de acceso
+
+- Invitado: entra en `/` y conserva el layout público original.
+- Usuario registrado: inicia sesión en `/login`; llega a `/mi-cuenta`, con navegación propia, `/mi-cuenta/favoritos` y `/mi-cuenta/notificaciones`.
+- Administrador: inicia sesión en `/admin/login`; usa el panel `/administrador` y rutas de gestión `/admin/...`.
+- Las cuentas creadas por registro siempre reciben rol `USUARIO`. El cliente contrasta el rol de sesión con el registro de cuenta antes de habilitar operaciones administrativas. Como toda esta implementación es local, una persona que manipule todo el estado del navegador aún puede suplantar sesiones; no debe usarse como control de acceso de producción.
+- Los catálogos de hospedajes, restaurantes, entretenimiento y eventos se guardan en `localStorage` al modificarlos y se comparten con sus páginas públicas. Los lugares turísticos mantienen el repositorio persistente existente. Favoritos, notificaciones y visitas también son locales a este navegador.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

@@ -1,6 +1,7 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import RecordDetailPage, { type DetailRecord } from "../components/detail/RecordDetailPage";
-import { events } from "../data/events";
+import { catalogRepository } from "../repositories/catalogRepository";
+import type { EventRecord } from "../types/event";
 import type { EventStatus } from "../types/event";
 import { getImageSet } from "../data/imageCatalog";
 import { useLanguage } from "../i18n/useLanguage";
@@ -18,7 +19,9 @@ const getCurrentStatus = (startDate: string | undefined, endDate: string | undef
 };
 export default function EventDetailPage() {
   const { language, tx } = useLanguage();
+  const detailPath = useLocation().pathname.startsWith("/admin/") ? "/admin/eventos" : "/eventos";
   const { eventId } = useParams<{ eventId: string }>();
+  const events = catalogRepository.list("eventos") as EventRecord[];
   const formatDate = (value: string) => new Intl.DateTimeFormat(language === "es" ? "es-BO" : "en-US", { day: "numeric", month: "long", year: "numeric" }).format(new Date(value + "T12:00:00"));
   const event = events.find((item) => item.id === eventId);
   const currentStatus = event && getCurrentStatus(event.startDate, event.endDate, event.status);
@@ -62,14 +65,14 @@ export default function EventDetailPage() {
     ],
   };
 
-  const related = event ? events.filter((item) => item.id !== event.id).slice(0, 4).map((item) => ({ id: item.id, name: item.name, category: translateRecordText("event", item.id, "category", item.category, language), location: translateRecordText("event", item.id, "location", item.location, language), imageSet: getImageSet("event", item.id, item.image ? [item.image] : []), to: `/eventos/${item.id}` })) : [];
+  const related = event ? events.filter((item) => item.id !== event.id).slice(0, 4).map((item) => ({ id: item.id, name: item.name, category: translateRecordText("event", item.id, "category", item.category, language), location: translateRecordText("event", item.id, "location", item.location, language), imageSet: getImageSet("event", item.id, item.image ? [item.image] : []), to: `${detailPath}/${item.id}` })) : [];
 
   return <RecordDetailPage
     record={record}
     related={related}
     moduleName="Eventos"
     detailTitle="evento"
-    backTo="/eventos"
+    backTo={detailPath}
     imageCategory="event"
     summary={{ rating: currentStatus ? tx(statusLabels[currentStatus]) : undefined, price: event?.organizer, hours: dateRange ? dateRange + (hours ? " · " + hours : "") : undefined }}
     summaryLabels={{ rating: "Estado", price: "Organizador", hours: "Fecha y horario" }}
