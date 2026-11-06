@@ -12,7 +12,7 @@ const INTERACTION_PAUSE_DELAY = 10_000;
 
 // Carrusel con fotografías reales de atractivos turísticos de Sucre.
 const heroImages = touristHeroImages;
-const heroPlaceIds = ["casa-de-la-libertad", "parque-cretacico", "la-recoleta", "castillo-de-la-glorieta"];
+const heroPlaceIds = ["la-recoleta", "castillo-de-la-glorieta", "plaza-25-de-mayo", "catedral-metropolitana-de-sucre"];
 const weatherApiUrl = "https://api.open-meteo.com/v1/forecast?latitude=-19.0475&longitude=-65.26&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=America%2FLa_Paz&temperature_unit=celsius&wind_speed_unit=kmh";
 
 type CurrentWeather = { temperature_2m: number; relative_humidity_2m: number; apparent_temperature: number; weather_code: number; wind_speed_10m: number };
@@ -112,6 +112,7 @@ function TourismHero() {
             category="tourist-place"
             className={`tourism-hero__image${index === activeImage ? " tourism-hero__image--active" : ""}`}
             imageClassName="tourism-hero__image-source"
+            priority={index === activeImage}
             alt=""
           />
         ))}

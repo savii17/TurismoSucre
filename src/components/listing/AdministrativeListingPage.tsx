@@ -346,6 +346,12 @@ const contentKind =
                       </p>
                     )}
 
+                    {isDisplayable(item.hours) && (
+                      <p className="admin-card__hours">
+                        ◷ {translateRecordText(contentKind, item.id, "hours", item.hours, language)}
+                      </p>
+                    )}
+
                     {isDisplayable(item.description) && (
                       <p className="admin-card__description">
                         {descriptionLabel}

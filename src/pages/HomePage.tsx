@@ -10,6 +10,8 @@ const quickActions = [
   { to: "/lugares-turisticos", icon: "pin", label: "Ver lugares turísticos" },
   { to: "/hospedajes", icon: "bed", label: "Ver hospedajes" },
   { to: "/restaurantes", icon: "food", label: "Ver restaurantes" },
+  { to: "/entretenimiento", icon: "music", label: "Ver entretenimiento" },
+  { to: "/eventos", icon: "calendar", label: "Ver eventos y festividades" },
   { to: "/emergencias", icon: "alert", label: "Ver emergencias" },
 ] as const;
 
@@ -19,6 +21,8 @@ function QuickActionIcon({ name }: { name: (typeof quickActions)[number]["icon"]
     bed: <path d="M3 18v-6.5A2.5 2.5 0 0 1 5.5 9h13a2.5 2.5 0 0 1 2.5 2.5V18M3 15h18M6 9V6h4a2 2 0 0 1 2 2v1M3 18v2m18-2v2" />,
     food: <path d="M7 3v8m-3-8v5a3 3 0 0 0 6 0V3M7 11v10m10-18v18m-3-18v6h3" />,
     alert: <path d="m12 3 9 18H3L12 3Zm0 6v5m0 3h.01" />,
+    music: <path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-3-3c1.66 0 3 1.34 3 3Zm12-2a3 3 0 1 1-3-3c1.66 0 3 1.34 3 3Z" />,
+    calendar: <path d="M4 5h16v15H4zM8 3v4m8-4v4M4 10h16" />,
     users: <path d="M16 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1m6-9a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm11 9v-1a4 4 0 0 0-3-3.87m-1-12.1a4 4 0 0 1 0 7.75" />,
     report: <path d="M6 3h9l4 4v14H6zM14 3v5h5M9 17l2-2 2 1 3-4" />,
   };

@@ -49,8 +49,8 @@ export const getTouristPlaceImage = (id: string, fallback: string) =>
   touristPlaceImages[id] ?? fallback;
 
 export const touristHeroImages = [
-  touristPlaceImages["casa-de-la-libertad"],
-  touristPlaceImages["parque-cretacico"],
   touristPlaceImages["la-recoleta"],
   touristPlaceImages["castillo-de-la-glorieta"],
+  touristPlaceImages["plaza-25-de-mayo"],
+  touristPlaceImages["catedral-metropolitana-de-sucre"],
 ] as const;
