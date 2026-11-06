@@ -82,10 +82,12 @@ export default function CategoryLocationMap({ title, items, className = "" }: Pr
   }, [mappedItems, size]);
 
   const selected = map?.points.find((point) => point.id === selectedId);
+  const withoutLocation = items.length - mappedItems.length;
 
   return <section className={`category-location-map ${className}`} aria-label={title}>
     <div className="category-location-map__heading"><div><span>🗺️</span><h2>{title}</h2></div><small>{map?.points.length ?? 0} {map?.points.length === 1 ? tx("marcador") : tx("marcadores")}</small></div>
     <div className="category-location-map__viewport" ref={viewportRef}>
+      {!mappedItems.length && <p className="category-location-map__empty">{tx("Todavía no hay ubicaciones registradas para mostrar en el mapa.")}</p>}
       {map?.tiles.map((tile) => <img key={`${map.zoom}-${tile.x}-${tile.y}`} className="category-location-map__tile" alt="" draggable="false" loading="lazy" src={`https://tile.openstreetmap.org/${map.zoom}/${tile.x}/${tile.y}.png`} style={{ left: tile.left, top: tile.top }} />)}
       {map?.points.map((point) => <button key={point.id} type="button" className={`category-location-map__marker${selectedId === point.id ? " is-selected" : ""}`} aria-label={`${language === "es" ? "Ver" : "View"} ${point.name} ${language === "es" ? "en el mapa" : "on the map"}`} title={point.name} style={{ left: `${point.x}px`, top: `${point.y}px` }} onClick={() => setSelectedId(selectedId === point.id ? null : point.id)}>📍</button>)}
       {selected && <div className="category-location-map__popup" style={{ left: `${Math.min(Math.max(selected.x, 100), size.width - 100)}px`, top: `${Math.max(8, selected.y - 39)}px` }}>
@@ -93,5 +95,6 @@ export default function CategoryLocationMap({ title, items, className = "" }: Pr
       </div>}
       <span className="category-location-map__attribution">© OpenStreetMap contributors</span>
     </div>
+    {withoutLocation > 0 && mappedItems.length > 0 && <p className="category-location-map__missing">{withoutLocation} {tx("registros todavía no tienen una ubicación registrada.")}</p>}
   </section>;
 }

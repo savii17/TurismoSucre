@@ -7,6 +7,8 @@ import type { TouristPlaceInput } from "../repositories/touristPlaceRepository";
 import type { TouristPlace } from "../types/listing";
 import { authRepository } from "../repositories/authRepository";
 import { useLanguage } from "../i18n/useLanguage";
+import LocationSearchField from "../components/listing/LocationSearchField";
+import ImageUrlField from "../components/listing/ImageUrlField";
 
 const emptyForm: TouristPlaceInput = {
   name: "", category: "", address: "", hours: "", image: "", shortDescription: "", description: "",
@@ -46,18 +48,17 @@ function TouristPlaceForm({ value, onCancel, onSave }: { value: TouristPlaceInpu
   return <form className="module-form" onSubmit={submit}>
     <label>{tx("Nombre del lugar")}<input required maxLength={100} value={form.name} onChange={(e) => set("name", e.target.value)} /></label>
     <label>{tx("Categoría")}<input required maxLength={80} value={form.category} onChange={(e) => set("category", e.target.value)} placeholder={tx("Ej.: Museos")} /></label>
-    <label className="module-form__wide">{tx("Ubicación / dirección")}<input required maxLength={200} value={form.address} onChange={(e) => set("address", e.target.value)} /></label>
-    <label>{tx("Horario") }<input maxLength={120} value={form.hours} onChange={(e) => set("hours", e.target.value)} /></label>
+    <div className="module-form__wide"><LocationSearchField value={form.address} latitude={form.latitud} longitude={form.longitud} onChange={(address, latitud, longitud) => setForm((current) => ({ ...current, address, latitud, longitud }))} label="Buscar ubicación" /></div>
+    <label>{tx("Horario") }<input maxLength={120} placeholder={tx("Ej.: Lunes a sábado, 09:00 a 18:00")} value={form.hours} onChange={(e) => set("hours", e.target.value)} /></label>
     <label>{tx("Teléfono")}<input maxLength={40} value={form.telefono ?? ""} onChange={(e) => set("telefono", e.target.value)} /></label>
-    <label>{tx("Latitud")}<input type="number" step="any" min="-90" max="90" value={form.latitud ?? ""} onChange={(e) => set("latitud", e.target.value)} /></label>
-    <label>{tx("Longitud")}<input type="number" step="any" min="-180" max="180" value={form.longitud ?? ""} onChange={(e) => set("longitud", e.target.value)} /></label>
+    {form.latitud != null && form.longitud != null && <p className="module-form__wide location-coordinates">{tx("Ubicación seleccionada")}: {form.latitud.toFixed(6)}, {form.longitud.toFixed(6)}</p>}
     <label>{tx("Precio de entrada (Bs)")}<input type="number" step="0.01" min="0" value={form.precio_entrada ?? ""} onChange={(e) => set("precio_entrada", e.target.value)} /></label>
     <label>{tx("Estado")}<select value={form.estado ?? "ACTIVO"} onChange={(e) => set("estado", e.target.value)}><option value="ACTIVO">{tx("ACTIVO")}</option><option value="INACTIVO">{tx("INACTIVO")}</option></select></label>
-    <label className="module-form__wide">{tx("Imagen (ruta o URL)")}<input maxLength={500} value={form.image} onChange={(e) => set("image", e.target.value)} placeholder="/images/tourist-places/imagen.jpg" /></label>
+    <div className="module-form__wide"><ImageUrlField value={form.image} onChange={(image) => set("image", image)} /></div>
     <label className="module-form__wide">{tx("Descripción breve")}<textarea required maxLength={250} value={form.shortDescription} onChange={(e) => set("shortDescription", e.target.value)} /></label>
     <label className="module-form__wide">{tx("Descripción")}<textarea required maxLength={2000} value={form.description} onChange={(e) => set("description", e.target.value)} /></label>
     <label className="module-form__wide">{tx("Atractivos destacados (separados por coma)")}<input value={form.highlights.join(", ")} onChange={(e) => setForm((current) => ({ ...current, highlights: e.target.value.split(",") }))} /></label>
-    <label className="module-form__wide">{tx("Servicios (separados por coma)")}<input value={form.services.join(", ")} onChange={(e) => setForm((current) => ({ ...current, services: e.target.value.split(",") }))} /></label>
+    <label className="module-form__wide">{tx("Servicios (separados por coma)")}<input value={form.services.join(", ")} onChange={(e) => setForm((current) => ({ ...current, services: e.target.value.split(",") }))} /><small>{tx("Separa cada servicio con una coma. Ej.: Wi-Fi, baños, estacionamiento, visitas guiadas, cafetería")}</small></label>
     {error && <p className="module-form__error" role="alert">{error}</p>}
     <div className="module-form__actions"><button type="button" className="module-button module-button--secondary" onClick={onCancel}>{tx("Cancelar")}</button><button className="admin-button" type="submit">{tx("Guardar lugar turístico")}</button></div>
   </form>;
