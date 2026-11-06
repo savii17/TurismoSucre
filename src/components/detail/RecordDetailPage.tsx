@@ -156,7 +156,7 @@ export default function RecordDetailPage({ record, moduleName, detailTitle, back
           <div className="record-detail__identity">
             <div className="record-detail__badges">{localized.category && <span className="record-detail__category">{localized.category}</span>}{status && <span className={`status-badge status-badge--${record.status === "INACTIVO" ? "inactivo" : "activo"}`}>{status}</span>}</div>
             <h1>{localized.name}</h1>
-            <FavoriteButton kind={imageCategory} id={record.id} name={localized.name} to={`${backTo}/${encodeURIComponent(record.id)}`} />
+            <FavoriteButton kind={imageCategory} id={record.id} name={localized.name} category={localized.category} to={`${backTo}/${encodeURIComponent(record.id)}`} />
             {address && <p className="record-detail__location"><span aria-hidden="true">⌖</span> {address}</p>}
             {record.rating != null && <p className="record-detail__rating"><span aria-label={text.rating}>★</span> {record.rating.toFixed(1)}{record.reviews != null && <small> · {record.reviews} {text.reviews}</small>}</p>}
             {tags.length > 0 && <ul className="record-detail__tags">{tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>}

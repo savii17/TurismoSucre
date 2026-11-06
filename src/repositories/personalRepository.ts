@@ -1,16 +1,20 @@
 import { authRepository } from "./authRepository";
 import { storageService } from "../services/storageService";
 
-export type FavoriteRecord = { id: string; kind: string; name: string; to: string; savedAt: string };
+export type FavoriteRecord = { id: string; kind: string; name: string; to: string; savedAt: string; category?: string };
 export type VisitRecord = { id: string; kind: string; name: string; visits: number };
 export type NotificationRecord = { id: string; recordId?: string; title: string; name?: string; category?: string; to: string; read: boolean; createdAt: string };
 const VISITS_KEY = "tourism_public_visits_v1";
+export const FAVORITES_CHANGED_EVENT = "turismosucre:favorites-changed";
 const accountKey = () => {
   const user = authRepository.getCurrentUser();
   if (!user || user.rol !== "USUARIO" || user.estado !== "ACTIVO") throw new Error("Esta función requiere una cuenta USUARIO activa.");
   return user.email.toLocaleLowerCase();
 };
 const favoritesKey = () => `tourism_favorites_${encodeURIComponent(accountKey())}`;
+const notifyFavoritesChanged = () => {
+  if (typeof window !== "undefined") window.dispatchEvent(new Event(FAVORITES_CHANGED_EVENT));
+};
 
 export function publishNewContentNotification(emails: string[], category: string, recordId: string, name: string, to: string): void {
   for (const email of emails) {
@@ -32,10 +36,15 @@ export const personalRepository = {
   toggleFavorite(record: Omit<FavoriteRecord, "savedAt">): boolean {
     const list = this.listFavorites();
     const exists = list.some((item) => item.kind === record.kind && item.id === record.id);
-    storageService.set(favoritesKey(), exists ? list.filter((item) => item.kind !== record.kind || item.id !== record.id) : [{ ...record, savedAt: new Date().toISOString() }, ...list]);
+    const next = exists ? list.filter((item) => item.kind !== record.kind || item.id !== record.id) : [{ ...record, savedAt: new Date().toISOString() }, ...list];
+    if (!storageService.set(favoritesKey(), next)) return exists;
+    notifyFavoritesChanged();
     return !exists;
   },
-  removeFavorite(kind: string, id: string): void { storageService.set(favoritesKey(), this.listFavorites().filter((item) => item.kind !== kind || item.id !== id)); },
+  removeFavorite(kind: string, id: string): void {
+    if (!storageService.set(favoritesKey(), this.listFavorites().filter((item) => item.kind !== kind || item.id !== id))) return;
+    notifyFavoritesChanged();
+  },
   listNotifications() {
     accountKey();
     return storageService.get<NotificationRecord[]>(`tourism_notifications_${encodeURIComponent(accountKey())}`) ?? [];

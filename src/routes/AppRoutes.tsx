@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation } from "rea
 import { useLanguage } from "../i18n/useLanguage";
 import { authRepository } from "../repositories/authRepository";
 import PublicExperienceLayout from "../components/layout/PublicExperienceLayout";
+import RegisteredUserLayout from "../components/layout/RegisteredUserLayout";
 import AdminLayout from "../components/layout/AdminLayout";
 import AudienceHomePage from "../pages/AudienceHomePage";
 import PlaceholderPage from "../pages/PlaceholderPage";
@@ -21,6 +22,7 @@ import AdminHomePage from "../pages/AdminHomePage";
 import AdminCatalogPage from "../pages/admin/AdminCatalogPage";
 import AdminStatsPage from "../pages/admin/AdminStatsPage";
 import FavoritesPage from "../pages/user/FavoritesPage";
+import UserHomePage from "../pages/user/UserHomePage";
 import NotificationsPage from "../pages/user/NotificationsPage";
 import LoginPage from "../pages/auth/LoginPage";
 import RegisterPage from "../pages/auth/RegisterPage";
@@ -52,8 +54,8 @@ function AppRoutes() {
     </Route>
 
     <Route element={<RequireRole role="USUARIO" />}>
-      <Route path="/mi-cuenta" element={<Navigate to="/" replace />} />
-      <Route element={<PublicExperienceLayout />}>
+      <Route element={<RegisteredUserLayout />}>
+        <Route path="/mi-cuenta" element={<UserHomePage />} />
         <Route path="/mi-cuenta/favoritos" element={<FavoritesPage />} />
         <Route path="/mi-cuenta/notificaciones" element={<NotificationsPage />} />
       </Route>
