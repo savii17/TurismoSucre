@@ -99,6 +99,7 @@ export default function RecordDetailPage({ record, moduleName, detailTitle, back
   const kind = imageCategory;
   const localized = {
     ...record,
+    name: translateRecordText(kind, record.id, "name", record.name, language),
     category: translateRecordText(kind, record.id, "category", record.category, language),
     address: translateRecordText(kind, record.id, "address", record.address, language),
     location: translateRecordText(kind, record.id, "location", record.location, language),
@@ -114,12 +115,13 @@ export default function RecordDetailPage({ record, moduleName, detailTitle, back
   };
 
   const images = [...new Set([record.image, ...(record.images ?? [])].filter((image): image is string => Boolean(image)))];
-  const imageSet = record.imageSet ?? {
+  const sourceImageSet = record.imageSet ?? {
     category: imageCategory,
     main: images[0] ? { src: images[0], alt: `${record.name} en Sucre, Bolivia`, order: 0, role: "main" as const } : undefined,
     gallery: images.slice(1).map((src, index) => ({ src, alt: `${record.name} en Sucre, Bolivia · imagen ${index + 2}`, order: index + 1, role: "gallery" as const })),
     fallback: `/images/fallback/fallback-${imageCategory}.svg`,
   };
+  const imageSet = { ...sourceImageSet, main: sourceImageSet.main ? { ...sourceImageSet.main, alt: `${localized.name} in Sucre, Bolivia` } : undefined, gallery: sourceImageSet.gallery.map((image, index) => ({ ...image, alt: `${localized.name} in Sucre, Bolivia · image ${index + 2}` })) };
   const fields = [
     { label: text.category, value: localized.category },
     { label: text.address, value: localized.address },
@@ -153,8 +155,8 @@ export default function RecordDetailPage({ record, moduleName, detailTitle, back
           <div className="record-detail__hero-media"><ImageGallery key={record.id} imageSet={imageSet} category={imageCategory} alt={record.name} /></div>
           <div className="record-detail__identity">
             <div className="record-detail__badges">{localized.category && <span className="record-detail__category">{localized.category}</span>}{status && <span className={`status-badge status-badge--${record.status === "INACTIVO" ? "inactivo" : "activo"}`}>{status}</span>}</div>
-            <h1>{record.name}</h1>
-            <FavoriteButton kind={imageCategory} id={record.id} name={record.name} to={`${backTo}/${encodeURIComponent(record.id)}`} />
+            <h1>{localized.name}</h1>
+            <FavoriteButton kind={imageCategory} id={record.id} name={localized.name} to={`${backTo}/${encodeURIComponent(record.id)}`} />
             {address && <p className="record-detail__location"><span aria-hidden="true">⌖</span> {address}</p>}
             {record.rating != null && <p className="record-detail__rating"><span aria-label={text.rating}>★</span> {record.rating.toFixed(1)}{record.reviews != null && <small> · {record.reviews} {text.reviews}</small>}</p>}
             {tags.length > 0 && <ul className="record-detail__tags">{tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>}
@@ -173,11 +175,11 @@ export default function RecordDetailPage({ record, moduleName, detailTitle, back
       </div>
 
       <aside className="record-detail__aside">
-        {record.showLocationMap !== false && <div className="record-detail__panel record-detail__map-panel"><LocationMap latitude={record.latitude} longitude={record.longitude} name={record.name} address={address} allowAddressSearch={record.allowLocationSearch ?? true} /></div>}
+        {record.showLocationMap !== false && <div className="record-detail__panel record-detail__map-panel"><LocationMap latitude={record.latitude} longitude={record.longitude} name={localized.name} address={address} allowAddressSearch={record.allowLocationSearch ?? true} /></div>}
         {(isDisplayable(record.phone) || isDisplayable(localized.hours) || isDisplayable(localized.price) || address) && <section className="record-detail__panel record-detail__practical"><h3>{text.practical}</h3><dl>{localized.address && isDisplayable(localized.address) && <div><dt>{text.address}</dt><dd>{localized.address}</dd></div>}{localized.location && isDisplayable(localized.location) && localized.location !== localized.address && <div><dt>{text.locationLabel}</dt><dd>{localized.location}</dd></div>}{isDisplayable(record.phone) && <div><dt>{text.phone}</dt><dd><a href={`tel:${record.phone!.replace(/[^+\d]/g, "")}`}>{record.phone}</a></dd></div>}{isDisplayable(localized.hours) && <div><dt>{text.hours}</dt><dd>{localized.hours}</dd></div>}{isDisplayable(localized.price) && <div><dt>{text.price}</dt><dd>{localized.price}</dd></div>}</dl></section>}
       </aside>
     </div>
 
-    {related.length > 0 && <section className="record-detail__related"><div className="record-detail__related-heading"><div><p className="record-detail__eyebrow">{tx(moduleName)}</p><h2>{text.related}</h2></div><Link to={backTo}>{text.back} <span aria-hidden="true">→</span></Link></div><div className="record-detail__related-grid">{related.slice(0, 4).map((item) => <Link className="record-detail__related-card" key={item.id} to={item.to}><ImageWithFallback imageSet={item.imageSet} category={item.imageSet.category} alt={item.name} objectFit="cover" /><span className="record-detail__related-copy">{item.category && <small>{translateRecordText(item.imageSet.category, item.id, "category", item.category, language)}</small>}<strong>{item.name}</strong>{item.location && <span>{translateRecordText(item.imageSet.category, item.id, "location", item.location, language)}</span>}</span><span className="record-detail__related-arrow" aria-hidden="true">↗</span></Link>)}</div></section>}
+    {related.length > 0 && <section className="record-detail__related"><div className="record-detail__related-heading"><div><p className="record-detail__eyebrow">{tx(moduleName)}</p><h2>{text.related}</h2></div><Link to={backTo}>{text.back} <span aria-hidden="true">→</span></Link></div><div className="record-detail__related-grid">{related.slice(0, 4).map((item) => { const name = translateRecordText(item.imageSet.category, item.id, "name", item.name, language); return <Link className="record-detail__related-card" key={item.id} to={item.to}><ImageWithFallback imageSet={item.imageSet} category={item.imageSet.category} alt={name} objectFit="cover" /><span className="record-detail__related-copy">{item.category && <small>{translateRecordText(item.imageSet.category, item.id, "category", item.category, language)}</small>}<strong>{name}</strong>{item.location && <span>{translateRecordText(item.imageSet.category, item.id, "location", item.location, language)}</span>}</span><span className="record-detail__related-arrow" aria-hidden="true">↗</span></Link>;})}</div></section>}
   </article>;
 }

@@ -20,7 +20,7 @@ function TouristPlaceCard({ place }: TouristPlaceCardProps) {
   const localizedPlace = language === "en" ? {
     ...basePlace,
     name: place.name,
-    nombre_lugar: place.nombre_lugar ?? place.name,
+    nombre_lugar: translateRecordText("tourist-place", place.id, "name", place.nombre_lugar ?? place.name, language),
     category: translateRecordText("tourist-place", place.id, "category", place.category, language),
     address: translateRecordText("tourist-place", place.id, "address", basePlace.address, language),
     ubicacion: translateRecordText("tourist-place", place.id, "location", basePlace.ubicacion ?? basePlace.address, language),

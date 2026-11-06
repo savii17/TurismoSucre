@@ -15,7 +15,7 @@ function DashboardTouristPlaceCard({ place }: Props) {
     place.id,
     place.imagenes_url?.find((url) => url.trim()) ?? place.image,
   );
-  const name = place.nombre_lugar ?? place.name;
+  const name = translateRecordText("tourist-place", place.id, "name", place.nombre_lugar ?? place.name, language);
   const location = translateRecordText("tourist-place", place.id, "location", place.ubicacion ?? place.localizacion ?? place.address, language);
   const description = translateRecordText("tourist-place", place.id, "shortDescription", place.descripcion ?? place.shortDescription, language);
   const rawHours = place.horario_inicio && place.horario_fin

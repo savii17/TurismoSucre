@@ -52,7 +52,7 @@ function DashboardRightSidebar() {
       </section>
       <section className="dashboard-right-sidebar__panel">
         <div className="dashboard-right-sidebar__panel-heading"><h2>{tx("Eventos y Festividades")}</h2><Link to="/eventos">{tx("Ver calendario")} <span aria-hidden="true">→</span></Link></div>
-        <ul className="dashboard-events-list">{agendaEvents.map((event) => <li key={event.id}><time><strong>{translateRecordText("event", event.id, "category", event.category, language)}</strong>{event.usualMonthLabel && <span>{translateRecordText("event", event.id, "month", event.usualMonthLabel, language)}</span>}</time><div><h3>{event.name}</h3><p>{translateRecordText("event", event.id, "description", event.description, language)}</p><small>{translateRecordText("event", event.id, "location", event.location, language)}</small></div></li>)}</ul>
+        <ul className="dashboard-events-list">{agendaEvents.map((event) => <li key={event.id}><time><strong>{translateRecordText("event", event.id, "category", event.category, language)}</strong>{event.usualMonthLabel && <span>{translateRecordText("event", event.id, "month", event.usualMonthLabel, language)}</span>}</time><div><h3>{translateRecordText("event", event.id, "name", event.name, language)}</h3><p>{translateRecordText("event", event.id, "description", event.description, language)}</p><small>{translateRecordText("event", event.id, "location", event.location, language)}</small></div></li>)}</ul>
       </section>
     </aside>
   );

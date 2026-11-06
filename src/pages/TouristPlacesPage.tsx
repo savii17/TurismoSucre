@@ -9,24 +9,35 @@ import { authRepository } from "../repositories/authRepository";
 import { useLanguage } from "../i18n/useLanguage";
 import LocationSearchField from "../components/listing/LocationSearchField";
 import ImageUrlField from "../components/listing/ImageUrlField";
+import { getRecordEnglishField, getRecordEnglishTranslations, saveRecordEnglishTranslations } from "../i18n/contentTranslations";
 
-const emptyForm: TouristPlaceInput = {
+type PlaceFormValue = TouristPlaceInput & { nameEn: string; categoryEn: string; locationEn: string; descriptionEn: string; hoursEn: string; servicesEn: string };
+
+const emptyForm: PlaceFormValue = {
   name: "", category: "", address: "", hours: "", image: "", shortDescription: "", description: "",
   highlights: [], services: [], estado: "ACTIVO", latitud: undefined, longitud: undefined, telefono: "", precio_entrada: undefined,
+  nameEn: "", categoryEn: "", locationEn: "", descriptionEn: "", hoursEn: "", servicesEn: "",
 };
-const toForm = (place: TouristPlace): TouristPlaceInput => ({
+const toForm = (place: TouristPlace): PlaceFormValue => {
+ const stored = getRecordEnglishTranslations("tourist-place", place.id);
+ const serviceMap = stored.services && typeof stored.services === "object" ? stored.services : {};
+ return ({
   name: place.nombre_lugar ?? place.name, category: place.category, address: place.ubicacion ?? place.address,
   hours: place.hours, image: place.imagenes_url?.[0] ?? place.image, shortDescription: place.shortDescription,
   description: place.descripcion ?? place.description, highlights: place.highlights ?? [], services: place.services ?? [],
   estado: place.estado ?? "ACTIVO", latitud: place.latitud, longitud: place.longitud, telefono: place.telefono ?? "",
   precio_entrada: place.precio_entrada, registrado_por: place.registrado_por,
-});
+  nameEn: getRecordEnglishField("tourist-place", place.id, "name"), categoryEn: typeof stored.category === "string" ? stored.category : "",
+  locationEn: getRecordEnglishField("tourist-place", place.id, "location") || getRecordEnglishField("tourist-place", place.id, "address"), descriptionEn: getRecordEnglishField("tourist-place", place.id, "description"),
+  hoursEn: getRecordEnglishField("tourist-place", place.id, "hours"), servicesEn: place.services.map((service) => serviceMap[service] ?? "").join(", "),
+ });
+};
 
-function TouristPlaceForm({ value, onCancel, onSave }: { value: TouristPlaceInput; onCancel: () => void; onSave: (input: TouristPlaceInput) => void }) {
+function TouristPlaceForm({ value, onCancel, onSave }: { value: PlaceFormValue; onCancel: () => void; onSave: (input: PlaceFormValue) => void }) {
   const { tx } = useLanguage();
   const [form, setForm] = useState(value);
   const [error, setError] = useState("");
-  const set = (key: keyof TouristPlaceInput, raw: string) => setForm((current) => ({
+  const set = (key: keyof PlaceFormValue, raw: string) => setForm((current) => ({
     ...current,
     [key]: key === "latitud" || key === "longitud" || key === "precio_entrada" ? (raw === "" ? undefined : Number(raw)) : raw,
   }));
@@ -59,6 +70,12 @@ function TouristPlaceForm({ value, onCancel, onSave }: { value: TouristPlaceInpu
     <label className="module-form__wide">{tx("Descripción")}<textarea required maxLength={2000} value={form.description} onChange={(e) => set("description", e.target.value)} /></label>
     <label className="module-form__wide">{tx("Atractivos destacados (separados por coma)")}<input value={form.highlights.join(", ")} onChange={(e) => setForm((current) => ({ ...current, highlights: e.target.value.split(",") }))} /></label>
     <label className="module-form__wide">{tx("Servicios (separados por coma)")}<input value={form.services.join(", ")} onChange={(e) => setForm((current) => ({ ...current, services: e.target.value.split(",") }))} /><small>{tx("Separa cada servicio con una coma. Ej.: Wi-Fi, baños, estacionamiento, visitas guiadas, cafetería")}</small></label>
+    <details className="module-form__wide translation-fields"><summary>{tx("Versión en inglés (opcional)")}</summary><p>{tx("Completa los campos en inglés para que el registro no aparezca pendiente en ese idioma. Los nombres propios pueden conservarse.")}</p>
+      <label>{tx("Nombre en inglés")}<input value={form.nameEn} onChange={(e) => set("nameEn", e.target.value)} /></label><label>{tx("Categoría en inglés")}<input value={form.categoryEn} onChange={(e) => set("categoryEn", e.target.value)} /></label>
+      <label className="module-form__wide">{tx("Ubicación en inglés")}<input value={form.locationEn} onChange={(e) => set("locationEn", e.target.value)} /></label><label className="module-form__wide">{tx("Descripción en inglés")}<textarea value={form.descriptionEn} onChange={(e) => set("descriptionEn", e.target.value)} /></label>
+      <label>{tx("Horario o periodicidad en inglés")}<input value={form.hoursEn} onChange={(e) => set("hoursEn", e.target.value)} /></label><label className="module-form__wide">{tx("Servicios en inglés (mismo orden, separados por coma)")}<input value={form.servicesEn} onChange={(e) => set("servicesEn", e.target.value)} /></label>
+    </details>
+    <p className="module-form__wide" role="status">{form.nameEn.trim() ? tx("Traducción del nombre completa") : tx("Traducción del nombre pendiente")}</p>
     {error && <p className="module-form__error" role="alert">{error}</p>}
     <div className="module-form__actions"><button type="button" className="module-button module-button--secondary" onClick={onCancel}>{tx("Cancelar")}</button><button className="admin-button" type="submit">{tx("Guardar lugar turístico")}</button></div>
   </form>;
@@ -80,10 +97,14 @@ export default function TouristPlacesPage({ adminMode = false }: { adminMode?: b
     price: place.precio_entrada == null ? undefined : place.precio_entrada === 0 ? "Gratuito" : `Bs ${place.precio_entrada}`,
   }));
   const refresh = () => setItems(touristPlaceRepository.list());
-  const save = (input: TouristPlaceInput) => {
+  const save = (input: PlaceFormValue) => {
     try {
-      if (editing === "new") touristPlaceRepository.create({ ...input, registrado_por: authRepository.getCurrentUser()?.email ?? "" });
-      else if (editing) touristPlaceRepository.update(editing.id, input);
+      const { nameEn, categoryEn, locationEn, descriptionEn, hoursEn, servicesEn, ...record } = input;
+      const saved = editing === "new" ? touristPlaceRepository.create({ ...record, registrado_por: authRepository.getCurrentUser()?.email ?? "" }) : editing ? touristPlaceRepository.update(editing.id, record) : undefined;
+      if (saved) {
+        const serviceMap = Object.fromEntries(record.services.flatMap((service, index) => { const translated = servicesEn.split(",").map((part) => part.trim())[index]; return translated ? [[service, translated]] : []; }));
+        saveRecordEnglishTranslations("tourist-place", saved.id, { ...(nameEn.trim() ? { name: nameEn.trim() } : {}), ...(categoryEn.trim() ? { category: categoryEn.trim() } : {}), ...(locationEn.trim() ? { location: locationEn.trim(), address: locationEn.trim() } : {}), ...(descriptionEn.trim() ? { description: descriptionEn.trim(), shortDescription: descriptionEn.trim() } : {}), ...(hoursEn.trim() ? { hours: hoursEn.trim() } : {}), ...(Object.keys(serviceMap).length ? { services: serviceMap } : {}) });
+      }
       setEditing(null);
       setFormError("");
       refresh();

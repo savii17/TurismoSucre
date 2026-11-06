@@ -4,6 +4,7 @@ import { useLanguage } from "../../i18n/useLanguage";
 import ImageWithFallback from "../ImageWithFallback";
 import { getImageSet } from "../../data/imageCatalog";
 import CategoryLocationMap from "./CategoryLocationMap";
+import { translateRecordText, type ContentKind } from "../../i18n/contentTranslations";
 
 export type ListingPageKind = "places" | "accommodations" | "restaurants" | "entertainment" | "events";
 
@@ -42,7 +43,8 @@ export function ListingCategoryMap({ kind, items, basePath }: { kind: ListingPag
   const { language } = useLanguage();
   const title = kind === "places" ? (language === "es" ? "Mapa de lugares turísticos" : "Tourist places map") : kind === "accommodations" ? (language === "es" ? "Mapa de hospedajes" : "Accommodation map") : kind === "restaurants" ? (language === "es" ? "Mapa de restaurantes" : "Restaurant map") : kind === "events" ? (language === "es" ? "Mapa de eventos" : "Events map") : (language === "es" ? "Mapa de entretenimiento" : "Entertainment map");
   const path = kind === "places" ? "lugares-turisticos" : kind === "accommodations" ? "hospedajes" : kind === "restaurants" ? "restaurantes" : kind === "events" ? "eventos" : "entretenimiento";
-  return <aside className="listing-map-panel"><CategoryLocationMap title={title} items={items.map((item) => ({ id: item.id, name: item.name, latitude: item.latitude, longitude: item.longitude, href: `${basePath ?? `/${path}`}/${encodeURIComponent(item.id)}` }))} /></aside>;
+  const contentKind: ContentKind = kind === "places" ? "tourist-place" : kind === "accommodations" ? "accommodation" : kind === "restaurants" ? "restaurant" : kind === "events" ? "event" : "entertainment";
+  return <aside className="listing-map-panel"><CategoryLocationMap title={title} items={items.map((item) => ({ id: item.id, name: translateRecordText(contentKind, item.id, "name", item.name, language), latitude: item.latitude, longitude: item.longitude, href: `${basePath ?? `/${path}`}/${encodeURIComponent(item.id)}` }))} /></aside>;
 }
 
 export default ListingPageVisuals;

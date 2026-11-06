@@ -114,7 +114,7 @@ const contentKind =
 
   const visibleItems = items.filter(
     (item) =>
-      `${item.name} ${item.category} ${item.location} ${item.description}`
+      `${item.name} ${translateRecordText(contentKind, item.id, "name", item.name, language)} ${item.category} ${item.location} ${item.description}`
         .toLocaleLowerCase()
         .includes(normalizedQuery) &&
       (category === "Todas" || item.category === category) &&
@@ -307,6 +307,7 @@ const contentKind =
                     language === "es" ? "es-BO" : "en-US"
                   )
                 : item.date;
+              const nameLabel = translateRecordText(contentKind, item.id, "name", item.name, language);
 
               return (
                 <article className="admin-card" key={item.id}>
@@ -316,7 +317,7 @@ const contentKind =
                       category={imageCategory}
                       alt={
                         imageSet.main?.alt ??
-                        `${item.name} in Sucre, Bolivia`
+                        `${nameLabel} in Sucre, Bolivia`
                       }
                     />
 
@@ -332,7 +333,7 @@ const contentKind =
                       {categoryLabel}
                     </p>
 
-                    <h2>{item.name}</h2>
+                    <h2>{nameLabel}</h2>
 
                     {showDate && isDisplayable(item.date) && (
                       <p className="admin-card__date">
